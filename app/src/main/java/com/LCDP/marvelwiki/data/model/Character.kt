@@ -8,7 +8,7 @@ import java.io.Serializable
     Utilizziamo una data class perché //TODO
 
     Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
-    alla proprietà 'id' della nostra classe 'Character' durante il funzionamento di Gson.
+    alla proprietà della nostra classe 'Character' durante il funzionamento di Gson.
 
     Con l'annotazione '@Expose' indichiamo che il campo è incluso nel processo di serializzazione
     e deserializzazione con Gson.

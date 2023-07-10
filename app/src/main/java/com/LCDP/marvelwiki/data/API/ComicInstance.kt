@@ -45,7 +45,6 @@ object ComicInstance {
             .build()
     }
 
-
     val comic_api by lazy {
         // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'ComicAPI'
         retrofit.create(ComicAPI::class.java)
