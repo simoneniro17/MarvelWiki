@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MarvelWiki</string>
+    <string name="title_chars">Characters</string>
+    <string name="character">character</string>
+    <string name="char_name">character_name</string>
+    <string name="comics">Comics</string>
+</resources>
