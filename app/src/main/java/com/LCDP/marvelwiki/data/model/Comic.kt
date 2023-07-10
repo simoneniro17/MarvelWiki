@@ -5,19 +5,18 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /*
-    l'annotazione @Expose è fornita dalla libreria GSON e viene utilizzat per indicare
-    quali campi dell'oggetto devono essere inclusi nella serializzazione o deserializzazione JSON
+    Utilizziamo una data class perché //TODO
 
-    Per impostazione predefinita GSON considera solo i campi pubblici e non statici di una classe
-    durante la serializzazione e deserializzazione JSON. Tuttavia, quando viene applicata
-    l'annotazione @Exopse a un campo, questo indica che il campo deve essere incluso nella serializzazione
-    o deserializzazione JSON anche se non è pubblico o statico.
-*/
+    Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
+    alla proprietà della nostra classe 'Comic' durante il funzionamento di Gson.
 
+    Con l'annotazione '@Expose' indichiamo che il campo è incluso nel processo di serializzazione
+    e deserializzazione con Gson.
+ */
 data class Comic(
     @SerializedName("id")
     @Expose
-    var comiId: Int? = null,
+    var comicId: Int? = null,
 
     @SerializedName("title")
     @Expose
