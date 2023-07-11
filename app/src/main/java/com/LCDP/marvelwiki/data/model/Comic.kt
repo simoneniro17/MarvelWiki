@@ -24,7 +24,7 @@ data class Comic(
 
     @SerializedName("thumbnail")
     @Expose
-    val thumbnail: String? = null,
+    val thumbnail: Thumbnail? = null,
 
     @SerializedName("description")
     @Expose

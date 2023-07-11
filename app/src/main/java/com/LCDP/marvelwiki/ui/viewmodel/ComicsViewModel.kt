@@ -6,24 +6,30 @@ import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.model.ComicResponse
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.usefulStuff.Constant
 import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ComicsViewModel(val comicsRepository: ComicsRepository): ViewModel(){
+class ComicsViewModel(val comicsRepository: ComicsRepository, id: Int): ViewModel(){
     // Questa classe estente la classe viewModel
 
     //La variabile comics è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
     //Resource rappresenta lo stato dei dati (caricamento, successo, errore) e CharacterResponse è il tipo dei dati dei comics
     val comics: MutableLiveData<Resource<ComicResponse>> = MutableLiveData()
 
+    var idToSearch = id
+    var currentOffset: Int = 0
 
+    init {
+        getComics()
+    }
     //Questo metodo serve per ottenere i dati dei comics.
     //viewModelScope.launch esegue il blocco in modo asincrono. Tramite postValue, si specifca che i dati sono in stato di loading
     //Il metodo getComic_api viene utilizzato per ottenere i dati dei comics
-    fun getComics(id: Int) = viewModelScope.launch {
+    fun getComics() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
-        val response = comicsRepository.getComics(id)
+        val response = comicsRepository.getComics(idToSearch,currentOffset)
 
         //Il risultato è passato a  handleResponse che gestisce la risposta
         comics.postValue(handleResponse(response))
@@ -42,4 +48,9 @@ class ComicsViewModel(val comicsRepository: ComicsRepository): ViewModel(){
         return Resource.Error(response.message())
     }
 
-}
+    fun loadMoreComics() {
+            currentOffset += Constant.limit // Incrementa l'offset di 100
+            getComics()
+        }
+    }
+
