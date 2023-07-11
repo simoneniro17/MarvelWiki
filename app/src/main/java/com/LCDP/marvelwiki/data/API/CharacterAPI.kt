@@ -14,7 +14,7 @@ interface CharacterAPI {
     suspend fun getCharacters(
         //TODO INVERTIRE TS E APIKEY???
         // La funzione prende in input diversi parametri, passati come parametri di query nell'URL della richiesta.
-        @Query("ts") apiKey: String = Constant.ts,
+        @Query("ts") apikey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,
         @Query("hash") hash: String = Constant.hash(),
         @Query("limit") limit: Int = Constant.limit

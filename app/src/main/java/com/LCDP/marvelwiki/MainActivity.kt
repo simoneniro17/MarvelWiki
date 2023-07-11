@@ -3,6 +3,7 @@ package com.LCDP.marvelwiki
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.ViewModelProvider
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import com.LCDP.marvelwiki.ui.screen.CharactersScreen
 import com.LCDP.marvelwiki.ui.screen.Navigation
@@ -21,18 +22,20 @@ class MainActivity : ComponentActivity() {
             //Per farlo ritornare come prima decommenta la riga sopra e commenta il resto sotto
 
 
-            // Crea l'istanza del repository
-            val charactersRepository = CharactersRepository()
-            // Crea l'istanza del ViewModel e del ViewModelFactory
-            val charactersViewModelFactory = CharactersViewModelFactory(charactersRepository)
-            val charactersViewModel = charactersViewModelFactory.create(CharactersViewModel::class.java)
+
+            lateinit var charactersViewModel: CharactersViewModel
+            val characterRepository = CharactersRepository()
+            val characterViewModelProviderFactory = CharactersViewModelFactory(characterRepository)
+            charactersViewModel = ViewModelProvider(this, characterViewModelProviderFactory).get(CharactersViewModel::class.java)
+
 
             // Richiama il composable CharactersScreen
-            CharactersScreen(charactersViewModel)               } } }
+            CharactersScreen(charactersViewModel)
+
+            println("Ciao")
 
 
 
-/*
                 // Stampa i campi dei personaggi
 
             when (val characters = charactersViewModel.characters.value) {
@@ -40,10 +43,10 @@ class MainActivity : ComponentActivity() {
                         characters.data?.characterData?.results?.forEach {  
 
                         character ->
-                            println("Nome: ${character.name}")
-                            println("Descrizione: ${character.description}")
-                            println("Thumbnail: ${character.thumbnail}")
-                            println()
+                            println("Nome: ${character.name}                1111111111111111111111111111111111111111111")
+                            //println("Descrizione: ${character.description}")
+                            //println("Thumbnail: ${character.thumbnail}")
+                            //println()
                         }
                     }
                     is Resource.Error -> {
@@ -58,4 +61,3 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-*/
