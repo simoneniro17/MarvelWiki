@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
+import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
+import com.LCDP.marvelwiki.usefulStuff.Resource
 
 @Composable
 fun NavigationScreen(navController : NavController) {
@@ -37,6 +42,9 @@ fun NavigationScreen(navController : NavController) {
     heroList.add(hulk)
     heroList.add(spiderman)
     heroList.add(ironman)
+
+
+
 
     Column (modifier = Modifier
         .background(Color.DarkGray)

@@ -35,6 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
+import com.LCDP.marvelwiki.usefulStuff.Resource
 
 @Composable
 fun HeroScreen(navController : NavController) {

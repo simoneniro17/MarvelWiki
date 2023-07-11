@@ -20,7 +20,7 @@ interface ComicAPI {
         @Query("ts") apiKey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,
         @Query("hash") hash: String = Constant.hash(),
-        // @Query("limit") limit: String = Constant.limit
+        //@Query("limit") limit: String = Constant.limit
     ):Response<ComicResponse>
 }
 

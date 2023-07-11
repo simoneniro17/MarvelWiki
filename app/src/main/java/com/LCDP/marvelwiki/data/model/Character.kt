@@ -24,7 +24,7 @@ data class Character (
 
     @SerializedName("thumbnail")
     @Expose
-    var tumbnail: Thumbnail? = null,
+    var thumbnail: Thumbnail? = null,
 
     @SerializedName("description")
     @Expose
