@@ -17,6 +17,7 @@ interface CharacterAPI {
         @Query("ts") apikey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,
         @Query("hash") hash: String = Constant.hash(),
-        @Query("limit") limit: Int = Constant.limit
+        @Query("limit") limit: Int = Constant.limit,
+        @Query("offset") offset: Int
     ):Response<CharacterResponse>
 }

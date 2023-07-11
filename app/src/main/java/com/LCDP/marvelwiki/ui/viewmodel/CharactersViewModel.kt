@@ -5,21 +5,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.usefulStuff.Constant
 import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class CharactersViewModel(val charactersRepository: CharactersRepository):ViewModel(){
-    // Questa classe estente la classe viewModel
+    // Questa classe estende la classe viewModel
 
     //La variabile characters è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
     //Resource rappresenta lo stato dei dati (caricamento, successo, errore) e CharacterResponse è il tipo dei dati dei personaggi
     val characters: MutableLiveData<Resource<CharacterResponse>> = MutableLiveData()
 
+    var currentOffset: Int = 0
+
     //Questo blocco viene eseguito alla creazione dell'istanza di questa questa classe
     init {
         getCharacters()
-
     }
 
     //Questo metodo serve per ottenere i dati dei personaggi.
@@ -27,10 +29,15 @@ class CharactersViewModel(val charactersRepository: CharactersRepository):ViewMo
     //Il metodo getChar_api viene utilizzato per ottenere i dati dei personaggi
     fun getCharacters() = viewModelScope.launch {
         characters.postValue(Resource.Loading())
-        val response = charactersRepository.getChar_api()
+        val response = charactersRepository.getChar_api(offset = currentOffset)
 
         //Il risultato è passato a  handleResponse che gestisce la risposta
         characters.postValue(handleResponse(response))
+    }
+
+    fun loadMoreCharacters() {
+        currentOffset += Constant.limit // Incrementa l'offset di 100
+        getCharacters()
     }
 
 

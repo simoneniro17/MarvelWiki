@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModelProvider
 import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
@@ -47,39 +50,42 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun CharactersScreen(charactersViewModel: CharactersViewModel) {
 
-        println("ciao")
-
         val characters: Resource<CharacterResponse> by charactersViewModel.characters.observeAsState(
             Resource.Loading()
         )
+        val loadingState = remember { mutableStateOf(true) }
 
         when (characters) {
             is Resource.Loading -> {
                 // Mostra il caricamento dei dati
             }
-
             is Resource.Success -> {
-                println("ciao1")
                 // Mostra i dati dei personaggi
                 val characterResponse = characters.data
                 val characterList = characterResponse?.characterData?.results
-                println("ciao2")
 
                 characterList?.forEach { character ->
-                    character?.let {
-                        println(character.name)
+                    println(character.name)
+                }
 
-                        //println("ciao3")
+                LaunchedEffect(loadingState.value) {
+                    if (loadingState.value) {
+                        charactersViewModel.loadMoreCharacters()
+                        loadingState.value = false
                     }
                 }
+
+                if (characterList.isNullOrEmpty()) {
+                    loadingState.value = true
+                }
             }
+
             is Resource.Error -> {
                 // Mostra un messaggio di errore
                 val errorMessage = characters.message
                 // ...
             }
         }
-
         // ...
     }
 }
