@@ -10,48 +10,48 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
+// Classe che estende la classe ViewModel
 class CharactersViewModel(val charactersRepository: CharactersRepository):ViewModel(){
-    // Questa classe estende la classe viewModel
 
-    //La variabile characters è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
-    //Resource rappresenta lo stato dei dati (caricamento, successo, errore) e CharacterResponse è il tipo dei dati dei personaggi
+    // 'MutableLiveData' è una classe fornita da Compose che può essere osservata per il cambiamento dei dati
     val characters: MutableLiveData<Resource<CharacterResponse>> = MutableLiveData()
 
     var currentOffset: Int = 0
 
-    //Questo blocco viene eseguito alla creazione dell'istanza di questa questa classe
+    // Blocco eseguito alla creazione dell'istanza della classe
     init {
         getCharacters()
     }
 
-    //Questo metodo serve per ottenere i dati dei personaggi.
-    // viewModelScope.launch esegue il blocco in modo asincrono. Tramite postValue, si specifca che i dati sono in stato di loading
-    //Il metodo getChar_api viene utilizzato per ottenere i dati dei personaggi
+    // Metodo per ottenere i dati dei personaggi
+    // viewModelScope.launch esegue il blocco in modo asincrono
+    // Tramite postValue, si specifica che i dati sono in stato di loading
+    // getChar_api() viene utilizzato per ottenere i dati dei personaggi
     fun getCharacters() = viewModelScope.launch {
         characters.postValue(Resource.Loading())
         val response = charactersRepository.getChar_api(offset = currentOffset)
 
-        //Il risultato è passato a  handleResponse che gestisce la risposta
+        // Passiamo il risultato ad 'handleResponse', che gestirà la risposta
         characters.postValue(handleResponse(response))
     }
 
+    // Funzione per ottenere i dati dei personaggi successivi oltre a quelli già caricati
     fun loadMoreCharacters() {
-        currentOffset += Constant.limit // Incrementa l'offset di 100
+        // Viene incrementato l'offset di una quantità pari al numero di personaggi caricati ogni volta
+        currentOffset += Constant.limit
         getCharacters()
     }
 
-
-    //Prende in input un oggetto Response<CharacterResponse> e restituisce un oggetto Resource<CharacterResponse>
+    // Funzione che si occupa di gestire le risposte ricevute dalle API
     private fun handleResponse(responses: Response<CharacterResponse>): Resource<CharacterResponse>{
 
-        //Se la risposta è positiva viene estratto il corpo della risposta e viene restituito un oggetto Resource.Success contenente il corpo
+        // Se la risposta è positiva, viene estratto il corpo della risposta e restituito in un oggetto Resource.Success
         if (responses.isSuccessful) {
             responses.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
         }
-        //Se la risposta è negativa si restituisce il messaggio di errore della risposta
+        // Se la risposta è negativa, si restituisce il messaggio di errore ricevuto nella risposta
         return Resource.Error(responses.message())
     }
-
 }
