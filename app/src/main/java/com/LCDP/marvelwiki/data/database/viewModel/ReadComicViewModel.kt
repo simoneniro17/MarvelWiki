@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.data.database.appDatabase
-import com.LCDP.marvelwiki.data.database.dao.ReadComicDAO
 import com.LCDP.marvelwiki.data.database.model.ReadComic
 import com.LCDP.marvelwiki.data.database.repository.ReadComicRepository
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +29,13 @@ class ReadComicViewModel(application: Application): AndroidViewModel(application
         // L'operazione di inserimento è svolta in un contesto di coroutine in modo asincrono
         viewModelScope.launch(Dispatchers.IO){
             repository.addReadComic(readComic)
+        }
+    }
+
+    fun deleteReadComic(readComic: ReadComic){
+        // L'operazione di cancellazione è svolta in un contesto di coroutine in modo asincrono
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteReadComic(readComic)
         }
     }
 }

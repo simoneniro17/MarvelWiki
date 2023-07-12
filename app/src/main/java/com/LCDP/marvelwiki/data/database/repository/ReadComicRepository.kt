@@ -14,4 +14,9 @@ class ReadComicRepository(private val readComicDAO: ReadComicDAO){
     suspend fun addReadComic(readComic: ReadComic){
         readComicDAO.addReadComic(readComic)
     }
+
+    // Funzione che permette di rimuovere un fumetto dall'elenco dei fumetti letti
+    suspend fun deleteReadComic(readComic: ReadComic){
+        readComicDAO.deleteReadComic(readComic)
+    }
 }

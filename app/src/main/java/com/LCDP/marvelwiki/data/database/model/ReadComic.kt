@@ -13,6 +13,5 @@ data class ReadComic(
         var id: Int,
         var title: String?,
         var thumbnailPath: String?,
-        var description: String?,
-        var images: String?
+        var description: String?
 )
