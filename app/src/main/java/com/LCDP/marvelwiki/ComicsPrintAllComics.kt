@@ -9,15 +9,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.LCDP.marvelwiki.data.model.ComicResponse
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
-import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModelFactory
 import com.LCDP.marvelwiki.usefulStuff.Resource
 
-
 class ComicsPrintAllComics : ComponentActivity() {
-    private val comicsRepository = ComicsRepository()               //creo la repository
-    private val id:Int = 123                                        //TODO trovare un modo per passarlo dinamicamente
+
+    // Creazione istanza repository, che verrà passata a 'RetrieveAllChar'
+    private val comicsRepository = ComicsRepository()
+
+    private val id: Int = 123   //TODO trovare un modo per passarlo dinamicamente
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,47 +27,55 @@ class ComicsPrintAllComics : ComponentActivity() {
     }
 }
 
-    @Composable
-    fun RetrieveAllComic(id: Int, comicsRepository: ComicsRepository) {
-        val comicsViewModel: ComicsViewModel = viewModel(                   //creo il viewmodel dalla factory e lo passo a comicScreen
-            factory = ComicsViewModelFactory(comicsRepository,id)
-        )
-        ComicsScreen(comicsViewModel)
-    }
+@Composable
+fun RetrieveAllComic(id: Int, comicsRepository: ComicsRepository) {
 
-    @Composable
-    fun ComicsScreen(comicsViewModel: ComicsViewModel) {
-    //viene osservata la risorsa comics del charactersViewModel
-        val comics: Resource<ComicResponse> by comicsViewModel.comics.observeAsState(
-            Resource.Loading()
+    // Creazione istanza del ViewModel dalla factory, che verrà passata a 'ComicsScreen'
+    val comicsViewModel: ComicsViewModel = viewModel(
+            factory = ComicsViewModelFactory(comicsRepository, id)
         )
+    ComicsScreen(comicsViewModel)
+}
 
-        when (comics) {
-            is Resource.Loading -> {
-                // Mostra il caricamento dei dati
+@Composable
+fun ComicsScreen(comicsViewModel: ComicsViewModel) {
+
+    // Osserviamo le modifiche della proprietà 'comics' del 'comicsViewModel'
+    val comics: Resource<ComicResponse> by comicsViewModel.comics.observeAsState(
+        Resource.Loading()
+    )
+
+    when (comics) {
+        is Resource.Loading -> {
+            // Mostra il caricamento dei dati
+        }
+
+        is Resource.Success -> {
+            // Mostra i dati dei fumetti
+            val comicResponse = comics.data
+
+            // Istanziamo la lista dei fumetti
+            val comicList =
+                comicResponse?.comicData?.results
+
+            // Tramite un loop, scorriamo la lista e stampiamo i titoli
+            comicList?.forEach { comic ->
+                println(comic.title)
             }
 
-            is Resource.Success -> {
-                // Mostra i dati dei personaggi
-                val comicResponse = comics.data
-                val comicList = comicResponse?.comicData?.results           //path per ottenere la lista di comics
-
-                comicList?.forEach { comic ->                               //loop che scorre la lista e stampa i titoli
-                    println(comic.title)
+            // Se la lista non è vuota, vengono richiesti ulteriori fumetti
+            if (comicList != null) {
+                if (comicList.isNotEmpty()) {
+                    comicsViewModel.loadMoreComics()
                 }
-
-                if (comicList != null) {                                    //se la lista non è vuota rimanda una richiesta per ricevere ulteriori comic
-                    if (comicList.isNotEmpty()) {
-                        comicsViewModel.loadMoreComics()
-                    }
-                }
-            }
-
-            is Resource.Error -> {
-                // Mostra un messaggio di errore
-                val errorMessage = comics.message
-                // ...
             }
         }
-        // ...
+
+        is Resource.Error -> {
+            // Mostra un messaggio di errore
+            val errorMessage = comics.message
+            // ...
+        }
     }
+    // ...
+}
