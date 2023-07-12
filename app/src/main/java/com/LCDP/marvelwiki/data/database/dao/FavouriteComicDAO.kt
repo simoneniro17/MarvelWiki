@@ -20,7 +20,7 @@ interface FavouriteComicDAO {
         Metodo per leggere tutti i dati della tabella "FavouriteComic"
         Infatti, il metodo readAllData() restituisce un oggetto 'LiveData' (mantiene aggiornati i dati
         automaticamente quando vengono apportate modifiche nel DB) contenente una lista di tutti i
-        personaggi preferiti presenti nel database
+        fumetti preferiti presenti nel database
      */
     @Query("SELECT * FROM FavouriteComic")
     fun readAllData():LiveData<List<FavouriteComic>>
