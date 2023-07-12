@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.LCDP.marvelwiki.data.database.dao.FavouriteCharacterDAO
+import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
 
 // Nella notazione '@Database' specifichiamo le entità coinvolte nel database, la versione del database e altre opzioni
 @Database(entities = [FavouriteCharacter::class],version = 1, exportSchema = false)

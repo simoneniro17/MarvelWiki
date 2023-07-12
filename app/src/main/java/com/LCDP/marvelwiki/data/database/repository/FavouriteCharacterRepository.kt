@@ -1,6 +1,8 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.data.database.repository
 
 import androidx.lifecycle.LiveData
+import com.LCDP.marvelwiki.data.database.dao.FavouriteCharacterDAO
+import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
 
 // Classe che fa da intermediario tra il ViewModel e il DAO
 class FavouriteCharacterRepository(private val favouriteCharacterDAO: FavouriteCharacterDAO) {

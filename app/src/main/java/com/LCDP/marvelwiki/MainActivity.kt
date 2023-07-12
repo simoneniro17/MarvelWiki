@@ -3,9 +3,8 @@ package com.LCDP.marvelwiki
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.lifecycle.ViewModelProvider
-import com.LCDP.marvelwiki.data.database.FavouriteCharacter
-import com.LCDP.marvelwiki.data.database.FavouriteCharacterViewModel
+import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.data.database.viewModel.FavouriteCharacterViewModel
 import com.LCDP.marvelwiki.ui.screen.Navigation
 
 class MainActivity : ComponentActivity() {
@@ -16,9 +15,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            favouriteCharacterViewModel = ViewModelProvider(this).get(FavouriteCharacterViewModel::class.java)
-            insertDataToDatabase()
-            //Navigation()
+            //favouriteCharacterViewModel = ViewModelProvider(this).get(FavouriteCharacterViewModel::class.java)
+            //insertDataToDatabase()
+            //readAllData()
+            Navigation()
         }
     }
 
@@ -27,6 +27,9 @@ class MainActivity : ComponentActivity() {
         favouriteCharacterViewModel.addFavouriteCharacter(favouriteCharacter)
     }
 
+    private fun readAllData(){
+
+    }
 }
 
 

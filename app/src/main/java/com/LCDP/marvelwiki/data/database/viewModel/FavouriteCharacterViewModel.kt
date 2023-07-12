@@ -1,16 +1,19 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.data.database.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.LCDP.marvelwiki.data.database.appDatabase
+import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.data.database.repository.FavouriteCharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavouriteCharacterViewModel(application: Application): AndroidViewModel(application) {
 
     // Oggetto 'LiveData' contenente la lista dei preferiti
-    private val readAllData: LiveData<List<FavouriteCharacter>>
+    val readAllData: LiveData<List<FavouriteCharacter>>
 
     // Istanza del FavCharRepository
     private val repository: FavouriteCharacterRepository

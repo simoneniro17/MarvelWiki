@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.data.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,7 +12,7 @@ data class FavouriteComic(
     @PrimaryKey
     var id: Int,
     var title: String?,
-    var thimbnailPath: String?,
+    var thumbnailPath: String?,
     var description: String?,
     var images: String?
 )

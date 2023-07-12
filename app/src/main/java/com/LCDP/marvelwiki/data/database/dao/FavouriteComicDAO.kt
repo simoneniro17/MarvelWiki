@@ -1,10 +1,11 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.data.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.LCDP.marvelwiki.data.database.model.FavouriteComic
 
 //Questa interfaccia definisce le operazioni di accesso e manipolazione dei dati per l'entità 'FavouriteComic'
 

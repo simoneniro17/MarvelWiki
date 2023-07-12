@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.data.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
