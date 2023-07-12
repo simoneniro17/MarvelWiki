@@ -11,7 +11,7 @@ import com.LCDP.marvelwiki.data.database.model.ReadComic
 //questa interfaccia definisce l'operazione di accesso e manipolazione dei dati per l'entità 'ReadComic'
 
 @Dao
-interface ReadComicDao {
+interface ReadComicDAO {
 
     //Metodo per aggiungere un Comic letto al database
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class FavouriteComicViewModel(application: Application): AndroidViewModel(application){
 
     //Oggetto 'LiveData' contenente la lista dei preferiti
-    private val readAllData: LiveData<List<FavouriteComic>>
+    val readAllData: LiveData<List<FavouriteComic>>
 
     //Istanza del FavoureiteComicRepository
     private val repository: FavouriteComicRepository
@@ -25,12 +25,11 @@ class FavouriteComicViewModel(application: Application): AndroidViewModel(applic
         readAllData = repository.readAllData
     }
 
-    fun addFavouriteComic(favouriteComic: FavouriteComic: FavouriteComic){
+    fun addFavouriteComic(favouriteComic: FavouriteComic){
         //L'operazione di inserimento è svolta in un contesto di coroutine in modo asincrono
         viewModelScope.launch(Dispatchers.IO){
             repository.addFavouriteComic(favouriteComic)
         }
     }
-
 
 }

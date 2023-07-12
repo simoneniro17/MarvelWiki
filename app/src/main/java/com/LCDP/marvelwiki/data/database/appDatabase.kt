@@ -5,14 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.LCDP.marvelwiki.data.database.dao.FavouriteCharacterDAO
+import com.LCDP.marvelwiki.data.database.dao.FavouriteComicDAO
 import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.data.database.model.FavouriteComic
 
 // Nella notazione '@Database' specifichiamo le entità coinvolte nel database, la versione del database e altre opzioni
-@Database(entities = [FavouriteCharacter::class],version = 1, exportSchema = false)
+@Database(entities = [FavouriteCharacter::class, FavouriteComic::class],version = 1, exportSchema = false)
 abstract class appDatabase :RoomDatabase(){
 
     // Definiamo il metodo per ottenere il DAO associato al database
     abstract fun favouriteCharacterDAO(): FavouriteCharacterDAO
+    abstract fun favouriteComicDAO(): FavouriteComicDAO
 
     // Creiamo il Singleton per l'accesso al database
     companion object{
