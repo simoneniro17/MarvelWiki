@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.LCDP.marvelwiki.data.database.model.FavouriteComic
 
-//Questa interfaccia definisce le operazioni di accesso e manipolazione dei dati per l'entità 'FavouriteComic'
+// Questa interfaccia definisce le operazioni di accesso e manipolazione dei dati per l'entità 'FavouriteComic'
 
 @Dao
 interface FavouriteComicDAO {

@@ -11,7 +11,7 @@ class ReadComicRepository(private val readComicDAO: ReadComicDAO){
     val readAllData: LiveData<List<ReadComic>> = readComicDAO.readAllData()
 
     //Funzione che permette di aggiungere un fumetto all'elenco dei fumetti letti
-    suspend fun addFavouriteComic(favouriteComic: ReadComic){
-        readComicDAO.addReadComic(favouriteComic)
+    suspend fun addReadComic(readComic: ReadComic){
+        readComicDAO.addReadComic(readComic)
     }
 }
