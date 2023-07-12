@@ -30,7 +30,7 @@ class CharacterPrintAllCharacters : ComponentActivity() {
 @Composable
 fun RetrieveAllChar(charactersRepository: CharactersRepository) {
 
-    // Creazione istanza del ViewModel della factory, che verrà passata a 'CharactersScreen'
+    // Creazione istanza del ViewModel dalla factory, che verrà passata a 'CharactersScreen'
     val charactersViewModel: CharactersViewModel = viewModel(
         factory = CharactersViewModelFactory(charactersRepository)
     )

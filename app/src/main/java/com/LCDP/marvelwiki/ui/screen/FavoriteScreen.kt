@@ -6,13 +6,13 @@ import androidx.navigation.NavController
 
 @Composable
 fun FavoriteScreen(navController : NavController) {
-    //Setup dei personaggi indicati come preferiti
+    // Setup dei personaggi indicati come preferiti
     FavoriteHeroesList(0)
 }
 
 @Composable
 fun FavoriteHeroesList(howManyFavs : Int) {
-    //Se non ci sono preferiti, un messaggio avvisa che la schermata è vuota, altrimenti chiama il metodo SetUpFavorites
+    // Se non ci sono preferiti, un messaggio avvisa che la schermata è vuota, altrimenti chiama il metodo SetUpFavorites()
     if (howManyFavs == 0) {
         Text(text = "There are no favorites here")
     } else {
@@ -22,6 +22,7 @@ fun FavoriteHeroesList(howManyFavs : Int) {
 
 @Composable
 fun SetUpFavorites() {
-    Text(text = "To do") //Questo metodo recupererà dal database tutti i personaggi indicati dall' utente come preferiti e li metterà in una lazyList
-    //In maniera del tutto analoga a quella della NavigationScreen.
+    // Questo metodo recupererà dal database tutti i personaggi indicati dall'utente come preferiti e
+    // li inserirà in una lazyList in maniera del tutto analoga a quella della NavigationScreen.
+    Text(text = "To do")
 }
