@@ -16,7 +16,7 @@ class Constant {
         const val PRIVATE_KEY = "b5bc8d30250a1484b783ba513a94f555c5310394"
         const val limit = 100
 
-        const val AVENGERS_URL = "http://gateway.marvel.com/v1/public/events/29/"
+        // const val AVENGERS_URL = "http://gateway.marvel.com/v1/public/events/29/"
 
         // Simone PUBLIC_KEY: "802a20828584c07127363491a6e1a431"
         // Simone PRIVATE_KEY: "19b4bbe049302f56eb3f60963965fef177f01dd0"

@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 /*
-    Utilizziamo una data class perché //TODO
-
     Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
     alla proprietà della nostra classe 'Character' durante il funzionamento di Gson.
 

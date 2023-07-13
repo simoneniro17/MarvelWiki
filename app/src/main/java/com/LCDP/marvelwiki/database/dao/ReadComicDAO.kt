@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.database.dao
+package com.LCDP.marvelwiki.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.LCDP.marvelwiki.data.database.model.ReadComic
+import com.LCDP.marvelwiki.database.model.ReadComic
 
 
 //questa interfaccia definisce l'operazione di accesso e manipolazione dei dati per l'entità 'ReadComic'

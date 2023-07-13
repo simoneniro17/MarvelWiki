@@ -12,7 +12,7 @@ interface CharacterAPI {
     // Specifichiamo l'endpoint dell'API per ottenere i personaggi.
     @GET("characters")
     suspend fun getCharacters(
-        //TODO INVERTIRE TS E APIKEY???
+
         // La funzione prende in input diversi parametri, passati come parametri di query nell'URL della richiesta.
         @Query("ts") apikey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,

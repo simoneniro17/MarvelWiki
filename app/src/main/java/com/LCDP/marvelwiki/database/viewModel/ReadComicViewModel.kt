@@ -1,12 +1,12 @@
-package com.LCDP.marvelwiki.data.database.viewModel
+package com.LCDP.marvelwiki.database.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.LCDP.marvelwiki.data.database.appDatabase
-import com.LCDP.marvelwiki.data.database.model.ReadComic
-import com.LCDP.marvelwiki.data.database.repository.ReadComicRepository
+import com.LCDP.marvelwiki.database.appDatabase
+import com.LCDP.marvelwiki.database.model.ReadComic
+import com.LCDP.marvelwiki.database.repository.ReadComicRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
