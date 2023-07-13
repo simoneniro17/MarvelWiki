@@ -14,11 +14,11 @@ import com.LCDP.marvelwiki.database.model.FavouriteComic
 @Dao
 interface FavouriteComicDAO {
 
-    //Metodo per aggiungere un Comic preferito al database
+    //  Metodo per aggiungere un fumetto ai preferiti
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addFavouriteComic(favouriteComic: FavouriteComic)
 
-    // Metodo per rimuovere un fumetto preferito dal database
+    //  Metodo per rimuovere un fumetto dai preferito
     @Delete
     suspend fun deleteFavouriteComic(favouriteComic: FavouriteComic)
 

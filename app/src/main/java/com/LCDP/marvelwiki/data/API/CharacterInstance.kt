@@ -48,28 +48,4 @@ object CharacterInstance {
     val char_api by lazy {
         retrofit.create(CharacterAPI::class.java)
     }
-
-    /* val thorapi by lazy {
-        retrofit.create(CharactersAPI::class.java)
-    } */
 }
-
-/*
-object IronManInstance{
-    private val retrofit by lazy {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
-        Retrofit.Builder()
-            .baseUrl(Constant.IRONMAN_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-    }
-
-    val ironmanapi by lazy {
-        retrofit.create(CharactersAPI::class.java)
-    }
-}*/

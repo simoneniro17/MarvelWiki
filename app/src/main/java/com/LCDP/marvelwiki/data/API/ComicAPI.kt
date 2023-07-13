@@ -23,5 +23,3 @@ interface ComicAPI {
         @Query("offset") offset: Int
     ):Response<ComicResponse>
 }
-
-// TODO INVERTIRE TS E APIKEY???

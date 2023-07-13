@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 /*
     Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
-    alla proprietà della nostra classe 'ThumbnailResponse' durante il funzionamento di Gson.
+    alla proprietà della nostra classe 'Thumbnail' durante il funzionamento di Gson.
 
     Con l'annotazione '@Expose' indichiamo che il campo è incluso nel processo di serializzazione
     e deserializzazione con Gson.
