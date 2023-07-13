@@ -1,8 +1,11 @@
 package com.LCDP.marvelwiki.data.repository
 
-import com.LCDP.marvelwiki.data.API.ComicInstance
+import com.LCDP.marvelwiki.data.API.ComicsAPICall.LatestComicInstanceByCharId
+import com.LCDP.marvelwiki.data.API.ComicsAPICall.ComicInstanceByIsbn
 
 class ComicsRepository {
-    //Questo metodo chiama dalla api il metodo getcomics
-    suspend fun getComics(id: Int,offset: Int) = ComicInstance.comic_api.getComics(id,offset = offset)
+    //Questo metodo chiama dalla ComicAPIbyCharId il metodo getComicsByCharId
+    suspend fun getComicsByCharId(id: Int) = LatestComicInstanceByCharId.latestComicsByCharId_API.getLatestComicsByCharId(id)
+    //Questo metodo chiama dalla ComicAPIbyIsbn il metodo getComicsByCharId
+    suspend fun getComicsByIsbn(isbn:String) = ComicInstanceByIsbn.comicByIsbn_API.getComicByIsbn(isbn)
 }

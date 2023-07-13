@@ -11,7 +11,7 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ComicsViewModel(val comicsRepository: ComicsRepository, id: Int): ViewModel(){
+class ComicsViewModel(private val comicsRepository: ComicsRepository, id: Int = 0 , isbn: String = ""): ViewModel() {
     // Questa classe estente la classe viewModel
 
     //La variabile comics è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
@@ -19,27 +19,42 @@ class ComicsViewModel(val comicsRepository: ComicsRepository, id: Int): ViewMode
     val comics: MutableLiveData<Resource<ComicResponse>> = MutableLiveData()
 
     var idToSearch = id
-    var currentOffset: Int = 0
+    var isbnToSearch: String = isbn
 
     init {
-        getComics()
+        if(isbn == ""){
+            getLatestComicsByCharId()
+        }
+        if (id == 0){
+            getComicsByIsbn()
+        }
     }
+
     //Questo metodo serve per ottenere i dati dei comics.
     //viewModelScope.launch esegue il blocco in modo asincrono. Tramite postValue, si specifca che i dati sono in stato di loading
     //Il metodo getComic_api viene utilizzato per ottenere i dati dei comics
-    fun getComics() = viewModelScope.launch {
+    fun getLatestComicsByCharId() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
-        val response = comicsRepository.getComics(idToSearch,currentOffset)
+        val response = comicsRepository.getComicsByCharId(idToSearch)
 
         //Il risultato è passato a  handleResponse che gestisce la risposta
         comics.postValue(handleResponse(response))
     }
 
+    fun getComicsByIsbn() = viewModelScope.launch {
+        comics.postValue(Resource.Loading())
+        val response = comicsRepository.getComicsByIsbn(isbnToSearch)
+
+        //Il risultato è passato a  handleResponse che gestisce la risposta
+        comics.postValue(handleResponse(response))
+    }
+
+
     //Prende in input un oggetto Response<ComicResponse> e restituisce un oggetto Resource<ComicResponse>
-    private fun handleResponse(response: Response<ComicResponse>): Resource<ComicResponse>{
+    private fun handleResponse(response: Response<ComicResponse>): Resource<ComicResponse> {
 
         //Se la risposta è positiva viene estratto il corpo della risposta e viene restituito un oggetto Resource.Success contenente il corpo
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
@@ -48,9 +63,6 @@ class ComicsViewModel(val comicsRepository: ComicsRepository, id: Int): ViewMode
         return Resource.Error(response.message())
     }
 
-    fun loadMoreComics() {
-            currentOffset += Constant.limit // Incrementa l'offset di 100
-            getComics()
-        }
-    }
+}
+
 

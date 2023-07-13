@@ -1,6 +1,6 @@
 package com.LCDP.marvelwiki.data.repository
 
-import com.LCDP.marvelwiki.data.API.CharacterInstance
+import com.LCDP.marvelwiki.data.API.CharactersAPICall.CharacterInstance
 
 class CharactersRepository {
     //Questo metodo chiama dalla api il metodo get character

@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.API
+package com.LCDP.marvelwiki.data.API.ComicsAPICall
 
 import com.LCDP.marvelwiki.usefulStuff.Constant
 import okhttp3.OkHttpClient
@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object CharacterInstance {
+object LatestComicInstanceByCharId {
     /*
         L'utilizzo della dicitura "by lazy" indica che l'inizializzazione della variabile "retrofit"
         viene ritardata fino al momento in cui viene effettivamente utilizzata, ottimizzando così
@@ -20,7 +20,7 @@ object CharacterInstance {
             Creiamo un oggetto per la registrazione delle richieste e delle risposte di rete.
             Viene impostato il livello di log su 'BODY', che registra tutti i dettagli sia dell'header,
             sia del body.
-         */
+        */
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -45,31 +45,8 @@ object CharacterInstance {
             .build()
     }
 
-    val char_api by lazy {
-        retrofit.create(CharacterAPI::class.java)
+    val latestComicsByCharId_API by lazy {
+        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'ComicAPIByCharId'
+        retrofit.create(LatestComicAPIByCharId::class.java)
     }
-
-    /* val thorapi by lazy {
-        retrofit.create(CharactersAPI::class.java)
-    } */
 }
-
-/*
-object IronManInstance{
-    private val retrofit by lazy {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
-        Retrofit.Builder()
-            .baseUrl(Constant.IRONMAN_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-    }
-
-    val ironmanapi by lazy {
-        retrofit.create(CharactersAPI::class.java)
-    }
-}*/

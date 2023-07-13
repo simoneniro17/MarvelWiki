@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.API
+package com.LCDP.marvelwiki.data.API.CharactersAPICall
 
 import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.usefulStuff.Constant

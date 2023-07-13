@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.data.API
+package com.LCDP.marvelwiki.data.API.ComicsAPICall
 
 import com.LCDP.marvelwiki.usefulStuff.Constant
 import okhttp3.OkHttpClient
@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ComicInstance {
+object ComicInstanceByIsbn  {
     /*
         L'utilizzo della dicitura "by lazy" indica che l'inizializzazione della variabile "retrofit"
         viene ritardata fino al momento in cui viene effettivamente utilizzata, ottimizzando così
@@ -45,8 +45,8 @@ object ComicInstance {
             .build()
     }
 
-    val comic_api by lazy {
-        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'ComicAPI'
-        retrofit.create(ComicAPI::class.java)
+    val comicByIsbn_API by lazy {
+        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'ComicAPIByIsbn'
+        retrofit.create(ComicAPIByIsbn::class.java)
     }
 }
