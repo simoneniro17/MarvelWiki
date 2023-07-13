@@ -9,10 +9,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 //  Funzione per scaricare e salvare sul dispositivo l'immagine del personaggio che vogliamo aggiungere ai preferiti
-fun downloadAndSaveImage(context: Context, character: Character): String {
+fun saveCharThumb(context: Context, character: Character): String {
 
     //  Nome dell'immagine basato sull'ID del personaggio
-    val imageName = "${character.id}.jpg"
+    val imageName = "${character.name}" + "${character.id}" + ".jpg"
 
     //  File in cui verrà salvata l'immagine
     val imageFile = File(getFavCharThumbDirectory(context), imageName)
@@ -50,11 +50,11 @@ fun downloadAndSaveImage(context: Context, character: Character): String {
 }
 
 
-//  Funzione per ottenere (o creare) la directory favCharThumb
+//  Funzione per ottenere (o creare) la directory favCharThumbs
 private fun getFavCharThumbDirectory(context: Context): File {
 
     //  Creiamo il percorso della directory
-    val directory = File(context.filesDir, "favCharThumb")
+    val directory = File(context.filesDir, "favCharThumbs")
     if (!directory.exists()) {
 
         // Creiamo la directory se non esiste già
