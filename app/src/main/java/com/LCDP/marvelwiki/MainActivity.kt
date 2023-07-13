@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
-import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
-import com.LCDP.marvelwiki.data.database.model.FavouriteComic
-import com.LCDP.marvelwiki.data.database.model.ReadComic
-import com.LCDP.marvelwiki.data.database.viewModel.FavouriteCharacterViewModel
-import com.LCDP.marvelwiki.data.database.viewModel.FavouriteComicViewModel
-import com.LCDP.marvelwiki.data.database.viewModel.ReadComicViewModel
+import com.LCDP.marvelwiki.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.database.model.FavouriteComic
+import com.LCDP.marvelwiki.database.model.ReadComic
+import com.LCDP.marvelwiki.database.viewModel.FavouriteCharacterViewModel
+import com.LCDP.marvelwiki.database.viewModel.FavouriteComicViewModel
+import com.LCDP.marvelwiki.database.viewModel.ReadComicViewModel
 import com.LCDP.marvelwiki.ui.screen.Navigation
 
 class MainActivity : ComponentActivity() {

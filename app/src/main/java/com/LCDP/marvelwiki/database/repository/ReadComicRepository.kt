@@ -1,8 +1,8 @@
-package com.LCDP.marvelwiki.data.database.repository
+package com.LCDP.marvelwiki.database.repository
 
 import androidx.lifecycle.LiveData
-import com.LCDP.marvelwiki.data.database.dao.ReadComicDAO
-import com.LCDP.marvelwiki.data.database.model.ReadComic
+import com.LCDP.marvelwiki.database.dao.ReadComicDAO
+import com.LCDP.marvelwiki.database.model.ReadComic
 
 
 //Classe che fa da intermediario tra il ViewModel e il DAO

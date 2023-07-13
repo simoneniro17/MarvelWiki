@@ -1,15 +1,15 @@
-package com.LCDP.marvelwiki.data.database
+package com.LCDP.marvelwiki.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.LCDP.marvelwiki.data.database.dao.FavouriteCharacterDAO
-import com.LCDP.marvelwiki.data.database.dao.FavouriteComicDAO
-import com.LCDP.marvelwiki.data.database.dao.ReadComicDAO
-import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
-import com.LCDP.marvelwiki.data.database.model.FavouriteComic
-import com.LCDP.marvelwiki.data.database.model.ReadComic
+import com.LCDP.marvelwiki.database.dao.FavouriteCharacterDAO
+import com.LCDP.marvelwiki.database.dao.FavouriteComicDAO
+import com.LCDP.marvelwiki.database.dao.ReadComicDAO
+import com.LCDP.marvelwiki.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.database.model.FavouriteComic
+import com.LCDP.marvelwiki.database.model.ReadComic
 
 // Nella notazione '@Database' specifichiamo le entità coinvolte nel database, la versione del database e altre opzioni
 @Database(
