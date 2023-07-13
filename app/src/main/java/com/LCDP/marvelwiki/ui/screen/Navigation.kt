@@ -34,6 +34,11 @@ fun Navigation() {
             StartingScreen(navController = navController)
         }
 
+        // Controller associato alla schermata di navigazione dei fumetti
+        composable(route = Screens.ComicNavigationScreen.route) {
+            ComicNavigationScreen(navController = navController)
+        }
+
         //DA AGGIUNGERE LE DESTINAZIONI NUOVE (ComicNavigationScreen, ComicFavoriteScreen, ComicScreen)
     }
 }
