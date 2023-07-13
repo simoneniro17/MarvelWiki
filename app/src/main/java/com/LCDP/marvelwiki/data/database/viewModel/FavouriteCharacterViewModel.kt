@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.data.database.appDatabase
 import com.LCDP.marvelwiki.data.database.model.FavouriteCharacter
-import com.LCDP.marvelwiki.data.database.model.FavouriteComic
 import com.LCDP.marvelwiki.data.database.repository.FavouriteCharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

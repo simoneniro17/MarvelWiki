@@ -104,6 +104,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // PICASSO
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+
     /*  GLIDE
         La prima dipendenza importa la libreria Glide, che semplifica il caricamento, la memorizzazione
         nella cache e la visualizzazione delle immagini da varie fonti come URL, file, risorse o bitmap.

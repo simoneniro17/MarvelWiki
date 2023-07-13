@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "ReadComic")
 data class ReadComic(
-        @PrimaryKey
-        var id: Int,
-        var title: String?,
-        var thumbnailPath: String?,
-        var description: String?
+    @PrimaryKey
+    var id: Int,
+    var title: String?,
+    var thumbnailPath: String?,
+    var description: String?
 )

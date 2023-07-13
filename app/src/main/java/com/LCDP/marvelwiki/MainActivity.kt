@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var favouriteCharacterViewModel: FavouriteCharacterViewModel
     private lateinit var favouriteComicViewModel: FavouriteComicViewModel
-    // private lateinit var readComicViewModel: ReadComicViewModel
+    private lateinit var readComicViewModel: ReadComicViewModel
 
     //APP LAUNCH
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +24,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             favouriteCharacterViewModel = ViewModelProvider(this).get(FavouriteCharacterViewModel::class.java)
             favouriteComicViewModel = ViewModelProvider(this).get(FavouriteComicViewModel::class.java)
-            //readComicViewModel = ViewModelProvider(this).get(ReadComicViewModel::class.java)
+            readComicViewModel = ViewModelProvider(this).get(ReadComicViewModel::class.java)
             insertDataToDatabase()
             readAllData()
+            deleteDataFromDatabase()
             //Navigation()
         }
     }
@@ -38,8 +39,16 @@ class MainActivity : ComponentActivity() {
         val favouriteComic = FavouriteComic(10," regoli","subame la radio","", "")
         favouriteComicViewModel.addFavouriteComic(favouriteComic)
 
-        //val readComic = ReadComic(10," regoliiii","subame la radio","")
-        //readComicViewModel.addReadComic(readComic)
+        val favouriteComic2 = FavouriteComic(102030," regoli","subame la radio","", "")
+        favouriteComicViewModel.addFavouriteComic(favouriteComic2)
+
+        val readComic = ReadComic(10," regoliiii","subame la radio","")
+        readComicViewModel.addReadComic(readComic)
+    }
+
+    private fun deleteDataFromDatabase(){
+        val favouriteComic = FavouriteComic(10," regoli","subame la radio","", "")
+        favouriteComicViewModel.deleteFavouriteComic(favouriteComic)
     }
 
     private fun readAllData(){
