@@ -5,16 +5,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Checkbox
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -23,10 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
-import com.LCDP.marvelwiki.usefulStuff.Resource
 
 @Composable
 fun NavigationScreen(navController : NavController) {
@@ -43,16 +48,31 @@ fun NavigationScreen(navController : NavController) {
     heroList.add(spiderman)
     heroList.add(ironman)
 
-
-
-
-    Column (modifier = Modifier
-        .background(Color.DarkGray)
-        .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
+    Box (modifier = Modifier
+        .background(Color.Transparent)
+        .fillMaxSize()
     ) {
-        NavigationScreenUpperBar(navController, marvelFont)             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-        AllHeroesList(navController, marvelFont, heroList)              //Lazy list contenente tutti i personaggi dal DB. E' necessario passargli anche il navController perchè se nella lista si sceglie di cliccare un personaggio, esso sarà attivato per condurre alla pagina relativa al personaggio selezionato)
+
+        Image(
+            painter = painterResource(R.drawable.background),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
+        //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
+        Column (
+            modifier = Modifier
+                .background(Color.Transparent)
+                .fillMaxSize()
+        ) {
+            NavigationScreenUpperBar(navController, marvelFont)             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
+            SearchBar(marvelFont)
+            //FavoriteFilterButton(marvelFont, false)
+            Separator(marvelFont)
+            AllHeroesList(navController, marvelFont, heroList)
+        }
     }
 }
 
@@ -61,7 +81,7 @@ fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFam
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .height(60.dp)
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
@@ -69,24 +89,16 @@ fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFam
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Text(
-            text = "navigation".uppercase(),
-            fontSize = 40.sp,
-            color = Color.White,
-            fontFamily = fontFamily,
-            textAlign = TextAlign.Center,
-        )
-
         Column(
             modifier = Modifier
-                .height(50.dp)
-                .width(50.dp)
+                .height(40.dp)
+                .width(40.dp)
                 .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
                 .clip(shape = CircleShape)
                 .background(Color.Green)
         ) {
             Image(
-                painterResource(R.drawable.avengers_tower),
+                painterResource(R.drawable.back_arrow),
                 contentDescription = "HOME",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -100,6 +112,104 @@ fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFam
             )
         }
 
+        Text(
+            text = "HEROES".uppercase(),
+            fontSize = 40.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
+        )
+
+    }
+}
+
+@Composable
+fun SearchBar(fontFamily : FontFamily) {
+    var textFieldState by remember {
+        mutableStateOf("")
+    }
+    Row (verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        OutlinedTextField(
+            value = textFieldState,
+            onValueChange = {textFieldState = it},
+            label = {Text(
+                text = "Search a character".uppercase(),
+                color = Color.White,
+                fontSize = 20.sp,
+                fontFamily = fontFamily
+            )},
+            leadingIcon = {
+                Icon(
+                    painterResource(R.drawable.search_icon),
+                    contentDescription = "Search Icon",
+                    modifier = Modifier.size(30.dp,30.dp)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Black,
+                focusedIndicatorColor = Color.Red,
+                leadingIconColor = Color.Black,
+                cursorColor = Color.Red,
+                textColor = Color.White
+            ),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+} //fontFamily needed for texts inside the search bar
+
+@Composable
+fun FavoriteFilterButton(fontFamily : FontFamily, clicked : Boolean) {
+
+    val currentColor : Color
+    if (clicked) {
+        currentColor = Color.Red
+    } else {
+        currentColor = Color.LightGray
+    }
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(30.dp)
+        .background(color = currentColor)
+        .border(border = BorderStroke(1.dp, Color.Black))
+        .clickable(onClick = {!clicked})
+    ) {
+
+    }
+}
+
+@Composable
+fun Separator(fontFamily : FontFamily) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(40.dp)
+        .background(color = Color.Red)
+        .border(border = BorderStroke(1.dp, Color.Black)),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val checkedState = remember {mutableStateOf(false)}
+        Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it},
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Black,
+                uncheckedColor = Color.Black,
+                //checkmarkColor = Color.Black
+            )
+        )
+
+        Text("Visualize only favorite heroes".uppercase(),
+            fontSize = 20.sp,
+            fontFamily = fontFamily,
+            color = Color.White
+        )
     }
 }
 

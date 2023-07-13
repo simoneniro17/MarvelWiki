@@ -11,7 +11,7 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ComicsViewModel(private val comicsRepository: ComicsRepository, id: Int = 0 , isbn: String = ""): ViewModel() {
+class ComicsViewModel(private val comicsRepository: ComicsRepository, operationCode : Int, id: Int = 0 , isbn: String = ""): ViewModel() {
     // Questa classe estente la classe viewModel
 
     //La variabile comics è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
@@ -22,14 +22,15 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, id: Int = 
     var isbnToSearch: String = isbn
 
     init {
-        if(isbn == ""){
-            getLatestComicsByCharId()
-        }
-        if (id == 0){
-            getComicsByIsbn()
+        when (operationCode) {
+            1 -> getComicsByIsbn()
+            2 -> getLatestComicsByCharId()
+            3 -> getLatestComic()
+            else -> {
+                println("wrongOperationCode")
+            }
         }
     }
-
     //Questo metodo serve per ottenere i dati dei comics.
     //viewModelScope.launch esegue il blocco in modo asincrono. Tramite postValue, si specifca che i dati sono in stato di loading
     //Il metodo getComic_api viene utilizzato per ottenere i dati dei comics
@@ -44,6 +45,14 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, id: Int = 
     fun getComicsByIsbn() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
         val response = comicsRepository.getComicsByIsbn(isbnToSearch)
+
+        //Il risultato è passato a  handleResponse che gestisce la risposta
+        comics.postValue(handleResponse(response))
+    }
+
+    fun getLatestComic() = viewModelScope.launch {
+        comics.postValue(Resource.Loading())
+        val response = comicsRepository.getLatestComic()
 
         //Il risultato è passato a  handleResponse che gestisce la risposta
         comics.postValue(handleResponse(response))

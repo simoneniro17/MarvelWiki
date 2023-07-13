@@ -33,10 +33,6 @@ fun HomeScreen(navController : NavController) {
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
-    //TESTING ELEMENTS (utilizzati solo per prova, non coincidono col model definitivo dei personaggi, da eliminare)
-    val hulk = HeroModel(1, "hulk", R.drawable.hulk, "Robert Bruce Banner", "Stan Lee", "1962", "The incredible hulk N.1", "...","...")
-    val spiderman = HeroModel(2, "spider man", R.drawable.spiderman, "Peter Parker", "Stan Lee", "1962", "The Amazing Spiderman", "...", "...")
-
     //CREAZIONE DELLA SCHERMATA INTERA
     Box (modifier = Modifier
         .background(Color.Transparent)
@@ -58,10 +54,9 @@ fun HomeScreen(navController : NavController) {
                 .fillMaxSize()
         ) {
             HomeScreenUpperBar(marvelFont)                                               //Setup of the Layout Bar displaying Home
-            SearchBar(marvelFont)                                                        //Setup of the search bar - top screen
-            NavigationButtons(navController, marvelFont)                                 //Setup of navigation buttons - top screen
-            DailyHeroBanner(marvelFont)                                                  //Setup of the "DAILY HERO" banner - mid screen
-            DailyHeroCard(marvelFont, spiderman)                                         //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
+            NavigationButtons(navController, marvelFont)
+            LatestComicBanner(marvelFont)                                                  //Setup of the "DAILY HERO" banner - mid screen
+            LatestComicCard(navController, marvelFont)  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
         }
     }
 }
@@ -71,7 +66,7 @@ fun HomeScreenUpperBar(fontFamily : FontFamily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .height(60.dp)
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
@@ -89,142 +84,105 @@ fun HomeScreenUpperBar(fontFamily : FontFamily) {
 }
 
 @Composable
-fun SearchBar(fontFamily : FontFamily) {
-    var textFieldState by remember {
-        mutableStateOf("")
-    }
-    Row (verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-    ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
-            value = textFieldState,
-            onValueChange = {textFieldState = it},
-            label = {Text(
-                text = "Search a character/film/comic".uppercase(),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = fontFamily
-            )},
-            leadingIcon = {
-                Icon(
-                    painterResource(R.drawable.search_icon),
-                    contentDescription = "Search Icon",
-                    modifier = Modifier.size(30.dp,30.dp)
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Black,
-                focusedIndicatorColor = Color.Red,
-                leadingIconColor = Color.Black,
-                cursorColor = Color.Red,
-                textColor = Color.White
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}                                                        //fontFamily needed for texts inside the search bar
-
-@Composable
-fun NavigationButtons (navController : NavController, fontFamily : FontFamily) {
+fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
     Row (modifier = Modifier
         .fillMaxWidth()
-        .height(100.dp),
+        .height(150.dp)
+        .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(150.dp)
+                .width(300.dp)
                 .border(
                     border = BorderStroke(width = 1.dp, color = Color.Black),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.NavigationScreen.route) }),
+                .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) }),
             verticalArrangement = Arrangement.Top
         ) {
 
             Image(
-                painterResource(R.drawable.holo_globe),
-                contentDescription = "NAVIGATION",
+                painterResource(R.drawable.avengers),
+                contentDescription = "HEROES",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxHeight(0.8f)
-                    .width(150.dp)
+                    .width(3000.dp)
                     .border(
                         border = BorderStroke(width = 1.dp, color = Color.Black)
                     )
             )
 
             Text(
-                text = "NAVIGATION".uppercase(),
+                text = "HEROES".uppercase(),
                 fontSize = 20.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(color = Color.Red)
-                    .fillMaxHeight()
-                    .width(150.dp)
+                    .fillMaxSize()
                     .padding(vertical = 2.dp)
             )
 
         }
+    }
 
+    Row (modifier = Modifier
+        .fillMaxWidth()
+        .height(150.dp)
+        .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(150.dp)
+                .width(300.dp)
                 .border(
                     border = BorderStroke(width = 1.dp, color = Color.Black),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.FavoriteScreen.route) }),
+                .clickable(onClick = {  }), // TODO
             verticalArrangement = Arrangement.Top
         ) {
 
             Image(
-                painterResource(R.drawable.avengers),
-                contentDescription = "FAVORITES",
+                painterResource(R.drawable.library),
+                contentDescription = "LIBRARY",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxHeight(0.8f)
-                    .width(150.dp)
+                    .width(300.dp)
                     .border(
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                     )
             )
 
             Text(
-                text = "FAVORITES".uppercase(),
+                text = "LIBRARY".uppercase(),
                 fontSize = 20.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(color = Color.Red)
-                    .fillMaxHeight()
-                    .width(150.dp)
+                    .fillMaxSize()
                     .padding(vertical = 2.dp)
             )
 
         }
-
     }
-}                //fontFamily needed for texts inside of the buttons
-//Nav controller needed for buttons to let you navigates to other screens
+}
 
 @Composable
-fun DailyHeroBanner(fontFamily : FontFamily) {
-    Spacer(modifier = Modifier.height(30.dp))
+fun LatestComicBanner(fontFamily : FontFamily) {
+    Spacer(modifier = Modifier.height(5.dp))
     Row (modifier = Modifier
         .fillMaxWidth()
         .background(Color.Red)
@@ -238,7 +196,7 @@ fun DailyHeroBanner(fontFamily : FontFamily) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "DAILY HERO",
+                text = "LATEST COMIC",
                 color = Color.White,
                 fontSize = 40.sp,
                 fontFamily = fontFamily,
@@ -249,21 +207,17 @@ fun DailyHeroBanner(fontFamily : FontFamily) {
 }                                                  //fontFamily needed for the "DAILY HERO" text
 
 @Composable
-fun DailyHeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
+fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //INSERIRE COMIC MODEL
     Row {
         Spacer(modifier = Modifier.height(30.dp))
-        val scrollState = rememberScrollState()
         Column(modifier = Modifier
-            .verticalScroll(scrollState)
             .fillMaxSize()
             .background(Color.Transparent),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
 
-            TextChip(selectedHero.name, 50.sp, fontFamily)
-
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             Box(
                 modifier = Modifier
@@ -271,31 +225,17 @@ fun DailyHeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                ImageCard(
-                    painterResource(selectedHero.heroPic),
+                ClickableImageCard(navController,
+                    painterResource(R.drawable.holo_globe),
                     contentDescription = "None",
                     modifier = Modifier.fillMaxSize()
                 )
             }
 
-            TextChip("[Hero name] : " + selectedHero.name, 20.sp, fontFamily)
-
-            TextChip("[Real name]: " + selectedHero.realName, 20.sp, fontFamily)
-
-            TextChip("[Creator]: " + selectedHero.creator, 20.sp, fontFamily)
-
-            TextChip("[First Appearance]: " + selectedHero.creationDate + " " + selectedHero.firstAppearance, 20.sp, fontFamily)
-
-            TextChip("[Info]: " + selectedHero.info, 20.sp, fontFamily)
-
-            TextChip("[Origins]: " + selectedHero.origins, 20.sp, fontFamily)
-
-            Spacer(modifier = Modifier.height(10.dp))
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(20.dp)
+                    .height(10.dp)
                     .background(Color.Red)
                     .border(border = BorderStroke(width = 1.dp, color = Color.Black))
                     .padding(horizontal = 30.dp),
@@ -308,13 +248,42 @@ fun DailyHeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
         }
     }
 
-}                                                    //fontFamily needed for every information's text
-//TextChip method allows you to create a CHIP with custom text, size, font
+}
+
 @Composable
-fun ImageCard(
-    painter : Painter,
-    contentDescription : String,
-    modifier : Modifier
+fun ClickableImageCard(navController : NavController,
+                       painter : Painter,
+                       contentDescription : String,
+                       modifier : Modifier
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+            .clickable (onClick = { /*TODO ti porta alla pagina specifica del fumetto*/ })
+            .border(
+                border = BorderStroke(width = 2.dp, Color.Black),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(shape = RoundedCornerShape(10.dp))
+    ) {
+        Box(
+            modifier = Modifier
+                .height(300.dp)
+        ) {
+            Image(modifier = Modifier.fillMaxSize(),
+                painter = painter,
+                contentDescription = contentDescription,
+                contentScale = ContentScale.FillBounds
+            )
+        }
+    }
+}
+
+@Composable
+fun UnclickableImageCard(painter : Painter,
+                         contentDescription : String,
+                         modifier : Modifier
 ) {
     Card(
         modifier = Modifier
@@ -337,17 +306,17 @@ fun ImageCard(
             )
         }
     }
-}                                                                                             //Creates an image card. Painter must be an INT, contentDescription can be "none", do no specify modifier
+}
 
 @Composable
 fun TextChip(text : String, fontSize : TextUnit, fontFamily : FontFamily) {
 
     val text = text
 
-    Spacer(modifier = Modifier.height(10.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 
     Box (modifier = Modifier
-        .padding(10.dp)
+        .padding(30.dp)
         .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
         .clip(shape = RoundedCornerShape(10.dp))
         .background(Color.Gray),

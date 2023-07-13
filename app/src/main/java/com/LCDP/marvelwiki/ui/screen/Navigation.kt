@@ -12,26 +12,28 @@ fun Navigation() {
     val navController = rememberNavController()
 
     // Vengono costruite le varie schermate, gli viene associato il controller e viene mostrata di default quella della Home
-    NavHost(navController = navController, startDestination = Screens.HomeScreen.route) {
+    NavHost(navController = navController, startDestination = Screens.StartingScreen.route) {
 
         // Controller associato alla schermata Home
         composable(route = Screens.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
 
-        // Controller associato alla schermata Navigation
-        composable(route = Screens.NavigationScreen.route) {
+        // Controller associato alla schermata HeroNavigation
+        composable(route = Screens.HeroNavigationScreen.route) {
             NavigationScreen(navController = navController)
-        }
-
-        // Controller associato alla schermata Favorites
-        composable(route = Screens.FavoriteScreen.route) {
-            FavoriteScreen(navController = navController)
         }
 
         // Controller associato alla schermata del singolo Eroe
         composable(route = Screens.HeroScreen.route) {
             HeroScreen(navController = navController)
         }
+
+        // Controller associato alla schermata iniziale
+        composable(route = Screens.StartingScreen.route) {
+            StartingScreen(navController = navController)
+        }
+
+        //DA AGGIUNGERE LE DESTINAZIONI NUOVE (ComicNavigationScreen, ComicFavoriteScreen, ComicScreen)
     }
 }

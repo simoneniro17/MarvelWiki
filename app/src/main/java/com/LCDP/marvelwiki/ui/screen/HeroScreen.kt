@@ -18,8 +18,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,18 +48,32 @@ fun HeroScreen(navController : NavController) {
 
     //TESTING (personaggi provvisori (model non definitivo) da eliminare e usati per testing)
     val hulk = HeroModel(1, "hulk", R.drawable.hulk, "Robert Bruce Banner", "Stan Lee", "1962", "The incredible hulk N.1", "...","...")
-    val spiderman = HeroModel(2, "spider man", R.drawable.spiderman, "Peter Parker", "Stan Lee", "1962", "The Amazing Spiderman", "...", "...")
 
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
-    Column (modifier = Modifier
-        .background(Color.DarkGray)
-        .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
+
+    Box (modifier = Modifier
+        .background(Color.Transparent)
+        .fillMaxSize()
     ) {
-        HeroScreenUpperBar(navController, marvelFont)       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
-        HeroCard(marvelFont, hulk)                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+        Image(
+            painter = painterResource(R.drawable.sfondo_muro),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        Column (modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
+        ) {
+
+            HeroScreenUpperBar(navController, marvelFont)       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
+            HeroCard(marvelFont, hulk)                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+        }
+
     }
 }
 
@@ -65,7 +83,7 @@ fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .height(60.dp)
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
@@ -73,24 +91,16 @@ fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Text(
-            text = "Hero Card".uppercase(),
-            fontSize = 40.sp,
-            color = Color.White,
-            fontFamily = fontFamily,
-            textAlign = TextAlign.Center,
-        )
-
         Column(
             modifier = Modifier
-                .height(50.dp)
-                .width(50.dp)
+                .height(40.dp)
+                .width(40.dp)
                 .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
                 .clip(shape = CircleShape)
                 .background(Color.Green)
         ) {
             Image(
-                painterResource(R.drawable.holo_globe),
+                painterResource(R.drawable.back_arrow),
                 contentDescription = "HOME",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -100,9 +110,18 @@ fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
                         shape = CircleShape
                     )
                     .clip(shape = CircleShape)
-                    .clickable(onClick = {navController.navigate(Screens.NavigationScreen.route)})
+                    .clickable(onClick = {navController.navigate(Screens.HeroNavigationScreen.route)})
             )
         }
+
+        Text(
+            text = "Hulk".uppercase(),
+            fontSize = 40.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
+        )
+
     }
 }
 
@@ -118,8 +137,6 @@ fun HeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            TextChip(selectedHero.name, 50.sp, fontFamily)
-
             Spacer(modifier = Modifier.height(10.dp))
 
             Box(
@@ -128,39 +145,42 @@ fun HeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                ImageCard(
+                UnclickableImageCard(
                     painterResource(selectedHero.heroPic),
                     contentDescription = "none",
                     modifier = Modifier.fillMaxSize()
                 )
             }
 
-            TextChip("[Hero name]: " + selectedHero.name, 20.sp, fontFamily)
-
-            TextChip("[Real name]: " + selectedHero.realName, 20.sp, fontFamily)
-
-            TextChip("[Creator]: " + selectedHero.creator, 20.sp, fontFamily)
-
-            TextChip("[First Appearance]: " + selectedHero.creationDate + " " + selectedHero.firstAppearance, 20.sp, fontFamily)
-
-            TextChip("[Info]: " + selectedHero.info, 20.sp, fontFamily)
-
-            TextChip("[Origins]: " + selectedHero.origins, 20.sp, fontFamily)
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-                    .background(Color.Red)
-                    .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                    .padding(horizontal = 30.dp),
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .background(color = Color.Red)
+                .border(border = BorderStroke(1.dp, Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("")
+                val checkedState = remember { mutableStateOf(false) }
+                Checkbox(
+                    checked = checkedState.value,
+                    onCheckedChange = { checkedState.value = it},
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color.Black,
+                        uncheckedColor = Color.Black,
+                        //checkmarkColor = Color.Black
+                    )
+                )
+
+                Text("Favorite".uppercase(),
+                    fontSize = 20.sp,
+                    fontFamily = fontFamily,
+                    color = Color.White
+                )
             }
+
+            TextChip("Info", 20.sp, fontFamily)
+
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
