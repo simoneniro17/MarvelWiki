@@ -17,10 +17,11 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 
 @Composable
-fun StartingScreen(navController : NavController) {
-    Box (modifier = Modifier
-        .background(Color.Transparent)
-        .fillMaxSize()
+fun StartingScreen(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.background_colored),
@@ -29,9 +30,10 @@ fun StartingScreen(navController : NavController) {
             modifier = Modifier.fillMaxSize()
         )
 
-        Column (modifier = Modifier
-            .background(Color.Transparent)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .background(Color.Transparent)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -41,7 +43,7 @@ fun StartingScreen(navController : NavController) {
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable {navController.navigate(Screens.HomeScreen.route)}
+                    .clickable { navController.navigate(Screens.HomeScreen.route) }
             )
         }
     }

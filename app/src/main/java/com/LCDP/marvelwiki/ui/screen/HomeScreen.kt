@@ -1,4 +1,5 @@
 package com.LCDP.marvelwiki.ui.screen
+
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,11 +25,11 @@ import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
 import com.LCDP.marvelwiki.printer.RetrieveLatestComic
 import com.squareup.picasso.Picasso
-import dev.chrisbanes.accompanist.picasso.PicassoImage
+
 
 //SCHERMATA HOME
 @Composable
-fun HomeScreen(navController : NavController) {
+fun HomeScreen(navController: NavController) {
 
     //In questa classe e nella classe HeroScreen si fa largamente uso del metodo TextChip. E' un metodo composable che permette,
     // dati come argomenti un font, la dimensione del testo e il testo, di creare una piccola label contenente il testo inserito, automaticamente
@@ -38,9 +39,10 @@ fun HomeScreen(navController : NavController) {
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
     //CREAZIONE DELLA SCHERMATA INTERA
-    Box (modifier = Modifier
-        .background(Color.Transparent)
-        .fillMaxSize()
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()
     ) {
 
         Image(
@@ -52,7 +54,7 @@ fun HomeScreen(navController : NavController) {
 
         //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
         //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
-        Column (
+        Column(
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxSize()
@@ -60,13 +62,16 @@ fun HomeScreen(navController : NavController) {
             HomeScreenUpperBar(marvelFont)                                               //Setup of the Layout Bar displaying Home
             NavigationButtons(navController, marvelFont)
             LatestComicBanner(marvelFont)                                                  //Setup of the "DAILY HERO" banner - mid screen
-            LatestComicCard(navController, marvelFont)  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
+            LatestComicCard(
+                navController,
+                marvelFont
+            )  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
         }
     }
 }
 
 @Composable
-fun HomeScreenUpperBar(fontFamily : FontFamily) {
+fun HomeScreenUpperBar(fontFamily: FontFamily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,11 +93,12 @@ fun HomeScreenUpperBar(fontFamily : FontFamily) {
 }
 
 @Composable
-fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .height(150.dp)
-        .padding(10.dp),
+fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -136,10 +142,11 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
         }
     }
 
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .height(150.dp)
-        .padding(10.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -185,18 +192,20 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
 }
 
 @Composable
-fun LatestComicBanner(fontFamily : FontFamily) {
+fun LatestComicBanner(fontFamily: FontFamily) {
     Spacer(modifier = Modifier.height(5.dp))
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.Red)
-        .height(50.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Red)
+            .height(50.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Box (modifier = Modifier
-            .fillMaxSize()
-            .border(BorderStroke(1.dp, color = Color.Black)),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(BorderStroke(1.dp, color = Color.Black)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -211,13 +220,14 @@ fun LatestComicBanner(fontFamily : FontFamily) {
 }                                                  //fontFamily needed for the "DAILY HERO" text
 
 @Composable
-fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //INSERIRE COMIC MODEL
+fun LatestComicCard(navController: NavController, fontFamily: FontFamily) { //INSERIRE COMIC MODEL
     println("ciao")
     Row {
         Spacer(modifier = Modifier.height(30.dp))
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Transparent),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -229,20 +239,13 @@ fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //
                     .fillMaxWidth(0.9f)
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
-            ) { ClickableImageCard(
-                navController = navController,
-                contentDescription = "None",
-                modifier = Modifier.fillMaxSize()
-            )
-
-
-                /*ClickableImageCard(navController,
-                    painterResource(R.drawable.holo_globe),
+            ) {
+                ClickableImageCard(
+                    navController,
+                    painter = painterResource(R.drawable.holo_globe),
                     contentDescription = "None",
                     modifier = Modifier.fillMaxSize()
                 )
-SE VUOI RIPRISTINARE DECOMMENTA E CANCELLA QUELLO SOPRA
-                 */
             }
 
             Row(
@@ -264,10 +267,12 @@ SE VUOI RIPRISTINARE DECOMMENTA E CANCELLA QUELLO SOPRA
 }
 
 @Composable
-fun ClickableImageCard(navController : NavController,
-                       contentDescription : String,
-                       modifier : Modifier
-                        // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
+fun ClickableImageCard(
+    navController: NavController,
+    contentDescription: String,
+    modifier: Modifier,
+    painter: Painter
+    // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
 ) {
     println("ciao")
     val comicsRepository = ComicsRepository()
@@ -286,37 +291,36 @@ fun ClickableImageCard(navController : NavController,
             modifier = Modifier
                 .height(300.dp)
         ) {
-
-            PicassoImage(
-            data = RetrieveLatestComic(comicsRepository = comicsRepository), // Inserisci qui l'URL dell'immagine presa dalla API
-            contentDescription = contentDescription,
-            modifier = Modifier.fillMaxSize(),
-            picasso = Picasso.get(),
-            loading = {
-                // Stato di caricamento dell'immagine
-                // Puoi mostrare un indicatore di caricamento qui
-            },
-            error = {
-                // Stato di errore dell'immagine
-                // Puoi mostrare un'immagine di errore o un messaggio di errore qui
-            }
-        )
-
-            /*Image(modifier = Modifier.fillMaxSize(),
+            Image(
+                modifier = Modifier.fillMaxSize(),
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.FillBounds
             )
-                    SE VUOI RIPRISTINARE CANCELLA TUTTA LA PARTE DI PICASSO IMAGE
-             */
+
+            /* PicassoImage(
+                 data = RetrieveLatestComic(comicsRepository = comicsRepository), // Inserisci qui l'URL dell'immagine presa dalla API
+                 contentDescription = contentDescription,
+                 modifier = Modifier.fillMaxSize(),
+                 picasso = Picasso.get(),
+                 loading = {
+                     // Stato di caricamento dell'immagine
+                     // Puoi mostrare un indicatore di caricamento qui
+                 },
+                 error = {
+                     // Stato di errore dell'immagine
+                     // Puoi mostrare un'immagine di errore o un messaggio di errore qui
+                 }
+             ) */
         }
     }
 }
 
 @Composable
-fun UnclickableImageCard(painter : Painter,
-                         contentDescription : String,
-                         modifier : Modifier
+fun UnclickableImageCard(
+    painter: Painter,
+    contentDescription: String,
+    modifier: Modifier
 ) {
     Card(
         modifier = Modifier
@@ -332,7 +336,8 @@ fun UnclickableImageCard(painter : Painter,
             modifier = Modifier
                 .height(300.dp)
         ) {
-            Image(modifier = Modifier.fillMaxSize(),
+            Image(
+                modifier = Modifier.fillMaxSize(),
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.FillBounds
@@ -342,18 +347,23 @@ fun UnclickableImageCard(painter : Painter,
 }
 
 @Composable
-fun TextChip(text : String, fontSize : TextUnit, fontFamily : FontFamily) {
+fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
 
     val text = text
 
     Spacer(modifier = Modifier.height(5.dp))
 
-    Box (modifier = Modifier
-        .padding(30.dp)
-        .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
-        .clip(shape = RoundedCornerShape(10.dp))
-        .background(Color.Gray),
-        contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .padding(30.dp)
+            .border(
+                border = BorderStroke(width = 1.dp, Color.Black),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(shape = RoundedCornerShape(10.dp))
+            .background(Color.Gray),
+        contentAlignment = Alignment.Center
+    ) {
         Text(
             text = text.uppercase(),
             color = Color.White,
