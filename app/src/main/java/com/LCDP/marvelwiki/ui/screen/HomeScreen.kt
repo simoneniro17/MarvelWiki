@@ -72,7 +72,7 @@ fun HomeScreen(navController: NavController, context: Context) {
         ) {
             HomeScreenUpperBar(marvelFont)                                               //Setup of the Layout Bar displaying Home
             NavigationButtons(navController, marvelFont)
-            LatestComicBanner(marvelFont)                                                  //Setup of the "DAILY HERO" banner - mid screen
+            LatestComicBanner(marvelFont) //Setup of the "DAILY HERO" banner - mid screen
             LatestComicCard(
                 navController,
                 marvelFont,
@@ -228,6 +228,7 @@ fun LatestComicBanner(fontFamily: FontFamily) {
             )
         }
     }
+    Spacer(modifier = Modifier.height(30.dp))
 }                                                  //fontFamily needed for the "DAILY HERO" text
 
 @Composable
@@ -258,6 +259,9 @@ fun LatestComicCard(
                     context = context
                 )
             }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -286,8 +290,8 @@ fun ClickableImageCard(
     val url =  retrieveLatestComicPath()
     Card(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
+            .height(300.dp)
+            .width(200.dp)
             .clickable(onClick = { //TODO ti porta alla pagina specifica del fumetto
             })
             .border(
@@ -299,6 +303,7 @@ fun ClickableImageCard(
         Box(
             modifier = Modifier
                 .height(300.dp)
+                .padding(0.dp)
         ) {
             val imageView = remember { ImageView(context) }
 
@@ -306,7 +311,7 @@ fun ClickableImageCard(
                 .load(url)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
-                .resize(300, 300)
+                .resize(200, 300)
                 .centerCrop()
                 .into(imageView)
 
