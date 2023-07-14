@@ -41,14 +41,11 @@ fun retrieveCharacterList(): List<Character>? {
                 characterResponse?.characterData?.results
 
             // Se la lista non è vuota, vengono richiesti ulteriori personaggi
-            /*if (characterList != null) {
+            if (characterList != null) {
                 if (characterList.isNotEmpty()) {
                     charactersViewModel.loadMoreCharacters()
                 }
             }
-
-             */
-
             return characterList
         }
         is Resource.Error -> {
