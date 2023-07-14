@@ -257,14 +257,6 @@ fun LatestComicCard(
                     modifier = Modifier.fillMaxSize(),
                     context = context
                 )
-
-
-                /*ClickableImageCard(navController,
-            painterResource(R.drawable.holo_globe),
-            contentDescription = "None",
-            modifier = Modifier.fillMaxSize()
-        )
-         */
             }
             Row(
                 modifier = Modifier
