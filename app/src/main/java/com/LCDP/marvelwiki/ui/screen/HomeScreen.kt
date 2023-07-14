@@ -1,4 +1,9 @@
 package com.LCDP.marvelwiki.ui.screen
+
+import android.content.Context
+import android.media.Image
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,17 +23,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
-import com.LCDP.marvelwiki.printer.RetrieveLatestComic
+import com.LCDP.marvelwiki.printer.retrieveLatestComicPath
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import dev.chrisbanes.accompanist.picasso.PicassoImage
 
+
 //SCHERMATA HOME
 @Composable
-fun HomeScreen(navController : NavController) {
+fun HomeScreen(navController: NavController, context: Context) {
 
     //In questa classe e nella classe HeroScreen si fa largamente uso del metodo TextChip. E' un metodo composable che permette,
     // dati come argomenti un font, la dimensione del testo e il testo, di creare una piccola label contenente il testo inserito, automaticamente
@@ -38,11 +51,11 @@ fun HomeScreen(navController : NavController) {
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
     //CREAZIONE DELLA SCHERMATA INTERA
-    Box (modifier = Modifier
-        .background(Color.Transparent)
-        .fillMaxSize()
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()
     ) {
-
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = "none",
@@ -52,7 +65,7 @@ fun HomeScreen(navController : NavController) {
 
         //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
         //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
-        Column (
+        Column(
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxSize()
@@ -60,13 +73,17 @@ fun HomeScreen(navController : NavController) {
             HomeScreenUpperBar(marvelFont)                                               //Setup of the Layout Bar displaying Home
             NavigationButtons(navController, marvelFont)
             LatestComicBanner(marvelFont)                                                  //Setup of the "DAILY HERO" banner - mid screen
-            LatestComicCard(navController, marvelFont)  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
+            LatestComicCard(
+                navController,
+                marvelFont,
+                context
+            )  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
         }
     }
 }
 
 @Composable
-fun HomeScreenUpperBar(fontFamily : FontFamily) {
+fun HomeScreenUpperBar(fontFamily: FontFamily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,11 +105,12 @@ fun HomeScreenUpperBar(fontFamily : FontFamily) {
 }
 
 @Composable
-fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .height(150.dp)
-        .padding(10.dp),
+fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -108,7 +126,6 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
                 .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) }),
             verticalArrangement = Arrangement.Top
         ) {
-
             Image(
                 painterResource(R.drawable.avengers),
                 contentDescription = "HEROES",
@@ -136,10 +153,11 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
         }
     }
 
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .height(150.dp)
-        .padding(10.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -185,18 +203,20 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
 }
 
 @Composable
-fun LatestComicBanner(fontFamily : FontFamily) {
+fun LatestComicBanner(fontFamily: FontFamily) {
     Spacer(modifier = Modifier.height(5.dp))
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.Red)
-        .height(50.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Red)
+            .height(50.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Box (modifier = Modifier
-            .fillMaxSize()
-            .border(BorderStroke(1.dp, color = Color.Black)),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(BorderStroke(1.dp, color = Color.Black)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -211,40 +231,41 @@ fun LatestComicBanner(fontFamily : FontFamily) {
 }                                                  //fontFamily needed for the "DAILY HERO" text
 
 @Composable
-fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //INSERIRE COMIC MODEL
-    println("ciao")
+fun LatestComicCard(
+    navController: NavController,
+    fontFamily: FontFamily,
+    context: Context
+) { //INSERIRE COMIC MODEL
     Row {
         Spacer(modifier = Modifier.height(30.dp))
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Transparent),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-
-            Spacer(modifier = Modifier.height(5.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
-            ) { ClickableImageCard(
-                navController = navController,
-                contentDescription = "None",
-                modifier = Modifier.fillMaxSize()
-            )
+            ) {
+                ClickableImageCard(
+                    navController = navController,
+                    contentDescription = "None",
+                    modifier = Modifier.fillMaxSize(),
+                    context = context
+                )
 
 
                 /*ClickableImageCard(navController,
-                    painterResource(R.drawable.holo_globe),
-                    contentDescription = "None",
-                    modifier = Modifier.fillMaxSize()
-                )
-SE VUOI RIPRISTINARE DECOMMENTA E CANCELLA QUELLO SOPRA
-                 */
+            painterResource(R.drawable.holo_globe),
+            contentDescription = "None",
+            modifier = Modifier.fillMaxSize()
+        )
+         */
             }
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -260,22 +281,23 @@ SE VUOI RIPRISTINARE DECOMMENTA E CANCELLA QUELLO SOPRA
 
         }
     }
-
 }
 
 @Composable
-fun ClickableImageCard(navController : NavController,
-                       contentDescription : String,
-                       modifier : Modifier
-                        // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
+fun ClickableImageCard(
+    navController: NavController,
+    contentDescription: String,
+    modifier: Modifier,
+    context: Context
+    // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
 ) {
-    println("ciao")
-    val comicsRepository = ComicsRepository()
+    val url =  retrieveLatestComicPath()
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
-            .clickable(onClick = { /*TODO ti porta alla pagina specifica del fumetto*/ })
+            .clickable(onClick = { //TODO ti porta alla pagina specifica del fumetto
+            })
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
@@ -286,37 +308,30 @@ fun ClickableImageCard(navController : NavController,
             modifier = Modifier
                 .height(300.dp)
         ) {
+            val imageView = remember { ImageView(context) }
 
-            PicassoImage(
-            data = RetrieveLatestComic(comicsRepository = comicsRepository), // Inserisci qui l'URL dell'immagine presa dalla API
-            contentDescription = contentDescription,
-            modifier = Modifier.fillMaxSize(),
-            picasso = Picasso.get(),
-            loading = {
-                // Stato di caricamento dell'immagine
-                // Puoi mostrare un indicatore di caricamento qui
-            },
-            error = {
-                // Stato di errore dell'immagine
-                // Puoi mostrare un'immagine di errore o un messaggio di errore qui
-            }
-        )
+            Picasso.get()
+                .load(url)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(300, 300)
+                .centerCrop()
+                .into(imageView)
 
-            /*Image(modifier = Modifier.fillMaxSize(),
-                painter = painter,
-                contentDescription = contentDescription,
-                contentScale = ContentScale.FillBounds
+            AndroidView(
+                factory = { imageView },
+                modifier = Modifier.fillMaxSize()
             )
-                    SE VUOI RIPRISTINARE CANCELLA TUTTA LA PARTE DI PICASSO IMAGE
-             */
         }
     }
 }
 
+
 @Composable
-fun UnclickableImageCard(painter : Painter,
-                         contentDescription : String,
-                         modifier : Modifier
+fun UnclickableImageCard(
+    painter: Painter,
+    contentDescription: String,
+    modifier: Modifier
 ) {
     Card(
         modifier = Modifier
@@ -332,7 +347,8 @@ fun UnclickableImageCard(painter : Painter,
             modifier = Modifier
                 .height(300.dp)
         ) {
-            Image(modifier = Modifier.fillMaxSize(),
+            Image(
+                modifier = Modifier.fillMaxSize(),
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.FillBounds
@@ -342,18 +358,23 @@ fun UnclickableImageCard(painter : Painter,
 }
 
 @Composable
-fun TextChip(text : String, fontSize : TextUnit, fontFamily : FontFamily) {
+fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
 
     val text = text
 
     Spacer(modifier = Modifier.height(5.dp))
 
-    Box (modifier = Modifier
-        .padding(30.dp)
-        .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
-        .clip(shape = RoundedCornerShape(10.dp))
-        .background(Color.Gray),
-        contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .padding(30.dp)
+            .border(
+                border = BorderStroke(width = 1.dp, Color.Black),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(shape = RoundedCornerShape(10.dp))
+            .background(Color.Gray),
+        contentAlignment = Alignment.Center
+    ) {
         Text(
             text = text.uppercase(),
             color = Color.White,

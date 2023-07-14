@@ -105,7 +105,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     // PICASSO
-    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "dev.chrisbanes.accompanist:accompanist-picasso:0.6.2"
 
     /*  GLIDE
