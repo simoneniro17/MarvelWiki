@@ -110,7 +110,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 marvelFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             SearchBar(marvelFont)
-            //FavoriteFilterButton(marvelFont, false)
             Separator(marvelFont)
             AllHeroesList(navController, marvelFont, retrieveCharacterList(), context = context)
         }
@@ -208,28 +207,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
     } //fontFamily needed for texts inside the search bar
 
     @Composable
-    fun FavoriteFilterButton(fontFamily: FontFamily, clicked: Boolean) {
-
-        val currentColor: Color
-        if (clicked) {
-            currentColor = Color.Red
-        } else {
-            currentColor = Color.LightGray
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp)
-                .background(color = currentColor)
-                .border(border = BorderStroke(1.dp, Color.Black))
-                .clickable(onClick = { !clicked })
-        ) {
-
-        }
-    }
-
-    @Composable
     fun Separator(fontFamily: FontFamily) {
         Row(
             modifier = Modifier
@@ -286,13 +263,13 @@ fun NavigationScreen(navController: NavController,context: Context) {
         navController: NavController,
         fontFamily: FontFamily,
         selectedHero: Character,
-    context: Context
+        context: Context
     ) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(350.dp)
+                .width(400.dp)
+                .height(300.dp)
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
@@ -300,8 +277,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.9f)
+                    .fillMaxSize()
                     .border(
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                         shape = RoundedCornerShape(10.dp)
@@ -316,30 +292,30 @@ fun NavigationScreen(navController: NavController,context: Context) {
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(300, 300)
+                    .resize(510, 310)
                     .centerCrop()
                     .into(imageView)
 
                 AndroidView(
                     factory = { imageView },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.8f)
                 )
 
-                selectedHero.name?.let {
-                    Text(
-                        text = it.uppercase(),
-                        fontSize = 30.sp,
-                        fontFamily = fontFamily,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .background(color = Color.Red)
-                            .height(50.dp)
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                    )
-                }
-
+                Text(
+                    text = selectedHero.name!!.uppercase(),
+                    fontSize = 30.sp,
+                    fontFamily = fontFamily,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .background(color = Color.Red)
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
+                )
             }
+
         }
     }
