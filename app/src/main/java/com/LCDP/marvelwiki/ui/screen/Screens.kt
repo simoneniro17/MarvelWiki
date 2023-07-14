@@ -1,7 +1,7 @@
 package com.LCDP.marvelwiki.ui.screen
 
 // Classe che definisce una gerarchia di oggetti Singleton che rappresentano le diverse schermate dell'applicazione
-sealed class Screens(val route : String) {
+sealed class Screens(val route: String) {
     object HomeScreen : Screens("home_screen")
     object HeroNavigationScreen : Screens("hero_nav_screen")
     object HeroFavoriteScreen : Screens("hero_fav_screen")

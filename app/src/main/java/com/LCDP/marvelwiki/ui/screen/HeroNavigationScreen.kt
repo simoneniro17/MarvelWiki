@@ -34,23 +34,54 @@ import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.HeroModel
 
 @Composable
-fun NavigationScreen(navController : NavController) {
+fun NavigationScreen(navController: NavController) {
 
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
     //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    val hulk = HeroModel(1, "hulk", R.drawable.hulk, "Robert Bruce Banner", "Stan Lee", "1962", "The incredible hulk N.1", "...","...")
-    val spiderman = HeroModel(2, "spider man", R.drawable.spiderman, "Peter Parker", "Stan Lee", "1962", "The Amazing Spiderman", "...", "...")
-    val ironman = HeroModel(3, "Iron Man", R.drawable.ironman, "Tony Stark", "stan lee", "1962", "Tales of suspance", "..", "...")
+    val hulk = HeroModel(
+        1,
+        "hulk",
+        R.drawable.hulk,
+        "Robert Bruce Banner",
+        "Stan Lee",
+        "1962",
+        "The incredible hulk N.1",
+        "...",
+        "..."
+    )
+    val spiderman = HeroModel(
+        2,
+        "spider man",
+        R.drawable.spiderman,
+        "Peter Parker",
+        "Stan Lee",
+        "1962",
+        "The Amazing Spiderman",
+        "...",
+        "..."
+    )
+    val ironman = HeroModel(
+        3,
+        "Iron Man",
+        R.drawable.ironman,
+        "Tony Stark",
+        "stan lee",
+        "1962",
+        "Tales of suspance",
+        "..",
+        "..."
+    )
     val heroList = ArrayList<HeroModel>(10000)
     heroList.add(hulk)
     heroList.add(spiderman)
     heroList.add(ironman)
 
-    Box (modifier = Modifier
-        .background(Color.Transparent)
-        .fillMaxSize()
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()
     ) {
 
         Image(
@@ -62,12 +93,15 @@ fun NavigationScreen(navController : NavController) {
 
         //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
         //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
-        Column (
+        Column(
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxSize()
         ) {
-            NavigationScreenUpperBar(navController, marvelFont)             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
+            NavigationScreenUpperBar(
+                navController,
+                marvelFont
+            )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             SearchBar(marvelFont)
             //FavoriteFilterButton(marvelFont, false)
             Separator(marvelFont)
@@ -77,7 +111,7 @@ fun NavigationScreen(navController : NavController) {
 }
 
 @Composable
-fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
+fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +142,7 @@ fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFam
                         shape = CircleShape
                     )
                     .clip(shape = CircleShape)
-                    .clickable(onClick = {navController.navigate(Screens.HomeScreen.route)})
+                    .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
             )
         }
 
@@ -124,11 +158,12 @@ fun NavigationScreenUpperBar(navController : NavController, fontFamily : FontFam
 }
 
 @Composable
-fun SearchBar(fontFamily : FontFamily) {
+fun SearchBar(fontFamily: FontFamily) {
     var textFieldState by remember {
         mutableStateOf("")
     }
-    Row (verticalAlignment = Alignment.CenterVertically,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
@@ -136,18 +171,20 @@ fun SearchBar(fontFamily : FontFamily) {
     ) {
         OutlinedTextField(
             value = textFieldState,
-            onValueChange = {textFieldState = it},
-            label = {Text(
-                text = "Search a character".uppercase(),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = fontFamily
-            )},
+            onValueChange = { textFieldState = it },
+            label = {
+                Text(
+                    text = "Search a character".uppercase(),
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = fontFamily
+                )
+            },
             leadingIcon = {
                 Icon(
                     painterResource(R.drawable.search_icon),
                     contentDescription = "Search Icon",
-                    modifier = Modifier.size(30.dp,30.dp)
+                    modifier = Modifier.size(30.dp, 30.dp)
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
@@ -164,40 +201,42 @@ fun SearchBar(fontFamily : FontFamily) {
 } //fontFamily needed for texts inside the search bar
 
 @Composable
-fun FavoriteFilterButton(fontFamily : FontFamily, clicked : Boolean) {
+fun FavoriteFilterButton(fontFamily: FontFamily, clicked: Boolean) {
 
-    val currentColor : Color
+    val currentColor: Color
     if (clicked) {
         currentColor = Color.Red
     } else {
         currentColor = Color.LightGray
     }
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(30.dp)
-        .background(color = currentColor)
-        .border(border = BorderStroke(1.dp, Color.Black))
-        .clickable(onClick = {!clicked})
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp)
+            .background(color = currentColor)
+            .border(border = BorderStroke(1.dp, Color.Black))
+            .clickable(onClick = { !clicked })
     ) {
 
     }
 }
 
 @Composable
-fun Separator(fontFamily : FontFamily) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(40.dp)
-        .background(color = Color.Red)
-        .border(border = BorderStroke(1.dp, Color.Black)),
+fun Separator(fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .background(color = Color.Red)
+            .border(border = BorderStroke(1.dp, Color.Black)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val checkedState = remember {mutableStateOf(false)}
+        val checkedState = remember { mutableStateOf(false) }
         Checkbox(
             checked = checkedState.value,
-            onCheckedChange = { checkedState.value = it},
+            onCheckedChange = { checkedState.value = it },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black,
@@ -205,7 +244,8 @@ fun Separator(fontFamily : FontFamily) {
             )
         )
 
-        Text("Visualize only favorite heroes".uppercase(),
+        Text(
+            "Visualize only favorite heroes".uppercase(),
             fontSize = 20.sp,
             fontFamily = fontFamily,
             color = Color.White
@@ -214,21 +254,26 @@ fun Separator(fontFamily : FontFamily) {
 }
 
 @Composable
-fun AllHeroesList(navController : NavController, fontFamily : FontFamily, heroList : List<HeroModel>) {
+fun AllHeroesList(navController: NavController, fontFamily: FontFamily, heroList: List<HeroModel>) {
     LazyColumn {
         items(3) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-            HeroThumbnail(navController, fontFamily, heroList[it])      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
+            HeroThumbnail(
+                navController,
+                fontFamily,
+                heroList[it]
+            )      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
         }
     }
 }
 
 @Composable
-fun HeroThumbnail(navController : NavController, fontFamily : FontFamily, selectedHero : HeroModel) {
+fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selectedHero: HeroModel) {
 
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .height(350.dp)
-        .padding(20.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(350.dp)
+            .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {

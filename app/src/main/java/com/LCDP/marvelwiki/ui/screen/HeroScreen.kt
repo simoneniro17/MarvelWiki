@@ -44,18 +44,29 @@ import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.usefulStuff.Resource
 
 @Composable
-fun HeroScreen(navController : NavController) {
+fun HeroScreen(navController: NavController) {
 
     //TESTING (personaggi provvisori (model non definitivo) da eliminare e usati per testing)
-    val hulk = HeroModel(1, "hulk", R.drawable.hulk, "Robert Bruce Banner", "Stan Lee", "1962", "The incredible hulk N.1", "...","...")
+    val hulk = HeroModel(
+        1,
+        "hulk",
+        R.drawable.hulk,
+        "Robert Bruce Banner",
+        "Stan Lee",
+        "1962",
+        "The incredible hulk N.1",
+        "...",
+        "..."
+    )
 
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
 
-    Box (modifier = Modifier
-        .background(Color.Transparent)
-        .fillMaxSize()
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.sfondo_muro),
@@ -64,21 +75,28 @@ fun HeroScreen(navController : NavController) {
             modifier = Modifier.fillMaxSize()
         )
 
-        Column (modifier = Modifier
-            .background(Color.Transparent)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .background(Color.Transparent)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
 
-            HeroScreenUpperBar(navController, marvelFont)       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
-            HeroCard(marvelFont, hulk)                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+            HeroScreenUpperBar(
+                navController,
+                marvelFont
+            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
+            HeroCard(
+                marvelFont,
+                hulk
+            )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
         }
 
     }
 }
 
 @Composable
-fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
+fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
 
     Row(
         modifier = Modifier
@@ -110,7 +128,7 @@ fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
                         shape = CircleShape
                     )
                     .clip(shape = CircleShape)
-                    .clickable(onClick = {navController.navigate(Screens.HeroNavigationScreen.route)})
+                    .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
             )
         }
 
@@ -126,7 +144,7 @@ fun HeroScreenUpperBar(navController : NavController, fontFamily : FontFamily) {
 }
 
 @Composable
-fun HeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
+fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {
     Row {
         val scrollState = rememberScrollState()
         Column(
@@ -152,18 +170,19 @@ fun HeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
                 )
             }
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(color = Color.Red)
-                .border(border = BorderStroke(1.dp, Color.Black)),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .background(color = Color.Red)
+                    .border(border = BorderStroke(1.dp, Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 val checkedState = remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checkedState.value,
-                    onCheckedChange = { checkedState.value = it},
+                    onCheckedChange = { checkedState.value = it },
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
@@ -171,7 +190,8 @@ fun HeroCard(fontFamily : FontFamily, selectedHero : HeroModel) {
                     )
                 )
 
-                Text("Favorite".uppercase(),
+                Text(
+                    "Favorite".uppercase(),
                     fontSize = 20.sp,
                     fontFamily = fontFamily,
                     color = Color.White
