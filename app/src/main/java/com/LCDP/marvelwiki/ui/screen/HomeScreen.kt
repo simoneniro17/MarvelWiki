@@ -21,6 +21,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.printer.RetrieveLatestComic
+import com.squareup.picasso.Picasso
+import dev.chrisbanes.accompanist.picasso.PicassoImage
 
 //SCHERMATA HOME
 @Composable
@@ -148,7 +152,7 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = {  }), // TODO
+                .clickable(onClick = { }), // TODO
             verticalArrangement = Arrangement.Top
         ) {
 
@@ -208,6 +212,7 @@ fun LatestComicBanner(fontFamily : FontFamily) {
 
 @Composable
 fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //INSERIRE COMIC MODEL
+    println("ciao")
     Row {
         Spacer(modifier = Modifier.height(30.dp))
         Column(modifier = Modifier
@@ -224,12 +229,20 @@ fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //
                     .fillMaxWidth(0.9f)
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
-            ) {
-                ClickableImageCard(navController,
+            ) { ClickableImageCard(
+                navController = navController,
+                contentDescription = "None",
+                modifier = Modifier.fillMaxSize()
+            )
+
+
+                /*ClickableImageCard(navController,
                     painterResource(R.drawable.holo_globe),
                     contentDescription = "None",
                     modifier = Modifier.fillMaxSize()
                 )
+SE VUOI RIPRISTINARE DECOMMENTA E CANCELLA QUELLO SOPRA
+                 */
             }
 
             Row(
@@ -252,15 +265,17 @@ fun LatestComicCard(navController : NavController, fontFamily : FontFamily) { //
 
 @Composable
 fun ClickableImageCard(navController : NavController,
-                       painter : Painter,
                        contentDescription : String,
                        modifier : Modifier
+                        // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
 ) {
+    println("ciao")
+    val comicsRepository = ComicsRepository()
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
-            .clickable (onClick = { /*TODO ti porta alla pagina specifica del fumetto*/ })
+            .clickable(onClick = { /*TODO ti porta alla pagina specifica del fumetto*/ })
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
@@ -271,11 +286,29 @@ fun ClickableImageCard(navController : NavController,
             modifier = Modifier
                 .height(300.dp)
         ) {
-            Image(modifier = Modifier.fillMaxSize(),
+
+            PicassoImage(
+            data = RetrieveLatestComic(comicsRepository = comicsRepository), // Inserisci qui l'URL dell'immagine presa dalla API
+            contentDescription = contentDescription,
+            modifier = Modifier.fillMaxSize(),
+            picasso = Picasso.get(),
+            loading = {
+                // Stato di caricamento dell'immagine
+                // Puoi mostrare un indicatore di caricamento qui
+            },
+            error = {
+                // Stato di errore dell'immagine
+                // Puoi mostrare un'immagine di errore o un messaggio di errore qui
+            }
+        )
+
+            /*Image(modifier = Modifier.fillMaxSize(),
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.FillBounds
             )
+                    SE VUOI RIPRISTINARE CANCELLA TUTTA LA PARTE DI PICASSO IMAGE
+             */
         }
     }
 }
