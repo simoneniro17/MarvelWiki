@@ -76,6 +76,10 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
+
+
+
+
     /*  RETROFIT
         La prima dipendenza importa la libreria Retrofit stessa, che fornisce un'interfaccia semplice
         per definire le richieste e le risposte delle API, oltre a gestire automaticamente la conversione
@@ -106,6 +110,7 @@ dependencies {
 
     // PICASSO
     implementation 'com.squareup.picasso:picasso:2.8'
+    implementation "dev.chrisbanes.accompanist:accompanist-picasso:0.6.2"
 
 
     /*  GLIDE

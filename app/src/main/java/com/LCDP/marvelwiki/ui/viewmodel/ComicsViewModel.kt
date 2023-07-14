@@ -11,30 +11,34 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ComicsViewModel(private val comicsRepository: ComicsRepository, operationCode : Int, id: Int = 0 , isbn: String = ""): ViewModel() {
+class ComicsViewModel(private val comicsRepository: ComicsRepository, operationCode : Int, id: Int = 0 , isbn: String = "",name: String = ""): ViewModel() {
     // Questa classe estente la classe viewModel
 
     //La variabile comics è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
     //Resource rappresenta lo stato dei dati (caricamento, successo, errore) e CharacterResponse è il tipo dei dati dei comics
     val comics: MutableLiveData<Resource<ComicResponse>> = MutableLiveData()
 
-    var idToSearch = id
-    var isbnToSearch: String = isbn
+    private var currentOffset = 0
+
+    private var nameToSearch = name
+    private var idToSearch = id
+    private var isbnToSearch: String = isbn
 
     init {
         when (operationCode) {
             1 -> getComicsByIsbn()
             2 -> getLatestComicsByCharId()
             3 -> getLatestComic()
+            4 -> getComicByName()
             else -> {
-                println("wrongOperationCode")
+                println("Wrong Operation Code")
             }
         }
     }
     //Questo metodo serve per ottenere i dati dei comics.
     //viewModelScope.launch esegue il blocco in modo asincrono. Tramite postValue, si specifca che i dati sono in stato di loading
     //Il metodo getComic_api viene utilizzato per ottenere i dati dei comics
-    fun getLatestComicsByCharId() = viewModelScope.launch {
+    private fun getLatestComicsByCharId() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
         val response = comicsRepository.getComicsByCharId(idToSearch)
 
@@ -42,7 +46,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, operationC
         comics.postValue(handleResponse(response))
     }
 
-    fun getComicsByIsbn() = viewModelScope.launch {
+    private fun getComicsByIsbn() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
         val response = comicsRepository.getComicsByIsbn(isbnToSearch)
 
@@ -50,12 +54,26 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, operationC
         comics.postValue(handleResponse(response))
     }
 
-    fun getLatestComic() = viewModelScope.launch {
+    private fun getLatestComic() = viewModelScope.launch {
         comics.postValue(Resource.Loading())
         val response = comicsRepository.getLatestComic()
 
         //Il risultato è passato a  handleResponse che gestisce la risposta
         comics.postValue(handleResponse(response))
+    }
+
+
+    private fun getComicByName() = viewModelScope.launch {
+        comics.postValue(Resource.Loading())
+        val response = comicsRepository.getComicsByName(nameToSearch,currentOffset)
+
+        //Il risultato è passato a  handleResponse che gestisce la risposta
+        comics.postValue(handleResponse(response))
+    }
+
+    fun loadMoreComics() {
+        currentOffset += Constant.limit
+        getComicByName()
     }
 
 

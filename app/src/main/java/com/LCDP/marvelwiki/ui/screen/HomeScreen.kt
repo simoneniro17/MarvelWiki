@@ -148,7 +148,7 @@ fun NavigationButtons(navController : NavController, fontFamily : FontFamily) {
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = {navController.navigate(Screens.ComicNavigationScreen.route)  }),
+                .clickable(onClick = {  }), // TODO
             verticalArrangement = Arrangement.Top
         ) {
 

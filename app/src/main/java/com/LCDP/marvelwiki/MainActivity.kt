@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.printer.RetrieveComicByName
 import com.LCDP.marvelwiki.printer.RetrieveLatestComic
 import com.LCDP.marvelwiki.ui.screen.Navigation
 

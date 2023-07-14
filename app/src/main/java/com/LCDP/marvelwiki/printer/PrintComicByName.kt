@@ -1,53 +1,46 @@
 package com.LCDP.marvelwiki.printer
 
 import android.os.Bundle
-import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.LCDP.marvelwiki.data.model.ComicResponse
-import com.LCDP.marvelwiki.data.model.Thumbnail
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsByIsbnViewModelFactory
+import com.LCDP.marvelwiki.ui.viewmodel.ComicsByNameViewModelFactory
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
-import com.LCDP.marvelwiki.ui.viewmodel.LatestComicViewModelFactory
 import com.LCDP.marvelwiki.usefulStuff.Resource
 
-
-
-
-class PrintLatestComic: ComponentActivity() {
+class PrintComicByName : ComponentActivity() {
 
     // Creazione istanza repository, che verrà passata a 'RetrieveAllChar'
     private val comicsRepository = ComicsRepository()
 
-    private val isbn = ""   //TODO trovare un modo per passarlo dinamicamente
+    private val name = ""   //TODO trovare un modo per passarlo dinamicamente
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RetrieveLatestComic(comicsRepository = comicsRepository)
+            RetrieveComicByName(name, comicsRepository)
         }
     }
 }
 
 @Composable
-fun RetrieveLatestComic(comicsRepository: ComicsRepository) {
+fun RetrieveComicByName(name:String, comicsRepository: ComicsRepository) {
 
     // Creazione istanza del ViewModel dalla factory, che verrà passata a 'ComicsScreen'
     val comicsViewModel: ComicsViewModel = viewModel(
-        factory = LatestComicViewModelFactory(comicsRepository)
+        factory = ComicsByNameViewModelFactory(comicsRepository, name)
     )
-    latestComicScreen(comicsViewModel)
+    ComicsScreenByName(comicsViewModel)
 }
 
 @Composable
-fun latestComicScreen(comicsViewModel: ComicsViewModel): String? {
+fun ComicsScreenByName(comicsViewModel: ComicsViewModel) {
+
     // Osserviamo le modifiche della proprietà 'comics' del 'comicsViewModel'
     val comics: Resource<ComicResponse> by comicsViewModel.comics.observeAsState(
         Resource.Loading()
@@ -64,11 +57,17 @@ fun latestComicScreen(comicsViewModel: ComicsViewModel): String? {
 
             // Istanziamo la lista dei fumetti
             val comicList = comicResponse?.comicData?.results
-            println(comicList?.get(0)?.title)
-            return comicList?.get(0)?.thumbnail?.path
+            comicList?.forEach { comic ->
+                println(comic.title)
+            }
+
+            if (comicList != null) {
+                if (comicList.isNotEmpty()) {
+                    comicsViewModel.loadMoreComics()
+                }
+            }
 
         }
-
         is Resource.Error -> {
             // Mostra un messaggio di errore
             val errorMessage = comics.message
@@ -76,5 +75,4 @@ fun latestComicScreen(comicsViewModel: ComicsViewModel): String? {
         }
     }
     // ...
-    return null
 }
