@@ -4,7 +4,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
@@ -22,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Checkbox
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -100,7 +98,7 @@ fun ComicNavigationScreen(navController: NavController) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             ComicSearchBar(marvelFont)
             ComicSeparator(marvelFont)
-            AllComicsList(navController, marvelFont, heroList)
+            //AllComicsList(navController, marvelFont, heroList)
 
         }
     }
@@ -242,7 +240,7 @@ fun ComicSeparator(fontFamily: FontFamily) {
     }
 }
 
-@Composable
+/*@Composable
 fun AllComicsList(navController: NavController, fontFamily: FontFamily, heroList: List<HeroModel>) {
     LazyColumn {
         items(3) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
@@ -254,3 +252,4 @@ fun AllComicsList(navController: NavController, fontFamily: FontFamily, heroList
         }
     }
 }
+ */

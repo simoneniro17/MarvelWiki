@@ -22,7 +22,7 @@ fun Navigation(context: Context) {
 
         // Controller associato alla schermata HeroNavigation
         composable(route = Screens.HeroNavigationScreen.route) {
-            NavigationScreen(navController = navController)
+            NavigationScreen(navController = navController, context = context)
         }
 
         // Controller associato alla schermata del singolo Eroe
