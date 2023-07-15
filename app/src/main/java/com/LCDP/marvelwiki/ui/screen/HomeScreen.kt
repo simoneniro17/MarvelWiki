@@ -90,7 +90,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.Start,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
