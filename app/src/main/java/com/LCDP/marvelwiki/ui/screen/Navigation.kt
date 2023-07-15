@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.LCDP.marvelwiki.data.model.Character
 
 @Composable
 fun Navigation(context: Context) {
@@ -27,6 +28,7 @@ fun Navigation(context: Context) {
 
         // Controller associato alla schermata del singolo Eroe
         composable(route = Screens.HeroScreen.route) {
+            //HeroScreen(navController = navController, selectedHero = selectedHero, context = context)
             HeroScreen(navController = navController)
         }
 

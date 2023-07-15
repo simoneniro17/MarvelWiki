@@ -36,7 +36,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import dev.chrisbanes.accompanist.picasso.PicassoImage
 
 
 //SCHERMATA HOME
@@ -91,7 +90,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.Start,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

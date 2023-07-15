@@ -41,50 +41,50 @@ import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 @Composable
-fun NavigationScreen(navController: NavController,context: Context) {
+fun NavigationScreen(navController: NavController, context: Context) {
 
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
-/*
-    //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    val hulk = HeroModel(
-        1,
-        "hulk",
-        R.drawable.hulk,
-        "Robert Bruce Banner",
-        "Stan Lee",
-        "1962",
-        "The incredible hulk N.1",
-        "...",
-        "..."
-    )
-    val spiderman = HeroModel(
-        2,
-        "spider man",
-        R.drawable.spiderman,
-        "Peter Parker",
-        "Stan Lee",
-        "1962",
-        "The Amazing Spiderman",
-        "...",
-        "..."
-    )
-    val ironman = HeroModel(
-        3,
-        "Iron Man",
-        R.drawable.ironman,
-        "Tony Stark",
-        "stan lee",
-        "1962",
-        "Tales of suspance",
-        "..",
-        "..."
-    )
-    val heroList = ArrayList<HeroModel>(10000)
-    heroList.add(hulk)
-    heroList.add(spiderman)
-    heroList.add(ironman)
-*/
+    /*
+        //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
+        val hulk = HeroModel(
+            1,
+            "hulk",
+            R.drawable.hulk,
+            "Robert Bruce Banner",
+            "Stan Lee",
+            "1962",
+            "The incredible hulk N.1",
+            "...",
+            "..."
+        )
+        val spiderman = HeroModel(
+            2,
+            "spider man",
+            R.drawable.spiderman,
+            "Peter Parker",
+            "Stan Lee",
+            "1962",
+            "The Amazing Spiderman",
+            "...",
+            "..."
+        )
+        val ironman = HeroModel(
+            3,
+            "Iron Man",
+            R.drawable.ironman,
+            "Tony Stark",
+            "stan lee",
+            "1962",
+            "Tales of suspance",
+            "..",
+            "..."
+        )
+        val heroList = ArrayList<HeroModel>(10000)
+        heroList.add(hulk)
+        heroList.add(spiderman)
+        heroList.add(ironman)
+    */
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -116,206 +116,209 @@ fun NavigationScreen(navController: NavController,context: Context) {
     }
 }
 
-    @Composable
-    fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
-        Row(
+@Composable
+fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .background(Color.Red)
+            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .padding(horizontal = 30.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(Color.Red)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                .padding(horizontal = 30.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-                    .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
-                    .clip(shape = CircleShape)
-                    .background(Color.Green)
-            ) {
-                Image(
-                    painterResource(R.drawable.back_arrow),
-                    contentDescription = "HOME",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = CircleShape
-                        )
-                        .clip(shape = CircleShape)
-                        .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
-                )
-            }
-
-            Text(
-                text = "HEROES".uppercase(),
-                fontSize = 40.sp,
-                color = Color.White,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center,
-            )
-
-        }
-    }
-
-    @Composable
-    fun SearchBar(fontFamily: FontFamily) {
-        var textFieldState by remember {
-            mutableStateOf("")
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            OutlinedTextField(
-                value = textFieldState,
-                onValueChange = { textFieldState = it },
-                label = {
-                    Text(
-                        text = "Search a character".uppercase(),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontFamily = fontFamily
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        painterResource(R.drawable.search_icon),
-                        contentDescription = "Search Icon",
-                        modifier = Modifier.size(30.dp, 30.dp)
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Black,
-                    focusedIndicatorColor = Color.Red,
-                    leadingIconColor = Color.Black,
-                    cursorColor = Color.Red,
-                    textColor = Color.White
-                ),
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    } //fontFamily needed for texts inside the search bar
-
-    @Composable
-    fun Separator(fontFamily: FontFamily) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
                 .height(40.dp)
-                .background(color = Color.Red)
-                .border(border = BorderStroke(1.dp, Color.Black)),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+                .width(40.dp)
+                .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
+                .clip(shape = CircleShape)
+                .background(Color.Green)
         ) {
-            val checkedState = remember { mutableStateOf(false) }
-            Checkbox(
-                checked = checkedState.value,
-                onCheckedChange = { checkedState.value = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color.Black,
-                    uncheckedColor = Color.Black,
-                    //checkmarkColor = Color.Black
-                )
-            )
-
-            Text(
-                "Visualize only favorite heroes".uppercase(),
-                fontSize = 20.sp,
-                fontFamily = fontFamily,
-                color = Color.White
-            )
-        }
-    }
-
-    @Composable
-    fun AllHeroesList(
-        navController: NavController,
-        fontFamily: FontFamily,
-        characterList: List<Character>?,
-    context: Context
-    ) {
-        LazyColumn {
-            items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-                if (characterList != null) {
-                    HeroThumbnail(
-                        navController,
-                        fontFamily,
-                        characterList[it],
-                        context
-                    )
-                }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
-            }
-        }
-    }
-
-    @Composable
-    fun HeroThumbnail(
-        navController: NavController,
-        fontFamily: FontFamily,
-        selectedHero: Character,
-        context: Context
-    ) {
-
-        Row(
-            modifier = Modifier
-                .width(400.dp)
-                .height(300.dp)
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-
-            Column(
+            Image(
+                painterResource(R.drawable.back_arrow),
+                contentDescription = "HOME",
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxSize()
                     .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black),
-                        shape = RoundedCornerShape(10.dp)
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = CircleShape
                     )
-                    .clip(shape = RoundedCornerShape(10.dp))
-                    .clickable(onClick = { navController.navigate(Screens.HeroScreen.route) }),
-                verticalArrangement = Arrangement.Top
-            ) {
-                val imageView = remember { ImageView(context) }
+                    .clip(shape = CircleShape)
+                    .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
+            )
+        }
 
-                Picasso.get()
-                    .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(510, 310)
-                    .centerCrop()
-                    .into(imageView)
+        Text(
+            text = "HEROES".uppercase(),
+            fontSize = 40.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
+        )
 
-                AndroidView(
-                    factory = { imageView },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                )
+    }
+}
 
+@Composable
+fun SearchBar(fontFamily: FontFamily) {
+    var textFieldState by remember {
+        mutableStateOf("")
+    }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        OutlinedTextField(
+            value = textFieldState,
+            onValueChange = { textFieldState = it },
+            label = {
                 Text(
-                    text = selectedHero.name!!.uppercase(),
-                    fontSize = 30.sp,
-                    fontFamily = fontFamily,
+                    text = "Search a character".uppercase(),
                     color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .background(color = Color.Red)
-                        .height(50.dp)
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
+                    fontSize = 20.sp,
+                    fontFamily = fontFamily
                 )
-            }
+            },
+            leadingIcon = {
+                Icon(
+                    painterResource(R.drawable.search_icon),
+                    contentDescription = "Search Icon",
+                    modifier = Modifier.size(30.dp, 30.dp)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Black,
+                focusedIndicatorColor = Color.Red,
+                leadingIconColor = Color.Black,
+                cursorColor = Color.Red,
+                textColor = Color.White
+            ),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+} //fontFamily needed for texts inside the search bar
 
+@Composable
+fun Separator(fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .background(color = Color.Red)
+            .border(border = BorderStroke(1.dp, Color.Black)),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val checkedState = remember { mutableStateOf(false) }
+        Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Black,
+                uncheckedColor = Color.Black,
+                //checkmarkColor = Color.Black
+            )
+        )
+
+        Text(
+            "Visualize only favorite heroes".uppercase(),
+            fontSize = 20.sp,
+            fontFamily = fontFamily,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+fun AllHeroesList(
+    navController: NavController,
+    fontFamily: FontFamily,
+    characterList: List<Character>?,
+    context: Context
+) {
+    LazyColumn {
+        items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
+            if (characterList != null) {
+                HeroThumbnail(
+                    navController,
+                    fontFamily,
+                    characterList[it],
+                    context
+                )
+            }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
         }
     }
+}
+
+@Composable
+fun HeroThumbnail(
+    navController: NavController,
+    fontFamily: FontFamily,
+    selectedHero: Character,
+    context: Context
+) {
+
+    Row(
+        modifier = Modifier
+            .width(400.dp)
+            .height(300.dp)
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clip(shape = RoundedCornerShape(10.dp))
+                .clickable(onClick = {
+                    navController.navigate(Screens.HeroScreen.route)
+                    }
+                ),
+            verticalArrangement = Arrangement.Top
+        ) {
+            val imageView = remember { ImageView(context) }
+
+            Picasso.get()
+                .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(510, 310)
+                .centerCrop()
+                .into(imageView)
+
+            AndroidView(
+                factory = { imageView },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)
+            )
+
+            Text(
+                text = selectedHero.name!!.uppercase(),
+                fontSize = 30.sp,
+                fontFamily = fontFamily,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(color = Color.Red)
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            )
+        }
+
+    }
+}
