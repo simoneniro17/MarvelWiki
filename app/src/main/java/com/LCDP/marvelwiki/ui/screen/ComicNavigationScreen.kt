@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.HeroModel
-
+//NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
 fun ComicNavigationScreen(navController: NavController) {
 
@@ -105,7 +105,7 @@ fun ComicNavigationScreen(navController: NavController) {
 }
 
 @Composable
-fun ComicSearchBar(fontFamily: FontFamily) {
+fun ComicSearchBar(fontFamily: FontFamily) {    //Crea la search bar per la ricerca dei fumetti
     var textFieldState by remember {
         mutableStateOf("")
     }
@@ -147,8 +147,9 @@ fun ComicSearchBar(fontFamily: FontFamily) {
     }
 } //fontFamily needed for texts inside the search bar
 
+
 @Composable
-fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) { //crea la barra superiore contenente il pulsante per tornare alla home.
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,7 +170,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
                 .background(Color.Green)
         ) {
             Image(
-                painterResource(R.drawable.back_arrow),
+                painterResource(R.drawable.back_arrow),   //bottone per tornare indietro
                 contentDescription = "HOME",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -195,7 +196,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 }
 
 @Composable
-fun ComicSeparator(fontFamily: FontFamily) {
+fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla searchbar contenente le spunte per filtrare la ricerca dei fumetti (preferiti e letti).
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -205,7 +206,7 @@ fun ComicSeparator(fontFamily: FontFamily) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val checkedState1 = remember { mutableStateOf(false) }
+        val checkedState1 = remember { mutableStateOf(false) }   //valore che filtra i fumetti preferiti
         Checkbox(
             checked = checkedState1.value,
             onCheckedChange = { checkedState1.value = it },
@@ -221,7 +222,7 @@ fun ComicSeparator(fontFamily: FontFamily) {
             fontFamily = fontFamily,
             color = Color.White
         )
-        val checkedState2 = remember { mutableStateOf(false) }
+        val checkedState2 = remember { mutableStateOf(false) }  //valore che filtra i fumetti letti.
         Checkbox(
             checked = checkedState2.value,
             onCheckedChange = { checkedState2.value = it },
