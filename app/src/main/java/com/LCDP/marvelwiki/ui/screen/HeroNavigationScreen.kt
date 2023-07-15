@@ -1,10 +1,13 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
@@ -14,10 +17,13 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +45,8 @@ import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun NavigationScreen(navController: NavController,context: Context) {
@@ -237,28 +245,70 @@ fun NavigationScreen(navController: NavController,context: Context) {
         }
     }
 
-    @Composable
-    fun AllHeroesList(
-        navController: NavController,
-        fontFamily: FontFamily,
-        characterList: List<Character>?,
+
+
+@Composable
+fun AllHeroesList(
+    navController: NavController,
+    fontFamily: FontFamily,
+    characterList: List<Character>?,
     context: Context
-    ) {
-        LazyColumn {
-            items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
+    ){
+        //listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
+        val listState = rememberLazyListState()
+        LazyColumn(state = listState) {
+            items(100) {item ->                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
                 if (characterList != null) {
                     HeroThumbnail(
                         navController,
                         fontFamily,
-                        characterList[it],
+                        characterList[item],
                         context
                     )
                 }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
             }
         }
-    }
+        //
+        val endOfListReached by remember{
+            //funzione che consente di calcolare in modo reattivo un valore derivato basato su uno o più valori di stato
+            derivedStateOf {
+                isScrollToEnd(listState)
+            }
+        }
+        //funzione di Jetpack Compose che consente di avviare un effetto asincrono all'interno di un composable
+        LaunchedEffect(isScrollToEnd(listState)){
+            //todo parte che da problemi
+            HeroThumbnail(
+                navController,
+                fontFamily,
+                characterList[item],
+                context
+            )
+        }
 
-    @Composable
+/* codice fede
+    LazyColumn() {
+            items(100) {item ->                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
+                if (characterList != null) {
+                    HeroThumbnail(
+                        navController,
+                        fontFamily,
+                        characterList[item],
+                        context
+                    )
+                }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
+            }
+        }
+ */
+}
+
+fun isScrollToEnd(scrollState: LazyListState): Boolean {
+    val lastVisibleIndex = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+    val totalCount = scrollState.layoutInfo.totalItemsCount
+    return lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 1
+}
+
+@Composable
     fun HeroThumbnail(
         navController: NavController,
         fontFamily: FontFamily,

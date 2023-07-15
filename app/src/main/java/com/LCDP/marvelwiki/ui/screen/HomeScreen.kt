@@ -36,7 +36,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import dev.chrisbanes.accompanist.picasso.PicassoImage
 
 
 //SCHERMATA HOME
