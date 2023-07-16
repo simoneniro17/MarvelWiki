@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 
+//COMPOSIZIONE TOTALE DELLA SCHERMATA DI APERTURA
 @Composable
 fun StartingScreen(navController: NavController) {
     Box(
