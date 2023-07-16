@@ -39,9 +39,13 @@ fun Navigation(context: Context) {
 
         // Controller associato alla schermata di navigazione dei fumetti
         composable(route = Screens.ComicNavigationScreen.route) {
-            ComicNavigationScreen(navController = navController)
+            ComicNavigationScreen(navController = navController, context = context)
         }
 
-        //DA AGGIUNGERE LE DESTINAZIONI NUOVE (ComicNavigationScreen, ComicFavoriteScreen, ComicScreen)
+        //Controller associato alla schermata del singolo fumetto
+        composable(route = Screens.ComicScreen.route) {
+            ComicScreen(navController = navController)
+        }
+
     }
 }
