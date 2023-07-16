@@ -126,7 +126,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
                .background(Color.Green)
        ) {
            Image(
-               painterResource(R.drawable.back_arrow),
+               painterResource(R.drawable.back_arrow),    //bottone per tornare indietro
                contentDescription = "HOME",
                contentScale = ContentScale.FillBounds,
                modifier = Modifier
@@ -152,7 +152,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
 }
 
 @Composable
-fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {
+fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
    Row {
        val scrollState = rememberScrollState()
        Column(
@@ -187,7 +187,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {
                horizontalArrangement = Arrangement.Center,
                verticalAlignment = Alignment.CenterVertically
            ) {
-               val checkedState = remember { mutableStateOf(false) }
+               val checkedState = remember { mutableStateOf(false) }  //La variabile checkedState tiene conto se l'ero è preferito o meno.
                Checkbox(
                    checked = checkedState.value,
                    onCheckedChange = { checkedState.value = it },
