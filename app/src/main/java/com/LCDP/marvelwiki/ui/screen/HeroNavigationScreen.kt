@@ -306,14 +306,6 @@ fun AllHeroesList(
     }
 }
 
-
-
-fun isScrollToEnd(scrollState: LazyListState): Boolean {
-    val lastVisibleIndex = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-    val totalCount = scrollState.layoutInfo.totalItemsCount
-    return lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 1
-}
-
 @Composable
     fun HeroThumbnail(
         navController: NavController,

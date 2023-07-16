@@ -2,6 +2,7 @@ package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
 import android.media.Image
+import android.media.MediaPlayer
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.compose.foundation.*
