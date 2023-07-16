@@ -14,10 +14,23 @@ class MainActivity : ComponentActivity() {
     //APP LAUNCH
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.avengers_theme)
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
+
         setContent {
             val context = this
             Navigation(context)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
 
