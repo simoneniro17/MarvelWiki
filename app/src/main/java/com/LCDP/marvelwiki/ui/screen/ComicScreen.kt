@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel

@@ -4,9 +4,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-
 import com.LCDP.marvelwiki.ui.screen.Navigation
-import java.util.Random
 
 class MainActivity : ComponentActivity() {
 
