@@ -137,7 +137,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
                         shape = CircleShape
                     )
                     .clip(shape = CircleShape)
-                    .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
+                    .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) })
             )
         }
 
@@ -188,7 +188,7 @@ fun ComicCard(fontFamily: FontFamily, selectedHero: HeroModel) {  //Crea la list
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è rispettivamente uno dei preferiti e se è stato letto o meno.
+                val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è, rispettivamente, uno dei preferiti e se è stato letto o meno.
                 Checkbox(                                                      //Il resto del codice serve solo per la rappresentazione grafica dei checbox su cui clickare per mettere la spunta.
                     checked = checkedState1.value,
                     onCheckedChange = { checkedState1.value = it },
