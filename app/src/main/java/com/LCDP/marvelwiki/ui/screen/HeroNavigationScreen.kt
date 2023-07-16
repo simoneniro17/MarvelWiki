@@ -45,8 +45,11 @@ import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun NavigationScreen(navController: NavController,context: Context) {
@@ -247,60 +250,63 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
 
 
+
 @Composable
 fun AllHeroesList(
     navController: NavController,
     fontFamily: FontFamily,
     characterList: List<Character>?,
     context: Context
-    ){
-        //listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
-        val listState = rememberLazyListState()
-        LazyColumn(state = listState) {
-            items(100) {item ->                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-                if (characterList != null) {
-                    HeroThumbnail(
-                        navController,
-                        fontFamily,
-                        characterList[item],
-                        context
-                    )
-                }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
-            }
-        }
-        //
-        val endOfListReached by remember{
-            //funzione che consente di calcolare in modo reattivo un valore derivato basato su uno o più valori di stato
-            derivedStateOf {
-                isScrollToEnd(listState)
-            }
-        }
-        //funzione di Jetpack Compose che consente di avviare un effetto asincrono all'interno di un composable
-        LaunchedEffect(isScrollToEnd(listState)){
-            //todo parte che da problemi
-            HeroThumbnail(
-                navController,
-                fontFamily,
-                characterList[item],
-                context
-            )
-        }
+) {
+    // listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
+    val listState = rememberLazyListState()
 
-/* codice fede
-    LazyColumn() {
-            items(100) {item ->                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-                if (characterList != null) {
-                    HeroThumbnail(
-                        navController,
-                        fontFamily,
-                        characterList[item],
-                        context
-                    )
-                }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
+    //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
+    //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
+    LaunchedEffect(Unit) {
+
+        //snapshotFlow { listState.layoutInfo.visibleItemsInfo } viene utilizzato per creare un flusso di snapshot basato sulle informazioni
+        //sugli elementi visibili ottenute da listState.layoutInfo.visibleItemsInfo.
+        //Questo flusso emette un nuovo valore ogni volta che le informazioni sugli elementi visibili cambiano
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo }
+            //.map lo utilizziamo per trasformare ogni valore emesso dal flusso nel valore booleano isAtEnd che indica che lo scorrimento è alla fine della lista
+            //controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
+            //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
+            //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
+            .map { visibleItemsInfo ->
+                val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
+                val totalCount = listState.layoutInfo.totalItemsCount
+                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 2
+                isAtEnd
+            }
+            //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
+            //solo valori diversi consecutivi
+            .distinctUntilChanged()
+            //raccoglie i valori emessi dal flusso, quando endOfListReached diventa true eseguiamo la if
+            .collect { endOfListReached ->
+                if (endOfListReached) {
+                    //todo
+
+
+                }
+            }
+    }
+
+    LazyColumn(state = listState) {
+        items(100) { index ->
+            if (characterList != null) {
+                HeroThumbnail(
+                    navController,
+                    fontFamily,
+                    characterList[index],
+                    context
+                )
             }
         }
- */
+    }
 }
+
+
 
 fun isScrollToEnd(scrollState: LazyListState): Boolean {
     val lastVisibleIndex = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
