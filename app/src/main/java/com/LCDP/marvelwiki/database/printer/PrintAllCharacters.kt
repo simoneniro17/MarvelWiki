@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.printer
+package com.LCDP.marvelwiki.database.printer
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,15 +14,14 @@ import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.LCDP.marvelwiki.usefulStuff.Resource
 
-
+/*
 @Composable
-fun retrieveCharacterList(): List<Character>? {
+fun loadCharacterList(offset:Int = 0): List<Character>? {
 
     val charactersRepository = CharactersRepository()
     val charactersViewModel: CharactersViewModel = viewModel(
-        factory = CharactersViewModelFactory(charactersRepository)
+        factory = CharactersViewModelFactory(charactersRepository, offset)
     )
-
     // Osserviamo le modifiche della proprietà 'characters' del 'charactersViewModel'
     val characters: Resource<CharacterResponse> by charactersViewModel.characters.observeAsState(
         Resource.Loading()
@@ -39,13 +38,6 @@ fun retrieveCharacterList(): List<Character>? {
             // Istanziamo la lista dei personaggi
             val characterList =
                 characterResponse?.characterData?.results
-
-            // Se la lista non è vuota, vengono richiesti ulteriori personaggi
-            if (characterList != null) {
-                if (characterList.isNotEmpty()) {
-                    charactersViewModel.loadMoreCharacters()
-                }
-            }
             return characterList
         }
         is Resource.Error -> {
@@ -56,4 +48,7 @@ fun retrieveCharacterList(): List<Character>? {
     }
 return null
 }
+
+ */
+
 

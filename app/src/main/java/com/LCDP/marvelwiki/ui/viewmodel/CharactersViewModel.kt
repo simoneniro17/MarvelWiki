@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,49 +10,29 @@ import com.LCDP.marvelwiki.usefulStuff.Constant
 import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import com.LCDP.marvelwiki.data.model.Character
 
-// Classe che estende la classe ViewModel
-class CharactersViewModel(val charactersRepository: CharactersRepository):ViewModel(){
+//In questa classe chiamiamo tutti i metodi relativi alla pi dei characters
+class CharactersViewModel(private val charactersRepository: CharactersRepository) : ViewModel() {
+    val _characterList = mutableStateListOf<Character>()                                            //è una mutable list, quando la lista viene modificata, Compose rileva i cambiamenti e aggiorna automaticamente l'interfaccia utente.
+    val characterList: List<Character> get() = _characterList                                       //prendiamo i dati dalla lista come lista immutabile
 
-    // 'MutableLiveData' è una classe fornita da Compose che può essere osservata per il cambiamento dei dati
-    val characters: MutableLiveData<Resource<CharacterResponse>> = MutableLiveData()
+    private var offset = 0                                                                          //offset per comunicare alla api da quale punto deve iniziare a prendere gli eroi
+    fun loadCharacterList() {                                                                       //carica la lista di personaggi 100 alla volta
+        viewModelScope.launch {
+            try {
+                val charactersResponse = charactersRepository.getChar_api(offset)                   //viene fatta una chiamata alla api specificando l'offset
+                val characters = charactersResponse.body()?.characterData?.results                  //prendo il corpo della  risposta che contiene i dati
 
-    var currentOffset: Int = 0
-
-    // Blocco eseguito alla creazione dell'istanza della classe
-    init {
-        getCharacters()
-    }
-
-    // Metodo per ottenere i dati dei personaggi
-    // viewModelScope.launch esegue il blocco in modo asincrono
-    // Tramite postValue, si specifica che i dati sono in stato di loading
-    // getChar_api() viene utilizzato per ottenere i dati dei personaggi
-    fun getCharacters() = viewModelScope.launch {
-        characters.postValue(Resource.Loading())
-        val response = charactersRepository.getChar_api(offset = currentOffset)
-
-        // Passiamo il risultato ad 'handleResponse', che gestirà la risposta
-        characters.postValue(handleResponse(response))
-    }
-
-    // Funzione per ottenere i dati dei personaggi successivi oltre a quelli già caricati
-    fun loadMoreCharacters() {
-        // Viene incrementato l'offset di una quantità pari al numero di personaggi caricati ogni volta
-        currentOffset += Constant.limit
-        getCharacters()
-    }
-
-    // Funzione che si occupa di gestire le risposte ricevute dalle API
-    private fun handleResponse(responses: Response<CharacterResponse>): Resource<CharacterResponse>{
-
-        // Se la risposta è positiva, viene estratto il corpo della risposta e restituito in un oggetto Resource.Success
-        if (responses.isSuccessful) {
-            responses.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                if (characters != null) {
+                    _characterList.addAll(characters.toMutableList())                               //aggiungo alla mutable list gli altri personaggi appena caricati. È importante notare il cast della lista immutabile appena presa
+                                                                                                    // ad una mutabile per potergli inserire i dati
+                    offset += characters.size                                                       //aggiorno l'offset
+                }
+            } catch (e: Exception) {
+                // Gestisco eventuali errori durante il caricamento
+                println("Errore durante il caricamento dei personaggi: ${e.message}")
             }
         }
-        // Se la risposta è negativa, si restituisce il messaggio di errore ricevuto nella risposta
-        return Resource.Error(responses.message())
     }
 }

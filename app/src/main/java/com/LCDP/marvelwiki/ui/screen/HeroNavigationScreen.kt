@@ -37,11 +37,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.printer.retrieveCharacterList
+import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -56,6 +60,12 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
     //Setup del font
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
+
+    val charactersRepository = CharactersRepository()               //creo la repository
+    val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
+        factory = CharactersViewModelFactory(charactersRepository)
+    )
+
 /*
     //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
     val hulk = HeroModel(
@@ -122,7 +132,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             SearchBar(marvelFont)
             Separator(marvelFont)
-            AllHeroesList(navController, marvelFont, retrieveCharacterList(), context = context)
+            AllHeroesList(navController, marvelFont,context, charactersViewModel)
         }
     }
 }
@@ -255,11 +265,15 @@ fun NavigationScreen(navController: NavController,context: Context) {
 fun AllHeroesList(
     navController: NavController,
     fontFamily: FontFamily,
-    characterList: List<Character>?,
-    context: Context
+    context: Context,
+    charactersViewModel: CharactersViewModel
+
 ) {
     // listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
     val listState = rememberLazyListState()
+
+    charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
+    val characterList = charactersViewModel.characterList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
     //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
     //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
@@ -276,7 +290,7 @@ fun AllHeroesList(
             .map { visibleItemsInfo ->
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
                 val totalCount = listState.layoutInfo.totalItemsCount
-                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 2
+                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 20
                 isAtEnd
             }
             //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
@@ -285,23 +299,19 @@ fun AllHeroesList(
             //raccoglie i valori emessi dal flusso, quando endOfListReached diventa true eseguiamo la if
             .collect { endOfListReached ->
                 if (endOfListReached) {
-                    //todo
-
-
+                    charactersViewModel.loadCharacterList()                         //richiama dal viewModel il metodo che richiama la api per caricare nuovi personaggi
                 }
             }
     }
 
-    LazyColumn(state = listState) {
-        items(100) { index ->
-            if (characterList != null) {
-                HeroThumbnail(
-                    navController,
-                    fontFamily,
-                    characterList[index],
-                    context
-                )
-            }
+    LazyColumn(state = listState) {                                  //ora carichiamo gli elementi della lista
+        items(characterList.size) { index ->
+            HeroThumbnail(
+                navController,
+                fontFamily,
+                characterList[index],
+                context
+            )
         }
     }
 }

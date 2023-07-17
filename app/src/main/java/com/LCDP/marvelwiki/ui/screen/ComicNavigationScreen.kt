@@ -35,7 +35,6 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -45,6 +44,7 @@ import com.squareup.picasso.Picasso
 fun ComicNavigationScreen(navController: NavController, context : Context) {
 
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
+
 
     //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
     /*val hulk = HeroModel(
@@ -109,7 +109,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
             ComicSearchBar(marvelFont)
             ComicSeparator(marvelFont)
             //AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)
-            AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
+
 
         }
     }
