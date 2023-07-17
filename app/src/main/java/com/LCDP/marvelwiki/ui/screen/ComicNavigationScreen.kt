@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -45,46 +46,6 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
 
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
-
-    //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    /*val hulk = HeroModel(
-        1,
-        "hulk",
-        R.drawable.hulk,
-        "Robert Bruce Banner",
-        "Stan Lee",
-        "1962",
-        "The incredible hulk N.1",
-        "...",
-        "..."
-    )
-    val spiderman = HeroModel(
-        2,
-        "spider man",
-        R.drawable.spiderman,
-        "Peter Parker",
-        "Stan Lee",
-        "1962",
-        "The Amazing Spiderman",
-        "...",
-        "..."
-    )
-    val ironman = HeroModel(
-        3,
-        "Iron Man",
-        R.drawable.ironman,
-        "Tony Stark",
-        "stan lee",
-        "1962",
-        "Tales of suspance",
-        "..",
-        "..."
-    )
-    val comicList = ArrayList<HeroModel>(10000)
-    comicList.add(hulk)
-    comicList.add(spiderman)
-    comicList.add(ironman)*/
-
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -92,7 +53,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
     ) {
 
         Image(
-            painter = painterResource(R.drawable.background),
+            painter = painterResource(R.drawable.background_tamarro),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
@@ -108,8 +69,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             ComicSearchBar(marvelFont)
             ComicSeparator(marvelFont)
-            //AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)
-
+            AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
 
         }
     }
@@ -148,7 +108,7 @@ fun ComicSearchBar(fontFamily: FontFamily) {    //Crea la search bar per la rice
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Black,
                 focusedIndicatorColor = Color.Red,
-                leadingIconColor = Color.Black,
+                leadingIconColor = Color.White,
                 cursorColor = Color.Red,
                 textColor = Color.White
             ),

@@ -113,7 +113,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
     ) {
 
         Image(
-            painter = painterResource(R.drawable.background),
+            painter = painterResource(R.drawable.background_tamarro),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
@@ -217,7 +217,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 colors = TextFieldDefaults.textFieldColors(
                     unfocusedIndicatorColor = Color.Black,
                     focusedIndicatorColor = Color.Red,
-                    leadingIconColor = Color.Black,
+                    leadingIconColor = Color.White,
                     cursorColor = Color.Red,
                     textColor = Color.White
                 ),
