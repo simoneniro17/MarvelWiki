@@ -51,7 +51,7 @@ fun HomeScreen(navController: NavController, context: Context) {
             .fillMaxSize()
     ) {
         Image(
-            painter = painterResource(R.drawable.background),
+            painter = painterResource(R.drawable.background_tamarro),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
@@ -328,7 +328,7 @@ fun UnclickableImageCard(
             .fillMaxSize()
             .padding(10.dp)
             .border(
-                border = BorderStroke(width = 2.dp, Color.Black),
+                border = BorderStroke(width = 1.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(shape = RoundedCornerShape(10.dp))

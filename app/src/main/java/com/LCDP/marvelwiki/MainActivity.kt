@@ -9,7 +9,7 @@ import com.LCDP.marvelwiki.ui.screen.Navigation
 class MainActivity : ComponentActivity() {
 
     //Inizializzazione del media player per riprodurre musica
-    var mediaPlayer : MediaPlayer?= null
+    private var mediaPlayer : MediaPlayer?= null
 
     //APP LAUNCH
     override fun onCreate(savedInstanceState: Bundle?) {
