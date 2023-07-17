@@ -1,9 +1,12 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.content.Context
+import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
@@ -27,17 +30,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
+import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.printer.retrieveCharacterList
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 
+//NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
-fun ComicNavigationScreen(navController: NavController) {
+fun ComicNavigationScreen(navController: NavController, context : Context) {
 
     val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
     //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    val hulk = HeroModel(
+    /*val hulk = HeroModel(
         1,
         "hulk",
         R.drawable.hulk,
@@ -70,10 +80,10 @@ fun ComicNavigationScreen(navController: NavController) {
         "..",
         "..."
     )
-    val heroList = ArrayList<HeroModel>(10000)
-    heroList.add(hulk)
-    heroList.add(spiderman)
-    heroList.add(ironman)
+    val comicList = ArrayList<HeroModel>(10000)
+    comicList.add(hulk)
+    comicList.add(spiderman)
+    comicList.add(ironman)*/
 
     Box(
         modifier = Modifier
@@ -98,14 +108,15 @@ fun ComicNavigationScreen(navController: NavController) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             ComicSearchBar(marvelFont)
             ComicSeparator(marvelFont)
-            //AllComicsList(navController, marvelFont, heroList)
+            //AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)
+            AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
 
         }
     }
 }
 
 @Composable
-fun ComicSearchBar(fontFamily: FontFamily) {
+fun ComicSearchBar(fontFamily: FontFamily) {    //Crea la search bar per la ricerca dei fumetti
     var textFieldState by remember {
         mutableStateOf("")
     }
@@ -147,8 +158,9 @@ fun ComicSearchBar(fontFamily: FontFamily) {
     }
 } //fontFamily needed for texts inside the search bar
 
+
 @Composable
-fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) { //crea la barra superiore contenente il pulsante per tornare alla home.
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,7 +181,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
                 .background(Color.Green)
         ) {
             Image(
-                painterResource(R.drawable.back_arrow),
+                painterResource(R.drawable.back_arrow),   //bottone per tornare indietro
                 contentDescription = "HOME",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -195,7 +207,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 }
 
 @Composable
-fun ComicSeparator(fontFamily: FontFamily) {
+fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla searchbar contenente le spunte per filtrare la ricerca dei fumetti (preferiti e letti).
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -205,7 +217,7 @@ fun ComicSeparator(fontFamily: FontFamily) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val checkedState1 = remember { mutableStateOf(false) }
+        val checkedState1 = remember { mutableStateOf(false) }   //valore che filtra i fumetti preferiti
         Checkbox(
             checked = checkedState1.value,
             onCheckedChange = { checkedState1.value = it },
@@ -221,7 +233,7 @@ fun ComicSeparator(fontFamily: FontFamily) {
             fontFamily = fontFamily,
             color = Color.White
         )
-        val checkedState2 = remember { mutableStateOf(false) }
+        val checkedState2 = remember { mutableStateOf(false) }  //valore che filtra i fumetti letti.
         Checkbox(
             checked = checkedState2.value,
             onCheckedChange = { checkedState2.value = it },
@@ -240,16 +252,88 @@ fun ComicSeparator(fontFamily: FontFamily) {
     }
 }
 
-/*@Composable
-fun AllComicsList(navController: NavController, fontFamily: FontFamily, heroList: List<HeroModel>) {
+@Composable
+fun AllComicsList(                                 //Ho usato la lo stesso metodo per la lista degli eroi solo per testare il ComicScreen. DA MODIFICARE.
+    navController: NavController,
+    fontFamily: FontFamily,
+    characterList: List<Character>?,
+    context: Context
+) {
     LazyColumn {
-        items(3) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-            HeroThumbnail(
-                navController,
-                fontFamily,
-                heroList[it]
-            )      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
+        items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
+            if (characterList != null) {
+                ComicThumbnail(
+                    navController,
+                    fontFamily,
+                    characterList[it],
+                    context
+                )
+            }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
         }
     }
 }
- */
+
+@Composable
+fun ComicThumbnail(
+    navController: NavController,
+    fontFamily: FontFamily,
+    selectedHero: Character,
+    context: Context
+) {
+
+    Row(
+        modifier = Modifier
+            .width(400.dp)
+            .height(300.dp)
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clip(shape = RoundedCornerShape(10.dp))
+                .clickable(onClick = {
+                    navController.navigate(Screens.ComicScreen.route)
+                }
+                ),
+            verticalArrangement = Arrangement.Top
+        ) {
+            val imageView = remember { ImageView(context) }
+
+            Picasso.get()
+                .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(510, 310)
+                .centerCrop()
+                .into(imageView)
+
+            AndroidView(
+                factory = { imageView },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)
+            )
+
+            Text(
+                text = selectedHero.name!!.uppercase(),
+                fontSize = 30.sp,
+                fontFamily = fontFamily,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(color = Color.Red)
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            )
+        }
+
+    }
+}

@@ -1,8 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
-import android.media.Image
-import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -24,19 +22,15 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.printer.retrieveLatestComicId
 import com.LCDP.marvelwiki.printer.retrieveLatestComicPath
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import dev.chrisbanes.accompanist.picasso.PicassoImage
 
 
 //SCHERMATA HOME
@@ -91,7 +85,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.Start,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -170,7 +164,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) }), // TODO
+                .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) }),
             verticalArrangement = Arrangement.Top
         ) {
 
@@ -292,8 +286,7 @@ fun ClickableImageCard(
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .clickable(onClick = { //TODO ti porta alla pagina specifica del fumetto
-            })
+            .clickable(onClick = { navController.navigate(route = Screens.ComicScreen.passId(1))}) //QUESTO e' DA MODIFICARE (DOBBIAMO RIVEDERE DELLE COSE SULLA NAVIGAZIONE
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)

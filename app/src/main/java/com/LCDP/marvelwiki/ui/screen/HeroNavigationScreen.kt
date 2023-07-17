@@ -1,10 +1,13 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
@@ -14,10 +17,13 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +45,11 @@ import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun NavigationScreen(navController: NavController,context: Context) {
@@ -110,7 +121,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 marvelFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             SearchBar(marvelFont)
-            //FavoriteFilterButton(marvelFont, false)
             Separator(marvelFont)
             AllHeroesList(navController, marvelFont, retrieveCharacterList(), context = context)
         }
@@ -208,28 +218,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
     } //fontFamily needed for texts inside the search bar
 
     @Composable
-    fun FavoriteFilterButton(fontFamily: FontFamily, clicked: Boolean) {
-
-        val currentColor: Color
-        if (clicked) {
-            currentColor = Color.Red
-        } else {
-            currentColor = Color.LightGray
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp)
-                .background(color = currentColor)
-                .border(border = BorderStroke(1.dp, Color.Black))
-                .clickable(onClick = { !clicked })
-        ) {
-
-        }
-    }
-
-    @Composable
     fun Separator(fontFamily: FontFamily) {
         Row(
             modifier = Modifier
@@ -260,39 +248,76 @@ fun NavigationScreen(navController: NavController,context: Context) {
         }
     }
 
-    @Composable
-    fun AllHeroesList(
-        navController: NavController,
-        fontFamily: FontFamily,
-        characterList: List<Character>?,
+
+
+
+@Composable
+fun AllHeroesList(
+    navController: NavController,
+    fontFamily: FontFamily,
+    characterList: List<Character>?,
     context: Context
-    ) {
-        LazyColumn {
-            items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-                if (characterList != null) {
-                    HeroThumbnail(
-                        navController,
-                        fontFamily,
-                        characterList[it],
-                        context
-                    )
-                }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
+) {
+    // listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
+    val listState = rememberLazyListState()
+
+    //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
+    //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
+    LaunchedEffect(Unit) {
+
+        //snapshotFlow { listState.layoutInfo.visibleItemsInfo } viene utilizzato per creare un flusso di snapshot basato sulle informazioni
+        //sugli elementi visibili ottenute da listState.layoutInfo.visibleItemsInfo.
+        //Questo flusso emette un nuovo valore ogni volta che le informazioni sugli elementi visibili cambiano
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo }
+            //.map lo utilizziamo per trasformare ogni valore emesso dal flusso nel valore booleano isAtEnd che indica che lo scorrimento è alla fine della lista
+            //controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
+            //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
+            //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
+            .map { visibleItemsInfo ->
+                val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
+                val totalCount = listState.layoutInfo.totalItemsCount
+                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 2
+                isAtEnd
+            }
+            //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
+            //solo valori diversi consecutivi
+            .distinctUntilChanged()
+            //raccoglie i valori emessi dal flusso, quando endOfListReached diventa true eseguiamo la if
+            .collect { endOfListReached ->
+                if (endOfListReached) {
+                    //todo
+
+
+                }
+            }
+    }
+
+    LazyColumn(state = listState) {
+        items(100) { index ->
+            if (characterList != null) {
+                HeroThumbnail(
+                    navController,
+                    fontFamily,
+                    characterList[index],
+                    context
+                )
             }
         }
     }
+}
 
-    @Composable
+@Composable
     fun HeroThumbnail(
         navController: NavController,
         fontFamily: FontFamily,
         selectedHero: Character,
-    context: Context
+        context: Context
     ) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(350.dp)
+                .width(400.dp)
+                .height(300.dp)
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
@@ -300,8 +325,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.9f)
+                    .fillMaxSize()
                     .border(
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                         shape = RoundedCornerShape(10.dp)
@@ -316,30 +340,30 @@ fun NavigationScreen(navController: NavController,context: Context) {
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(300, 300)
+                    .resize(510, 310)
                     .centerCrop()
                     .into(imageView)
 
                 AndroidView(
                     factory = { imageView },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.8f)
                 )
 
-                selectedHero.name?.let {
-                    Text(
-                        text = it.uppercase(),
-                        fontSize = 30.sp,
-                        fontFamily = fontFamily,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .background(color = Color.Red)
-                            .height(50.dp)
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                    )
-                }
-
+                Text(
+                    text = selectedHero.name!!.uppercase(),
+                    fontSize = 30.sp,
+                    fontFamily = fontFamily,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .background(color = Color.Red)
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
+                )
             }
+
         }
     }
