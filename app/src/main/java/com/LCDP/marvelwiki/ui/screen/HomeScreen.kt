@@ -42,7 +42,7 @@ fun HomeScreen(navController: NavController, context: Context) {
     // centrata nello schermo. Le TextChip sono facilmente riusabili per aggiungere serie di informazioni su un personaggio.
 
     //Setup del font
-    val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
+    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Normal))
 
     //CREAZIONE DELLA SCHERMATA INTERA
     Box(
@@ -64,12 +64,12 @@ fun HomeScreen(navController: NavController, context: Context) {
                 .background(Color.Transparent)
                 .fillMaxSize()
         ) {
-            HomeScreenUpperBar(marvelFont)                                               //Setup of the Layout Bar displaying Home
-            NavigationButtons(navController, marvelFont)
-            LatestComicBanner(marvelFont) //Setup of the "DAILY HERO" banner - mid screen
+            HomeScreenUpperBar(currentFont)                                               //Setup of the Layout Bar displaying Home
+            NavigationButtons(navController, currentFont)
+            LatestComicBanner(currentFont) //Setup of the "DAILY HERO" banner - mid screen
             LatestComicCard(
                 navController,
-                marvelFont,
+                currentFont,
                 context
             )  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
         }
@@ -90,7 +90,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
     ) {
         Text(
             text = "home".uppercase(),
-            fontSize = 40.sp,
+            fontSize = 30.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -134,7 +134,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
 
             Text(
                 text = "HEROES".uppercase(),
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -182,7 +182,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
 
             Text(
                 text = "LIBRARY".uppercase(),
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -216,7 +216,7 @@ fun LatestComicBanner(fontFamily: FontFamily) {
             Text(
                 text = "LATEST COMIC",
                 color = Color.White,
-                fontSize = 40.sp,
+                fontSize = 30.sp,
                 fontFamily = fontFamily,
                 textAlign = TextAlign.Center
             )

@@ -68,8 +68,7 @@ fun HeroScreen(navController: NavController) {
    )
 
    //Setup del font
-   val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
-
+   val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
    Box(
        modifier = Modifier
@@ -92,10 +91,10 @@ fun HeroScreen(navController: NavController) {
 
            HeroScreenUpperBar(
                navController,
-               marvelFont
+               currentFont
            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
            HeroCard(
-               marvelFont,
+               currentFont,
                hulk
            )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
        }
@@ -112,8 +111,8 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
            .height(60.dp)
            .background(Color.Red)
            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-           .padding(horizontal = 30.dp),
-       horizontalArrangement = Arrangement.SpaceBetween,
+           .padding(horizontal = 20.dp),
+       horizontalArrangement = Arrangement.spacedBy(110.dp),
        verticalAlignment = Alignment.CenterVertically
    ) {
 
