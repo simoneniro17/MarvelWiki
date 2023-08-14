@@ -3,6 +3,7 @@ package com.LCDP.marvelwiki.ui.screen
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,7 +47,10 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -56,46 +60,43 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
-/*
-    //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    val hulk = HeroModel(
-        1,
-        "hulk",
-        R.drawable.hulk,
-        "Robert Bruce Banner",
-        "Stan Lee",
-        "1962",
-        "The incredible hulk N.1",
-        "...",
-        "..."
-    )
-    val spiderman = HeroModel(
-        2,
-        "spider man",
-        R.drawable.spiderman,
-        "Peter Parker",
-        "Stan Lee",
-        "1962",
-        "The Amazing Spiderman",
-        "...",
-        "..."
-    )
-    val ironman = HeroModel(
-        3,
-        "Iron Man",
-        R.drawable.ironman,
-        "Tony Stark",
-        "stan lee",
-        "1962",
-        "Tales of suspance",
-        "..",
-        "..."
-    )
-    val heroList = ArrayList<HeroModel>(10000)
-    heroList.add(hulk)
-    heroList.add(spiderman)
-    heroList.add(ironman)
-*/
+
+    /*PROVVISORIO*/
+    /*
+    val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    val _heroes = MutableStateFlow(listOf<Character>())
+    val heroes = searchText
+        .combine(_heroes) {text, heroes ->
+            if (text.isBlank()) {
+                heroes
+            } else {
+                heroes.filter{
+                    it.doesMatchSearchQuery(text)
+                }
+            }
+        }
+
+     */
+    /*
+    fun doesMatchSearchQuery(query: String) : Boolean {
+        val matchingCombinations = listOf(
+            "$name",
+            "${name.first()}"
+        )
+
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+    */
+
+    /*FINE PROVVISORIO*/
+
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -212,7 +213,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                     textColor = Color.White
                 ),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
         }
     } //fontFamily needed for texts inside the search bar
@@ -247,8 +248,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
             )
         }
     }
-
-
 
 
 @Composable
