@@ -56,15 +56,16 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun NavigationScreen(navController: NavController,context: Context) {
+fun NavigationScreen(navController: NavController, context: Context) {
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
     val charactersRepository = CharactersRepository()               //creo la repository
-    val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
-        factory = CharactersViewModelFactory(charactersRepository)
-    )
+    val charactersViewModel: CharactersViewModel =
+        viewModel(       //creo il viewModel dalla sua factory
+            factory = CharactersViewModelFactory(charactersRepository)
+        )
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -89,137 +90,136 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            AllHeroesList(navController, currentFont,context, charactersViewModel)
+            AllHeroesList(navController, currentFont, context, charactersViewModel)
             SearchBar(currentFont)
             Separator(currentFont)
         }
     }
 }
 
-    @Composable
-    fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(Color.Red)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-                    .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
-                    .clip(shape = CircleShape)
-                    .background(Color.Green)
-            ) {
-                Image(
-                    painterResource(R.drawable.back_arrow),
-                    contentDescription = "HOME",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = CircleShape
-                        )
-                        .clip(shape = CircleShape)
-                        .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
-                )
-            }
-
-            Text(
-                text = "HEROES".uppercase(),
-                fontSize = 30.sp,
-                color = Color.White,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center,
-            )
-
-        }
-    }
-
-    @Composable
-    fun SearchBar(fontFamily: FontFamily
-
+@Composable
+fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .background(Color.Red)
+            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(50.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        var textFieldState by remember {
-            mutableStateOf("")
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            OutlinedTextField(
-                value = textFieldState,
-                onValueChange = {CharactersViewModel::loadCharacterList},
-                label = {
-                    Text(
-                        text = "Search a character".uppercase(),
-                        color = Color.White,
-                        fontSize = 15.sp,
-                        fontFamily = fontFamily
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        painterResource(R.drawable.search_icon),
-                        contentDescription = "Search Icon",
-                        modifier = Modifier.size(30.dp, 30.dp)
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Black,
-                    focusedIndicatorColor = Color.Red,
-                    leadingIconColor = Color.White,
-                    cursorColor = Color.Red,
-                    textColor = Color.White
-                ),
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    } //fontFamily needed for texts inside the search bar
 
-    @Composable
-    fun Separator(fontFamily: FontFamily) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
                 .height(40.dp)
-                .background(color = Color.Red)
-                .border(border = BorderStroke(1.dp, Color.Black)),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+                .width(40.dp)
+                .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
+                .clip(shape = CircleShape)
+                .background(Color.Green)
         ) {
-            val checkedState = remember { mutableStateOf(false) }
-            Checkbox(
-                checked = checkedState.value,
-                onCheckedChange = { checkedState.value = it },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color.Black,
-                    uncheckedColor = Color.Black,
-                    //checkmarkColor = Color.Black
-                )
-            )
-
-            Text(
-                "Visualize only favorite heroes".uppercase(),
-                fontSize = 12.sp,
-                fontFamily = fontFamily,
-                color = Color.White
+            Image(
+                painterResource(R.drawable.back_arrow),
+                contentDescription = "HOME",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = CircleShape
+                    )
+                    .clip(shape = CircleShape)
+                    .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
             )
         }
+
+        Text(
+            text = "HEROES".uppercase(),
+            fontSize = 30.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
+        )
+
     }
+}
 
+@Composable
+fun SearchBar(
+    fontFamily: FontFamily
 
+) {
+    var textFieldState by remember {
+        mutableStateOf("")
+    }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        OutlinedTextField(
+            value = textFieldState,
+            onValueChange = { CharactersViewModel::loadCharacterList },
+            label = {
+                Text(
+                    text = "Search a character".uppercase(),
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = fontFamily
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painterResource(R.drawable.search_icon),
+                    contentDescription = "Search Icon",
+                    modifier = Modifier.size(30.dp, 30.dp)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Black,
+                focusedIndicatorColor = Color.Red,
+                leadingIconColor = Color.White,
+                cursorColor = Color.Red,
+                textColor = Color.White
+            ),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+} //fontFamily needed for texts inside the search bar
+
+@Composable
+fun Separator(fontFamily: FontFamily) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .background(color = Color.Red)
+            .border(border = BorderStroke(1.dp, Color.Black)),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val checkedState = remember { mutableStateOf(false) }
+        Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Black,
+                uncheckedColor = Color.Black,
+                //checkmarkColor = Color.Black
+            )
+        )
+
+        Text(
+            "Visualize only favorite heroes".uppercase(),
+            fontSize = 12.sp,
+            fontFamily = fontFamily,
+            color = Color.White
+        )
+    }
+}
 
 
 @Composable
@@ -234,7 +234,8 @@ fun AllHeroesList(
     val listState = rememberLazyListState()
 
     charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
-    val characterList = charactersViewModel.characterList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
+    val characterList =
+        charactersViewModel.characterList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
     //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
     //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
@@ -251,7 +252,8 @@ fun AllHeroesList(
             .map { visibleItemsInfo ->
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
                 val totalCount = listState.layoutInfo.totalItemsCount
-                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
+                val isAtEnd =
+                    lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
                 isAtEnd
             }
             //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
@@ -278,67 +280,68 @@ fun AllHeroesList(
 }
 
 @Composable
-    fun HeroThumbnail(
-        navController: NavController,
-        fontFamily: FontFamily,
-        selectedHero: Character,
-        context: Context
+fun HeroThumbnail(
+    navController: NavController,
+    fontFamily: FontFamily,
+    selectedHero: Character,
+    context: Context
+) {
+
+    Row(
+        modifier = Modifier
+            .width(400.dp)
+            .height(300.dp)
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
     ) {
 
-        Row(
+        Column(
             modifier = Modifier
-                .width(400.dp)
-                .height(300.dp)
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+                .fillMaxSize()
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clip(shape = RoundedCornerShape(10.dp))
+                .clickable(onClick = {
+                    //navController.currentBackStackEntry?.arguments?.putSerializable("selectedHero", selectedHero)
+                    navController.navigate(Screens.HeroScreen.route)
+                }
+                ),
+            verticalArrangement = Arrangement.Top
         ) {
+            val imageView = remember { ImageView(context) }
 
-            Column(
+            Picasso.get()
+                .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(510, 310)
+                .centerCrop()
+                .into(imageView)
+
+            AndroidView(
+                factory = { imageView },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black),
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clip(shape = RoundedCornerShape(10.dp))
-                    .clickable(onClick = {
-                        navController.navigate(Screens.HeroScreen.route)
-                    }
-                    ),
-                verticalArrangement = Arrangement.Top
-            ) {
-                val imageView = remember { ImageView(context) }
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)
+            )
 
-                Picasso.get()
-                    .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(510, 310)
-                    .centerCrop()
-                    .into(imageView)
-
-                AndroidView(
-                    factory = { imageView },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                )
-
-                Text(
-                    text = selectedHero.name!!.uppercase(),
-                    fontSize = 20.sp,
-                    fontFamily = fontFamily,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .background(color = Color.Red)
-                        .height(50.dp)
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
-                )
-            }
-
+            Text(
+                text = selectedHero.name!!.uppercase(),
+                fontSize = 20.sp,
+                fontFamily = fontFamily,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(color = Color.Red)
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            )
         }
+
     }
+}
