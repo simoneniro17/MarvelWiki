@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
+import com.LCDP.marvelwiki.printer.retrieveCharacterList
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -68,7 +69,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
             ComicSearchBar(marvelFont)
             ComicSeparator(marvelFont)
-            //AllComicsList(navController, marvelFont, context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
+            AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
 
         }
     }

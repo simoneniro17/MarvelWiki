@@ -128,11 +128,11 @@ fun NavigationScreen(navController: NavController,context: Context) {
         ) {
             NavigationScreenUpperBar(
                 navController,
-                marvelFont
+                currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            SearchBar(marvelFont)
-            Separator(marvelFont)
             AllHeroesList(navController, marvelFont,context, charactersViewModel)
+            SearchBar(currentFont)
+            Separator(currentFont)
         }
     }
 }
@@ -145,8 +145,8 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 .height(60.dp)
                 .background(Color.Red)
                 .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                .padding(horizontal = 30.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(50.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -175,7 +175,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Text(
                 text = "HEROES".uppercase(),
-                fontSize = 40.sp,
+                fontSize = 30.sp,
                 color = Color.White,
                 fontFamily = fontFamily,
                 textAlign = TextAlign.Center,
@@ -203,7 +203,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                     Text(
                         text = "Search a character".uppercase(),
                         color = Color.White,
-                        fontSize = 20.sp,
+                        fontSize = 15.sp,
                         fontFamily = fontFamily
                     )
                 },
@@ -251,7 +251,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Text(
                 "Visualize only favorite heroes".uppercase(),
-                fontSize = 20.sp,
+                fontSize = 12.sp,
                 fontFamily = fontFamily,
                 color = Color.White
             )
@@ -341,7 +341,10 @@ fun AllHeroesList(
                         shape = RoundedCornerShape(10.dp)
                     )
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .clickable(onClick = { navController.navigate(Screens.HeroScreen.route) }),
+                    .clickable(onClick = {
+                        navController.navigate(Screens.HeroScreen.route)
+                    }
+                    ),
                 verticalArrangement = Arrangement.Top
             ) {
                 val imageView = remember { ImageView(context) }
@@ -364,7 +367,7 @@ fun AllHeroesList(
 
                 Text(
                     text = selectedHero.name!!.uppercase(),
-                    fontSize = 30.sp,
+                    fontSize = 20.sp,
                     fontFamily = fontFamily,
                     color = Color.White,
                     textAlign = TextAlign.Center,
