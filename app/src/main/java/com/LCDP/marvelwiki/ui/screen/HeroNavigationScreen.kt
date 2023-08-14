@@ -3,7 +3,6 @@ package com.LCDP.marvelwiki.ui.screen
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,19 +37,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.printer.retrieveCharacterList
+import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -59,44 +59,53 @@ import kotlinx.coroutines.flow.map
 fun NavigationScreen(navController: NavController,context: Context) {
 
     //Setup del font
-    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
+    val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
-    /*PROVVISORIO*/
-    /*
-    val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
+    val charactersRepository = CharactersRepository()               //creo la repository
+    val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
+        factory = CharactersViewModelFactory(charactersRepository)
+    )
 
-    val _isSearching = MutableStateFlow(false)
-    val isSearching = _isSearching.asStateFlow()
-
-    val _heroes = MutableStateFlow(listOf<Character>())
-    val heroes = searchText
-        .combine(_heroes) {text, heroes ->
-            if (text.isBlank()) {
-                heroes
-            } else {
-                heroes.filter{
-                    it.doesMatchSearchQuery(text)
-                }
-            }
-        }
-
-     */
-    /*
-    fun doesMatchSearchQuery(query: String) : Boolean {
-        val matchingCombinations = listOf(
-            "$name",
-            "${name.first()}"
-        )
-
-        return matchingCombinations.any {
-            it.contains(query, ignoreCase = true)
-        }
-    }
-    */
-
-    /*FINE PROVVISORIO*/
-
+/*
+    //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
+    val hulk = HeroModel(
+        1,
+        "hulk",
+        R.drawable.hulk,
+        "Robert Bruce Banner",
+        "Stan Lee",
+        "1962",
+        "The incredible hulk N.1",
+        "...",
+        "..."
+    )
+    val spiderman = HeroModel(
+        2,
+        "spider man",
+        R.drawable.spiderman,
+        "Peter Parker",
+        "Stan Lee",
+        "1962",
+        "The Amazing Spiderman",
+        "...",
+        "..."
+    )
+    val ironman = HeroModel(
+        3,
+        "Iron Man",
+        R.drawable.ironman,
+        "Tony Stark",
+        "stan lee",
+        "1962",
+        "Tales of suspance",
+        "..",
+        "..."
+    )
+    val heroList = ArrayList<HeroModel>(10000)
+    heroList.add(hulk)
+    heroList.add(spiderman)
+    heroList.add(ironman)
+*/
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -121,9 +130,9 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
+            AllHeroesList(navController, marvelFont,context, charactersViewModel)
             SearchBar(currentFont)
             Separator(currentFont)
-            AllHeroesList(navController, currentFont, retrieveCharacterList(), context = context)
         }
     }
 }
@@ -213,7 +222,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                     textColor = Color.White
                 ),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     } //fontFamily needed for texts inside the search bar
@@ -250,15 +259,21 @@ fun NavigationScreen(navController: NavController,context: Context) {
     }
 
 
+
+
 @Composable
 fun AllHeroesList(
     navController: NavController,
     fontFamily: FontFamily,
-    characterList: List<Character>?,
-    context: Context
+    context: Context,
+    charactersViewModel: CharactersViewModel
+
 ) {
     // listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
     val listState = rememberLazyListState()
+
+    charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
+    val characterList = charactersViewModel.characterList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
     //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
     //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
@@ -275,7 +290,7 @@ fun AllHeroesList(
             .map { visibleItemsInfo ->
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
                 val totalCount = listState.layoutInfo.totalItemsCount
-                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 2
+                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
                 isAtEnd
             }
             //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
@@ -284,23 +299,19 @@ fun AllHeroesList(
             //raccoglie i valori emessi dal flusso, quando endOfListReached diventa true eseguiamo la if
             .collect { endOfListReached ->
                 if (endOfListReached) {
-                    //todo
-
-
+                    charactersViewModel.loadCharacterList()                         //richiama dal viewModel il metodo che richiama la api per caricare nuovi personaggi
                 }
             }
     }
 
-    LazyColumn(state = listState) {
-        items(100) { index ->
-            if (characterList != null) {
-                HeroThumbnail(
-                    navController,
-                    fontFamily,
-                    characterList[index],
-                    context
-                )
-            }
+    LazyColumn(state = listState) {                                  //ora carichiamo gli elementi della lista
+        items(characterList.size) { index ->
+            HeroThumbnail(
+                navController,
+                fontFamily,
+                characterList[index],
+                context
+            )
         }
     }
 }
@@ -340,6 +351,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)

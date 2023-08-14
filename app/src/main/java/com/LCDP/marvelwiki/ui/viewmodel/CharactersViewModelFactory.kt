@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
 
 class CharactersViewModelFactory(
-    val charactersRepository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
 ): ViewModelProvider.Factory {
 
     //Il metodo create viene sovrascritto dalla factory

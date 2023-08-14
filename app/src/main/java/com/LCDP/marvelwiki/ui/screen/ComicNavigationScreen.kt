@@ -44,7 +44,7 @@ import com.squareup.picasso.Picasso
 @Composable
 fun ComicNavigationScreen(navController: NavController, context : Context) {
 
-    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
+    val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
 
     Box(
         modifier = Modifier
@@ -65,11 +65,11 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
         ) {
             ComicNavigationScreenUpperBar(
                 navController,
-                currentFont
+                marvelFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            ComicSearchBar(currentFont)
-            ComicSeparator(currentFont)
-            AllComicsList(navController, currentFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
+            ComicSearchBar(marvelFont)
+            ComicSeparator(marvelFont)
+            AllComicsList(navController, marvelFont, retrieveCharacterList(), context = context)  //chiama la stessa funzione che genera la lista degli eroi per testare il ComicScreen. DA MODIFICARE.
 
         }
     }
@@ -94,7 +94,7 @@ fun ComicSearchBar(fontFamily: FontFamily) {    //Crea la search bar per la rice
                 Text(
                     text = "Search a comic".uppercase(),
                     color = Color.White,
-                    fontSize = 15.sp,
+                    fontSize = 20.sp,
                     fontFamily = fontFamily
                 )
             },
@@ -127,8 +127,8 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .height(60.dp)
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(50.dp),
+            .padding(horizontal = 30.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -157,7 +157,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 
         Text(
             text = "COMICS".uppercase(),
-            fontSize = 30.sp,
+            fontSize = 40.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -189,7 +189,7 @@ fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla s
 
         Text(
             "Favorite comics".uppercase(),
-            fontSize = 12.sp,
+            fontSize = 20.sp,
             fontFamily = fontFamily,
             color = Color.White
         )
@@ -205,7 +205,7 @@ fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla s
 
         Text(
             "Read comics".uppercase(),
-            fontSize = 12.sp,
+            fontSize = 20.sp,
             fontFamily = fontFamily,
             color = Color.White
         )
@@ -283,7 +283,7 @@ fun ComicThumbnail(
 
             Text(
                 text = selectedHero.name!!.uppercase(),
-                fontSize = 20.sp,
+                fontSize = 30.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
