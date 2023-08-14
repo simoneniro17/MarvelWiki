@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.database.printer
+package com.LCDP.marvelwiki.printer
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

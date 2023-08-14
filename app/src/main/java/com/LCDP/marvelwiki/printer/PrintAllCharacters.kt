@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.database.printer
+package com.LCDP.marvelwiki.printer
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

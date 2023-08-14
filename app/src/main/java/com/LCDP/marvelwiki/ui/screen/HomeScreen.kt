@@ -26,8 +26,8 @@ import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.NavController
 import androidx.navigation.navArgument
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.database.printer.retrieveLatestComicId
-import com.LCDP.marvelwiki.database.printer.retrieveLatestComicPath
+import com.LCDP.marvelwiki.printer.retrieveLatestComicId
+import com.LCDP.marvelwiki.printer.retrieveLatestComicPath
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso

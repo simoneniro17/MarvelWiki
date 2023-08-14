@@ -290,7 +290,7 @@ fun AllHeroesList(
             .map { visibleItemsInfo ->
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
                 val totalCount = listState.layoutInfo.totalItemsCount
-                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 20
+                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
                 isAtEnd
             }
             //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
@@ -348,6 +348,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)
