@@ -59,53 +59,12 @@ import kotlinx.coroutines.flow.map
 fun NavigationScreen(navController: NavController,context: Context) {
 
     //Setup del font
-    val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
+    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
     val charactersRepository = CharactersRepository()               //creo la repository
     val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
         factory = CharactersViewModelFactory(charactersRepository)
     )
-
-/*
-    //TESTING ELEMENTS (La lista è fittizia e contiene elementi provvisori e da eliminare. Volendo si può riusare la stessa lista che dovrà contenere TUTTI gli eroi dal database, in modo da sfruttare al meglio la lazy list che ho implementato)
-    val hulk = HeroModel(
-        1,
-        "hulk",
-        R.drawable.hulk,
-        "Robert Bruce Banner",
-        "Stan Lee",
-        "1962",
-        "The incredible hulk N.1",
-        "...",
-        "..."
-    )
-    val spiderman = HeroModel(
-        2,
-        "spider man",
-        R.drawable.spiderman,
-        "Peter Parker",
-        "Stan Lee",
-        "1962",
-        "The Amazing Spiderman",
-        "...",
-        "..."
-    )
-    val ironman = HeroModel(
-        3,
-        "Iron Man",
-        R.drawable.ironman,
-        "Tony Stark",
-        "stan lee",
-        "1962",
-        "Tales of suspance",
-        "..",
-        "..."
-    )
-    val heroList = ArrayList<HeroModel>(10000)
-    heroList.add(hulk)
-    heroList.add(spiderman)
-    heroList.add(ironman)
-*/
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -130,7 +89,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            AllHeroesList(navController, marvelFont,context, charactersViewModel)
+            AllHeroesList(navController, currentFont,context, charactersViewModel)
             SearchBar(currentFont)
             Separator(currentFont)
         }
@@ -185,7 +144,9 @@ fun NavigationScreen(navController: NavController,context: Context) {
     }
 
     @Composable
-    fun SearchBar(fontFamily: FontFamily) {
+    fun SearchBar(fontFamily: FontFamily
+
+    ) {
         var textFieldState by remember {
             mutableStateOf("")
         }
@@ -198,7 +159,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
         ) {
             OutlinedTextField(
                 value = textFieldState,
-                onValueChange = { textFieldState = it },
+                onValueChange = {CharactersViewModel::loadCharacterList},
                 label = {
                     Text(
                         text = "Search a character".uppercase(),
