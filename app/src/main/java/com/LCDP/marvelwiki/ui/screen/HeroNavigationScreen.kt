@@ -47,6 +47,7 @@ import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
+import com.LCDP.marvelwiki.usefulStuff.Debouncer
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -155,7 +156,7 @@ fun SearchBar(
     onSearchQueryChange: (String) -> Unit
 ) {
     var textFieldState by remember { mutableStateOf("") }
-
+    val debouncer = remember { Debouncer(300)}
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -167,7 +168,7 @@ fun SearchBar(
             value = textFieldState,
             onValueChange = {
                 textFieldState = it
-                onSearchQueryChange(it) // Call the callback with the new query
+                debouncer.debounce {onSearchQueryChange(it)}
             },
             label = {
                 Text(
