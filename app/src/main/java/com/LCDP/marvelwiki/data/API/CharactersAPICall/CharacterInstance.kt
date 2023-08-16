@@ -49,4 +49,9 @@ object CharacterInstance {
         // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'CharacterAPI'
         retrofit.create(CharacterAPI::class.java)
     }
+
+    val charByName_api by lazy {
+        retrofit.create(CharacterByNameAPI::class.java)
+    }
+
 }
