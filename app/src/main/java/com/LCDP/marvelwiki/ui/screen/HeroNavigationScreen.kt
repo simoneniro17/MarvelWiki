@@ -90,9 +90,9 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            AllHeroesList(navController, currentFont, context, charactersViewModel)
             SearchBar(currentFont)
             Separator(currentFont)
+            AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
     }
 }
@@ -161,7 +161,7 @@ fun SearchBar(
     ) {
         OutlinedTextField(
             value = textFieldState,
-            onValueChange = { CharactersViewModel::loadCharacterList },
+            onValueChange = { textFieldState = it; CharactersViewModel::loadCharacterList },
             label = {
                 Text(
                     text = "Search a character".uppercase(),

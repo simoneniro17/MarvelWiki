@@ -112,7 +112,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
            .background(Color.Red)
            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
            .padding(horizontal = 20.dp),
-       horizontalArrangement = Arrangement.spacedBy(110.dp),
+       horizontalArrangement = Arrangement.spacedBy(80.dp),
        verticalAlignment = Alignment.CenterVertically
    ) {
 
@@ -140,8 +140,8 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
        }
 
        Text(
-           text = "Hulk".uppercase(),
-           fontSize = 40.sp,
+           text = "sample".uppercase(),
+           fontSize = 20.sp,
            color = Color.White,
            fontFamily = fontFamily,
            textAlign = TextAlign.Center,
