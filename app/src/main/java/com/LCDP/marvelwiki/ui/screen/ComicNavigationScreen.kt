@@ -34,8 +34,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
-import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.printer.retrieveLatestComicId
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -212,26 +210,7 @@ fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla s
     }
 }
 
-@Composable
-fun AllComicsList(                                 //Ho usato la lo stesso metodo per la lista degli eroi solo per testare il ComicScreen. DA MODIFICARE.
-    navController: NavController,
-    fontFamily: FontFamily,
-    characterList: List<Character>?,
-    context: Context
-) {
-    LazyColumn {
-        items(100) {                      //Il numero 3 è provvisorio e per testing, andrà sostituito col numero esatto di personaggi totali
-            if (characterList != null) {
-                ComicThumbnail(
-                    navController,
-                    fontFamily,
-                    characterList[it],
-                    context
-                )
-            }      //Questo metodo costruisce (per ogni entry [it] della lista) un' immagine cliccabile del personaggio che si vuole approfondire
-        }
-    }
-}
+
 
 @Composable
 fun ComicThumbnail(

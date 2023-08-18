@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface LatestComicAPI {
-    //isbn di prova: 978-1-302-94826-9
+
     @GET("comics")
     suspend fun getLatestComic(
         //Specifico le componenti dell'URL

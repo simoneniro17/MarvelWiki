@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavArgumentBuilder
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.navArgument
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.printer.retrieveLatestComicId
-import com.LCDP.marvelwiki.printer.retrieveLatestComicPath
+import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
+import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -44,6 +44,9 @@ fun HomeScreen(navController: NavController, context: Context) {
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Normal))
 
+    val comicsRepository = ComicsRepository()
+    val comicsViewModel: ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository = comicsRepository))
+    comicsViewModel.getLatestComic()
     //CREAZIONE DELLA SCHERMATA INTERA
     Box(
         modifier = Modifier
@@ -70,8 +73,13 @@ fun HomeScreen(navController: NavController, context: Context) {
             LatestComicCard(
                 navController,
                 currentFont,
-                context
-            )  // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
+                context,
+                comicsViewModel
+            )
+
+
+              // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
+
         }
     }
 }
@@ -229,7 +237,8 @@ fun LatestComicBanner(fontFamily: FontFamily) {
 fun LatestComicCard(
     navController: NavController,
     fontFamily: FontFamily,
-    context: Context
+    context: Context,
+    comicsViewModel: ComicsViewModel
 ) { //INSERIRE COMIC MODEL
     Row {
         Spacer(modifier = Modifier.height(30.dp))
@@ -250,8 +259,11 @@ fun LatestComicCard(
                     navController = navController,
                     contentDescription = "None",
                     modifier = Modifier.fillMaxSize(),
-                    context = context
+                    context = context,
+                    comicsViewModel = comicsViewModel
                 )
+
+
             }
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -278,15 +290,15 @@ fun ClickableImageCard(
     navController: NavController,
     contentDescription: String,
     modifier: Modifier,
-    context: Context
-    // SE VUOI RIPRISTINARE AGGIUNGI painter:Painter
+    context: Context,
+    comicsViewModel: ComicsViewModel
 ) {
-    val url =  retrieveLatestComicPath()
+
     Card(
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .clickable(onClick = { navController.navigate(route = Screens.ComicScreen.passId(1))}) //QUESTO e' DA MODIFICARE (DOBBIAMO RIVEDERE DELLE COSE SULLA NAVIGAZIONE
+            .clickable(onClick = { navController.navigate(route = Screens.ComicScreen.passId(1)) }) //QUESTO e' DA MODIFICARE (DOBBIAMO RIVEDERE DELLE COSE SULLA NAVIGAZIONE
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
@@ -301,12 +313,17 @@ fun ClickableImageCard(
             val imageView = remember { ImageView(context) }
 
             Picasso.get()
-                .load(url)
+                .load((comicsViewModel.comicList[0].thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(200, 300)
                 .centerCrop()
                 .into(imageView)
+
+
+
+
+
 
             AndroidView(
                 factory = { imageView },

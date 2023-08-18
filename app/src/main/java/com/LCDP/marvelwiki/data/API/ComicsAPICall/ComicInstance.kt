@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ComicInstanceByIsbn  {
+object ComicInstance {
     /*
         L'utilizzo della dicitura "by lazy" indica che l'inizializzazione della variabile "retrofit"
         viene ritardata fino al momento in cui viene effettivamente utilizzata, ottimizzando così
@@ -20,7 +20,7 @@ object ComicInstanceByIsbn  {
             Creiamo un oggetto per la registrazione delle richieste e delle risposte di rete.
             Viene impostato il livello di log su 'BODY', che registra tutti i dettagli sia dell'header,
             sia del body.
-        */
+         */
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -45,8 +45,21 @@ object ComicInstanceByIsbn  {
             .build()
     }
 
-    val comicByIsbn_API by lazy {
-        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'ComicAPIByIsbn'
+    val comicsByIsbn_api by lazy {
+        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'CharacterAPI'
         retrofit.create(ComicAPIByIsbn::class.java)
     }
+
+    val comicsByName_api by lazy {
+        retrofit.create(ComicAPIByName::class.java)
+    }
+
+    val latestComic_api by lazy {
+        retrofit.create(LatestComicAPI::class.java)
+    }
+
+    val latestComicByCharId_api by lazy {
+        retrofit.create(LatestComicAPIByCharId::class.java)
+    }
+
 }

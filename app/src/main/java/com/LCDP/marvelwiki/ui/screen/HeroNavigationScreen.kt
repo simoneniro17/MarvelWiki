@@ -45,8 +45,11 @@ import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.data.repository.ComicsRepository
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
+import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
+import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
 import com.LCDP.marvelwiki.usefulStuff.Debouncer
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
@@ -70,7 +73,6 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
     charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
     //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
-
 
     Box(
         modifier = Modifier
