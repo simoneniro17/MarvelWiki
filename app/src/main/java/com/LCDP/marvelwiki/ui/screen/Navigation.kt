@@ -47,11 +47,18 @@ fun Navigation(context: Context) {
 
         //Controller associato alla schermata del singolo fumetto
         //MODIFICHE TEMPORANEE PER PASSARE GLI ARGOMENTI (DA RIVEDERE)
-        composable(route = Screens.ComicScreen.route, arguments = listOf(navArgument("selected_comic_id") {
-            type = NavType.IntType
-        })) {
-            Log.d("Args", it.arguments?.getInt("selected_comic_id").toString())
-            ComicScreen(navController = navController)
+        composable(route = "comic_screen/{comicTitle}/{comicThumbnail}/{comicDescription}",
+           arguments = listOf(
+               navArgument("comicTitle") {type = NavType.StringType},
+               navArgument("comicThumbnail") {type = NavType.StringType},
+               navArgument("comicDescription") {type = NavType.StringType},
+           )
+        ) { entry ->
+            val comicTitle = entry.arguments?.getString("comicTitle") ?: ""
+            val comicThumbnail = entry.arguments?.getString("comicThumbnail") ?: ""
+            val comicDescription = entry.arguments?.getString("comicDescription") ?: ""
+
+            ComicScreen(navController, comicTitle, comicThumbnail, comicDescription)
         }
 
     }

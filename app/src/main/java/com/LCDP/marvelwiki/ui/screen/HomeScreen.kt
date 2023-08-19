@@ -298,7 +298,7 @@ fun ClickableImageCard(
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .clickable(onClick = { navController.navigate(route = Screens.ComicScreen.passId(1)) }) //QUESTO e' DA MODIFICARE (DOBBIAMO RIVEDERE DELLE COSE SULLA NAVIGAZIONE
+            .clickable(onClick = {/*TODO*/}) //navController.navigate(route = Screens.ComicScreen)
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)

@@ -54,20 +54,7 @@ import com.squareup.picasso.Picasso
 
 //NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
-fun ComicScreen(navController: NavController) {
-
-    //TESTING (personaggi provvisori (model non definitivo) da eliminare e usati per testing) (In questo caso ci sta Hulk e non un fumetto per semplicità, visto che ho copiato la scheda eroe).
-    val hulk = HeroModel(
-        1,
-        "hulk",
-        R.drawable.hulk,
-        "Robert Bruce Banner",
-        "Stan Lee",
-        "1962",
-        "The incredible hulk N.1",
-        "...",
-        "..."
-    )
+fun ComicScreen(navController: NavController, comicTitle : String, comicThumbnail : String, comicDescription : String) {
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -97,8 +84,7 @@ fun ComicScreen(navController: NavController) {
                 currentFont
             )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
             ComicCard(
-                currentFont,
-                hulk
+                currentFont
             )                          //Metodo riusabile che, se fornito di un model fumetto (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
         }
 
@@ -154,7 +140,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
 }
 
 @Composable
-fun ComicCard(fontFamily: FontFamily, selectedHero: HeroModel) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
+fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
     Row {
         val scrollState = rememberScrollState()
         Column(
@@ -174,7 +160,7 @@ fun ComicCard(fontFamily: FontFamily, selectedHero: HeroModel) {  //Crea la list
                 contentAlignment = Alignment.Center
             ) {
                 UnclickableImageCard(
-                    painterResource(selectedHero.heroPic),
+                    painterResource(R.drawable.holo_globe),
                     contentDescription = "none",
                     modifier = Modifier.fillMaxSize()
                 )

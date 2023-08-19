@@ -372,7 +372,10 @@ fun ComicThumbnail(
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
-                    navController.navigate(Screens.ComicScreen.route)
+                    val comicTitle = selectedComic.title
+                    val comicThumbnail = selectedComic.thumbnail
+                    val comicDescription = selectedComic.description
+                    navController.navigate("comic_screen/$comicTitle/$comicThumbnail/$comicDescription")
                 }
                 ),
             verticalArrangement = Arrangement.Top
