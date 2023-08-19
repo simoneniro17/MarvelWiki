@@ -374,8 +374,8 @@ fun ComicThumbnail(
                 .clickable(onClick = {
                     val comicTitle = selectedComic.title
                     val comicThumbnail = selectedComic.thumbnail
-                    val comicDescription = selectedComic.description
-                    navController.navigate("comic_screen/$comicTitle/$comicThumbnail/$comicDescription")
+                    val comicDescription = "ciao"
+                    navController.navigate(route ="${Screens.ComicScreen.route}/$comicTitle/$comicThumbnail/$comicDescription")
                 }
                 ),
             verticalArrangement = Arrangement.Top

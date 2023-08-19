@@ -54,7 +54,7 @@ import com.squareup.picasso.Picasso
 
 //NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
-fun ComicScreen(navController: NavController, comicTitle : String, comicThumbnail : String, comicDescription : String) {
+fun ComicScreen(navController: NavController, comicName : String, comicThumbnail : String, comicDescription : String) {
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -129,8 +129,8 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
         }
 
         Text(
-            text = "Hulk".uppercase(),
-            fontSize = 40.sp,
+            text = "Sample".uppercase(),
+            fontSize = 30.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -160,7 +160,7 @@ fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine d
                 contentAlignment = Alignment.Center
             ) {
                 UnclickableImageCard(
-                    painterResource(R.drawable.holo_globe),
+                    painterResource(R.drawable.sfondo_muro),
                     contentDescription = "none",
                     modifier = Modifier.fillMaxSize()
                 )
@@ -182,7 +182,6 @@ fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine d
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
-                        //checkmarkColor = Color.Black
                     )
                 )
 
@@ -200,7 +199,6 @@ fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine d
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
-                        //checkmarkColor = Color.Black
                     )
                 )
 

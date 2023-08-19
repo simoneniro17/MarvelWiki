@@ -46,8 +46,7 @@ fun Navigation(context: Context) {
         }
 
         //Controller associato alla schermata del singolo fumetto
-        //MODIFICHE TEMPORANEE PER PASSARE GLI ARGOMENTI (DA RIVEDERE)
-        composable(route = "comic_screen/{comicTitle}/{comicThumbnail}/{comicDescription}",
+        composable(route = Screens.ComicScreen.route + "/{comicTitle}/{comicThumbnail}/{comicDescription}",
            arguments = listOf(
                navArgument("comicTitle") {type = NavType.StringType},
                navArgument("comicThumbnail") {type = NavType.StringType},
