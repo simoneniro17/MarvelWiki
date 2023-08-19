@@ -74,6 +74,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
     charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
     //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
+
     Box(
         modifier = Modifier
             .background(Color.Transparent)

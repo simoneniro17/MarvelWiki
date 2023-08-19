@@ -74,5 +74,4 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
             }
         }
     }
-
 }

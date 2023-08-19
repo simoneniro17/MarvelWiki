@@ -312,13 +312,15 @@ fun ClickableImageCard(
         ) {
             val imageView = remember { ImageView(context) }
 
-            Picasso.get()
+            /*Picasso.get()
                 .load((comicsViewModel.comicList[0].thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(200, 300)
                 .centerCrop()
                 .into(imageView)
+
+             */
 
 
 
