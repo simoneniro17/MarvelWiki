@@ -54,8 +54,9 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository) : ViewMode
         }
     }
 
-    fun getComicsByIsbn(isbn: String) {
+    fun getComicsByIsbn(input: String) {
         _comicList.clear()
+        val isbn = input.substring(0,3) + "-" + input.substring(3,4) + "-" + input.substring(4,7) + "-" +input.substring(7,12) + "-" + input.substring(12)
         viewModelScope.launch {
             try {
                 val comicResponse =

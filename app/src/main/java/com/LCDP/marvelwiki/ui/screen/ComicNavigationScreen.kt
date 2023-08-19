@@ -83,8 +83,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
 
             //ComicSeparator(currentFont)
-            ComicByNameSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont)
-            ComicByIsbnSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont)
+            ComicSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont)
         }
     }
 }
@@ -111,7 +110,7 @@ fun ComicByIsbnSearchBar(
             },
             label = {
                 Text(
-                    text = "Inserisci l'Isbn del tuo comic".uppercase(),
+                    text = "Search comic by ISBN".uppercase(),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontFamily = fontFamily
@@ -139,26 +138,35 @@ fun ComicByIsbnSearchBar(
 }
 
 @Composable
-fun ComicByIsbnSearchScreen(
+fun ComicSearchScreen(
     navController: NavController,
     comicsViewModel: ComicsViewModel,
     fontFamily: FontFamily
 ) {
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQueryByName by remember { mutableStateOf("") }
+    var searchQueryByISBN by remember {mutableStateOf("")}
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        ComicByNameSearchBar(
+            fontFamily = fontFamily,
+            onSearchQueryChange = {
+                searchQueryByName = it
+                comicsViewModel.getComicByName(it)
+            }
+        )
+
         ComicByIsbnSearchBar(
             fontFamily = fontFamily,
             onSearchQueryChange = {
-                searchQuery = it // Update the search query
-                if(searchQuery.length == 13){
+                searchQueryByISBN = it // Update the search query
+                if(searchQueryByISBN.length == 13){
                     comicsViewModel.getComicsByIsbn(it)
                 }
             }
         )
-        if (searchQuery.isNotEmpty()) {
+        if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
             AllComicList(
                 navController = navController,
                 fontFamily = fontFamily,
@@ -194,7 +202,7 @@ fun ComicByNameSearchBar(
             },
             label = {
                 Text(
-                    text = "Search a comic".uppercase(),
+                    text = "Search comic by name".uppercase(),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontFamily = fontFamily
@@ -222,36 +230,6 @@ fun ComicByNameSearchBar(
 }
 
 @Composable
-fun ComicByNameSearchScreen(
-    navController: NavController,
-    comicsViewModel: ComicsViewModel,
-    fontFamily: FontFamily
-) {
-    var searchQuery by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        ComicByNameSearchBar(
-            fontFamily = fontFamily,
-            onSearchQueryChange = {
-                    searchQuery = it // Update the search query
-                    comicsViewModel.getComicByName(it)
-
-            }
-        )
-        if (searchQuery.isNotEmpty()) {
-            AllComicList(
-                navController = navController,
-                fontFamily = fontFamily,
-                context = LocalContext.current,
-                comicsViewModel = comicsViewModel
-            )
-        }
-    }
-}
-
-@Composable
 fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) { //crea la barra superiore contenente il pulsante per tornare alla home.
     Row(
         modifier = Modifier
@@ -259,8 +237,8 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .height(60.dp)
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-            .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(50.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -289,7 +267,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 
         Text(
             text = "COMICS".uppercase(),
-            fontSize = 40.sp,
+            fontSize = 30.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -418,7 +396,7 @@ fun ComicThumbnail(
 
             Text(
                 text = selectedComic.title!!.uppercase(),
-                fontSize = 30.sp,
+                fontSize = 20.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
                 textAlign = TextAlign.Center,
