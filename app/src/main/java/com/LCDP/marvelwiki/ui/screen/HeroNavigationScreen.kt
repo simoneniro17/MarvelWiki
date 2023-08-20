@@ -98,7 +98,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            Separator(fontFamily = currentFont)
+            //Separator(fontFamily = currentFont)
             SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont)
             AllHeroesList(navController, currentFont,context, charactersViewModel)
         }
@@ -335,7 +335,14 @@ fun AllHeroesList(
                     )
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
-                        navController.navigate(Screens.HeroScreen.route)
+
+                        val args = listOf(
+                            selectedHero.name,
+                            "thumbnail_sample",//selectedHero.thumbnail,
+                            "description_sample"//selectedHero.description
+                        )
+                        navController.navigate("heroScreen/${args.joinToString("/")}")
+
                     }
                     ),
                 verticalArrangement = Arrangement.Top

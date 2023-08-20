@@ -52,20 +52,15 @@ import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 @Composable
-fun HeroScreen(navController: NavController) {
+fun HeroScreen(navController: NavController, arguments: List<String>) {
 
-   //TESTING (personaggi provvisori (model non definitivo) da eliminare e usati per testing)
-   val hulk = HeroModel(
-       1,
-       "hulk",
-       R.drawable.hulk,
-       "Robert Bruce Banner",
-       "Stan Lee",
-       "1962",
-       "The incredible hulk N.1",
-       "...",
-       "..."
-   )
+    val selectedHeroName = arguments[0]
+    val selectedHeroThumbnail = arguments[1]
+    val selectedHeroDescription = arguments[2]
+
+    println(selectedHeroName)
+    println(selectedHeroThumbnail)
+    println(selectedHeroDescription)
 
    //Setup del font
    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -91,11 +86,13 @@ fun HeroScreen(navController: NavController) {
 
            HeroScreenUpperBar(
                navController,
-               currentFont
+               currentFont,
+               selectedHeroName
            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
            HeroCard(
                currentFont,
-               hulk
+               selectedHeroThumbnail,
+               selectedHeroDescription
            )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
        }
 
@@ -103,7 +100,7 @@ fun HeroScreen(navController: NavController) {
 }
 
 @Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName : String) {
 
    Row(
        modifier = Modifier
@@ -140,7 +137,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
        }
 
        Text(
-           text = "sample".uppercase(),
+           text = selectedHeroName.uppercase(),
            fontSize = 20.sp,
            color = Color.White,
            fontFamily = fontFamily,
@@ -151,7 +148,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
 }
 
 @Composable
-fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
+fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail : String, selectedHeroDescription : String) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
    Row {
        val scrollState = rememberScrollState()
        Column(
@@ -171,7 +168,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {   //Crea la list
                contentAlignment = Alignment.Center
            ) {
                UnclickableImageCard(
-                   painterResource(selectedHero.heroPic),
+                   painterResource(R.drawable.hulk),
                    contentDescription = "none",
                    modifier = Modifier.fillMaxSize()
                )
@@ -205,171 +202,9 @@ fun HeroCard(fontFamily: FontFamily, selectedHero: HeroModel) {   //Crea la list
                )
            }
 
-           TextChip("Info", 20.sp, fontFamily)
+           TextChip(selectedHeroDescription, 15.sp, fontFamily)
 
            Spacer(modifier = Modifier.height(10.dp))
        }
    }
 }
-
-/*
-@Composable
-fun HeroScreen(navController: NavController, selectedHero: Character?, context: Context) {
-
-    //Setup del font
-    val marvelFont = FontFamily(Font(R.font.marvel_font, FontWeight.Thin))
-
-    Box(
-        modifier = Modifier
-            .background(Color.Transparent)
-            .fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(R.drawable.sfondo_muro),
-            contentDescription = "none",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
-
-        Column(
-            modifier = Modifier
-                .background(Color.Transparent)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
-        ) {
-
-            HeroScreenUpperBar(
-                navController,
-                marvelFont,
-                selectedHero
-            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
-            HeroCard(
-                marvelFont,
-                selectedHero,
-                context
-            )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
-        }
-
-    }
-}
-
-@Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHero: Character?) {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-            .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Column(
-            modifier = Modifier
-                .height(40.dp)
-                .width(40.dp)
-                .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
-                .clip(shape = CircleShape)
-                .background(Color.Green)
-        ) {
-            Image(
-                painterResource(R.drawable.back_arrow),
-                contentDescription = "HOME",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        border = BorderStroke(width = 1.dp, Color.Black),
-                        shape = CircleShape
-                    )
-                    .clip(shape = CircleShape)
-                    .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
-            )
-        }
-
-        Text(
-            text = selectedHero?.name!!.uppercase(),
-            fontSize = 40.sp,
-            color = Color.White,
-            fontFamily = fontFamily,
-            textAlign = TextAlign.Center,
-        )
-
-    }
-}
-
-@Composable
-fun HeroCard(fontFamily: FontFamily, selectedHero: Character?, context: Context) {
-    Row {
-        val scrollState = rememberScrollState()
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-                .background(Color.Transparent),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .background(Color.Transparent),
-                contentAlignment = Alignment.Center
-            ) {
-                val imageView = remember { ImageView(context) }
-
-                Picasso.get()
-                    .load((selectedHero?.thumbnail?.path?.replace("http://", "https://")) + selectedHero?.thumbnail?.extension)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(510, 310)
-                    .centerCrop()
-                    .into(imageView)
-
-                AndroidView(
-                    factory = { imageView },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .background(color = Color.Red)
-                    .border(border = BorderStroke(1.dp, Color.Black)),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val checkedState = remember { mutableStateOf(false) }
-                Checkbox(
-                    checked = checkedState.value,
-                    onCheckedChange = { checkedState.value = it },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black,
-                        //checkmarkColor = Color.Black
-                    )
-                )
-
-                Text(
-                    "Favorite".uppercase(),
-                    fontSize = 20.sp,
-                    fontFamily = fontFamily,
-                    color = Color.White
-                )
-            }
-
-            TextChip("Info", 20.sp, fontFamily)
-
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-    }
-*/

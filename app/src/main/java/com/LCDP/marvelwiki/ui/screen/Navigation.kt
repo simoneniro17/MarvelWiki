@@ -30,9 +30,18 @@ fun Navigation(context: Context) {
         }
 
         // Controller associato alla schermata del singolo Eroe
-        composable(route = Screens.HeroScreen.route) {
-            //HeroScreen(navController = navController, selectedHero = selectedHero, context = context)
-            HeroScreen(navController = navController)
+        composable(
+            "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}",
+            arguments = listOf(
+                navArgument("heroName") { type = NavType.StringType },
+                navArgument("heroThumbnail") { type = NavType.StringType },
+                navArgument("heroDescription") { type = NavType.StringType }
+            )
+        ) { entry ->
+            val heroName = entry.arguments?.getString("heroName") ?: ""
+            val heroThumbnail = entry.arguments?.getString("heroThumbnail") ?: ""
+            val heroDescription = entry.arguments?.getString("heroDescription") ?: ""
+            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription))
         }
 
         // Controller associato alla schermata iniziale

@@ -4,7 +4,7 @@ package com.LCDP.marvelwiki.ui.screen
 sealed class Screens(val route: String) {
     object HomeScreen : Screens(route = "home_screen")
     object HeroNavigationScreen : Screens(route = "hero_nav_screen")
-    object HeroScreen : Screens(route = "hero_screen")
+    object HeroScreen : Screens(route = "heroScreen")
     object ComicNavigationScreen : Screens(route = "comic_nav_screen")
 
     //MODIFICHE TEMPORANEE PER PASSARE GLI ARGOMENTI (DA RIVEDERE)
