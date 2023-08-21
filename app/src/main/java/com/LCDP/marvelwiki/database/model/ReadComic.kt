@@ -3,15 +3,9 @@ package com.LCDP.marvelwiki.database.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
-//Definiamo una classe che verrà utilizzata come entità nel database SQLite tramite room
-//Specifichiamo il nome della tabella associata a questa entità
-
-@Entity(tableName = "ReadComic")
-data class ReadComic(
-    @PrimaryKey
-    var id: Int,
-    var title: String?,
-    var thumbnailPath: String?,
-    var description: String?
+//  Classe che verrà utilizzata come entità nel database SQLite tramite Room
+//  Specifichiamo il nome della tabella associata a questa entità
+@Entity(tableName = "read_comic")
+data class ReadComic (
+    @PrimaryKey val comicId: String
 )
