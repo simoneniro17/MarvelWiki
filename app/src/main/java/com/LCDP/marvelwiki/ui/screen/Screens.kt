@@ -6,12 +6,6 @@ sealed class Screens(val route: String) {
     object HeroNavigationScreen : Screens(route = "hero_nav_screen")
     object HeroScreen : Screens(route = "heroScreen")
     object ComicNavigationScreen : Screens(route = "comic_nav_screen")
-
-    //MODIFICHE TEMPORANEE PER PASSARE GLI ARGOMENTI (DA RIVEDERE)
-    object ComicScreen : Screens(route = "comic_screen/{selected_comic_id}") {
-        fun passId(id : Int) : String {
-            return "comic_screen/$id"
-        }
-    }
+    object ComicScreen : Screens(route = "comicScreen")
     object StartingScreen : Screens(route = "starting_screen")
 }

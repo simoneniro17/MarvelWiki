@@ -54,7 +54,12 @@ import com.squareup.picasso.Picasso
 
 //NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
-fun ComicScreen(navController: NavController, comicName : String, comicThumbnail : String, comicDescription : String) {
+fun ComicScreen(navController: NavController, arguments: List<String>) {
+
+    val selectedComicTitle = arguments[0]
+    val selectedComicThumbnail = arguments[1]
+    val selectedComicDescription = arguments[2]
+    val selectedComicId = arguments[3]
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
