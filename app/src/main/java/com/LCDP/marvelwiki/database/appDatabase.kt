@@ -11,7 +11,7 @@ import com.LCDP.marvelwiki.database.model.FavouriteCharacter
 import com.LCDP.marvelwiki.database.model.FavouriteComic
 import com.LCDP.marvelwiki.database.model.ReadComic
 
-// Nella notazione '@Database' specifichiamo le entità coinvolte nel database, la versione del database e altre opzioni
+// Specifichiamo le entità coinvolte nel database, la versione del database e altre opzioni
 @Database(
     entities = [FavouriteCharacter::class, FavouriteComic::class, ReadComic::class],
     version = 1,
@@ -26,22 +26,26 @@ abstract class appDatabase : RoomDatabase() {
 
     // Creiamo il Singleton per l'accesso al database
     companion object {
-        @Volatile // INUTILE?? assicura la coerenza dei dati tra i thread
+
+        // Assicura la coerenza dei dati tra i thread
+        @Volatile
         private var INSTANCE: appDatabase? = null
 
         // Funzione per ottenere un'istanza del database
         fun getDatabase(context: Context): appDatabase {
 
-            // Verifichiamo se esiste un'istanza già creata
             val tempInstance = INSTANCE
+
+            // Verifichiamo se esiste un'istanza già creata
             if (tempInstance != null) {
                 return tempInstance
             } else {
+
                 // Creiamo una nuova istanza del database
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     appDatabase::class.java,
-                    "app_Database"
+                    "marvelwiki_database"
                 ).build()
 
                 // Assegniamo l'istanza appena creata alla variabile 'INSTANCE'
