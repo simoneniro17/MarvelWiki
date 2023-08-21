@@ -336,10 +336,22 @@ fun AllHeroesList(
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
 
+
+                        val name = selectedHero.name
+                        var thumbnail = selectedHero.thumbnail?.path
+
+                        thumbnail = thumbnail?.replace("/","_")
+                        var description = selectedHero.description
+
+                        if (description.isNullOrEmpty()){
+                            description = "DESCRIPTION NOT FOUND"
+                        }
+
                         val args = listOf(
-                            selectedHero.name,
-                            "thumbnail_sample",//selectedHero.thumbnail,
-                            "description_sample"//selectedHero.description
+                            name,
+                            //"thumbnail_sample",//selectedHero.thumbnail,
+                            thumbnail,
+                            description
                         )
                         navController.navigate("heroScreen/${args.joinToString("/")}")
 

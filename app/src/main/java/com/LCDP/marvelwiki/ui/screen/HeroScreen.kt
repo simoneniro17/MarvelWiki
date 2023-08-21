@@ -42,25 +42,20 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.model.Character
-import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.data.repository.CharactersRepository
-import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
-import com.LCDP.marvelwiki.usefulStuff.Resource
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
+
 @Composable
-fun HeroScreen(navController: NavController, arguments: List<String>) {
+fun HeroScreen(navController: NavController, arguments: List<String>, context: Context) {
 
     val selectedHeroName = arguments[0]
     val selectedHeroThumbnail = arguments[1]
     val selectedHeroDescription = arguments[2]
 
-    println(selectedHeroName)
-    println(selectedHeroThumbnail)
-    println(selectedHeroDescription)
+    println(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
+
 
    //Setup del font
    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -92,7 +87,8 @@ fun HeroScreen(navController: NavController, arguments: List<String>) {
            HeroCard(
                currentFont,
                selectedHeroThumbnail,
-               selectedHeroDescription
+               selectedHeroDescription,
+               context
            )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
        }
 
@@ -148,7 +144,12 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
 }
 
 @Composable
-fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail : String, selectedHeroDescription : String) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
+fun HeroCard(
+    fontFamily: FontFamily,
+    selectedHeroThumbnail: String,
+    selectedHeroDescription: String,
+    context: Context
+) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
    Row {
        val scrollState = rememberScrollState()
        Column(
@@ -167,10 +168,22 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail : String, selectedHer
                    .background(Color.Transparent),
                contentAlignment = Alignment.Center
            ) {
-               UnclickableImageCard(
-                   painterResource(R.drawable.hulk),
-                   contentDescription = "none",
-                   modifier = Modifier.fillMaxSize()
+               val imageView = remember { ImageView(context) }
+
+               Picasso.get()
+                   .load(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
+                   .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                   .memoryPolicy(MemoryPolicy.NO_CACHE)
+                   .networkPolicy(NetworkPolicy.NO_CACHE)
+                   .resize(510, 310)
+                   .centerCrop()
+                   .into(imageView)
+
+               AndroidView(
+                   factory = { imageView },
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .fillMaxHeight(0.8f)
                )
            }
 

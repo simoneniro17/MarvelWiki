@@ -1,14 +1,12 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.LCDP.marvelwiki.data.model.Character
 
 @Composable
 fun Navigation(context: Context) {
@@ -41,7 +39,7 @@ fun Navigation(context: Context) {
             val heroName = entry.arguments?.getString("heroName") ?: ""
             val heroThumbnail = entry.arguments?.getString("heroThumbnail") ?: ""
             val heroDescription = entry.arguments?.getString("heroDescription") ?: ""
-            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription))
+            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription),context)
         }
 
         // Controller associato alla schermata iniziale
