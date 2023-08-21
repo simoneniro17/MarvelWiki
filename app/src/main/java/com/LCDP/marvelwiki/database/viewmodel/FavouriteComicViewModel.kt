@@ -1,33 +1,31 @@
-package com.LCDP.marvelwiki.database.viewModel
+package com.LCDP.marvelwiki.database.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.model.FavouriteComic
-import com.LCDP.marvelwiki.database.model.ReadComic
 import com.LCDP.marvelwiki.database.repository.FavouriteComicRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavouriteComicViewModel(application: Application): AndroidViewModel(application){
 
-    //Oggetto 'LiveData' contenente la lista dei preferiti
-    val readAllData: LiveData<List<FavouriteComic>>
+    // Oggetto contenente la lista (degli ID) dei fumetti preferiti
+    val allFavouriteComicId: List<String>
 
-    //Istanza del FavoureiteComicRepository
+    // Istanza del FavouriteComicRepository
     private val repository: FavouriteComicRepository
 
-    //Istanza del FavoureiteComicRepository utilizzando il DAO e viene impostato l'oggetto 'readAllData'
+    // Viene inizializzato il FavouriteComicRepository utilizzando il DAO e viene impostato l'oggetto 'allFavouriteComicId'
     init {
         val favouriteComicDAO = appDatabase.getDatabase(application).favouriteComicDAO()
         repository = FavouriteComicRepository(favouriteComicDAO)
-        readAllData = repository.readAllData
+        allFavouriteComicId = repository.allFavouriteComicId
     }
 
     fun addFavouriteComic(favouriteComic: FavouriteComic){
-        //L'operazione di inserimento è svolta in un contesto di coroutine in modo asincrono
+        // L'operazione di inserimento è svolta in un contesto di coroutine in modo asincrono
         viewModelScope.launch(Dispatchers.IO){
             repository.addFavouriteComic(favouriteComic)
         }

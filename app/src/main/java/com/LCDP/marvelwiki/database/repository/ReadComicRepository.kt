@@ -1,21 +1,21 @@
 package com.LCDP.marvelwiki.database.repository
 
-import androidx.lifecycle.LiveData
 import com.LCDP.marvelwiki.database.dao.ReadComicDAO
 import com.LCDP.marvelwiki.database.model.ReadComic
 
 
-//Classe che fa da intermediario tra il ViewModel e il DAO
+// Classe che fa da intermediario tra il rispettivo ViewModel e il DAO
 class ReadComicRepository(private val readComicDAO: ReadComicDAO){
-    //Oggetto Live Data contiene una lista di tutti i fumetti letti, ottenuta tramite il DAO
-    val readAllData: LiveData<List<ReadComic>> = readComicDAO.readAllData()
 
-    //Funzione che permette di aggiungere un fumetto all'elenco dei fumetti letti
+    // Oggetto che contiene una lista degli ID di tutti i fumetti letti, ottenuta tramite il DAO
+    val allReadComicId: List<String> = readComicDAO.getAllReadComicId()
+
+    // Funzione che permette di aggiungere (l'ID di) un fumetto a quelli letti
     suspend fun addReadComic(readComic: ReadComic){
-        readComicDAO.addReadComic(readComic)
+        readComicDAO.insertReadComic(readComic)
     }
 
-    // Funzione che permette di rimuovere un fumetto dall'elenco dei fumetti letti
+    // Funzione che permette di rimuovere (l'ID di) un fumetto dall'elenco dei fumetti preferiti
     suspend fun deleteReadComic(readComic: ReadComic){
         readComicDAO.deleteReadComic(readComic)
     }
