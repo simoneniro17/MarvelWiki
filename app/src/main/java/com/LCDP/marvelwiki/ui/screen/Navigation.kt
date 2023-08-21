@@ -66,7 +66,7 @@ fun Navigation(context: Context) {
             val comicThumbnail = entry.arguments?.getString("comicThumbnail") ?: ""
             val comicDescription = entry.arguments?.getString("comicDescription") ?: ""
             val comicId = entry.arguments?.getString("comicId") ?: ""
-            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId))
+            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId), context)
         }
 
     }

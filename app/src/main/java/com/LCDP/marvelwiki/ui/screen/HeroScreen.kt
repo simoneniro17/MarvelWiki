@@ -175,7 +175,7 @@ fun HeroCard(
                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                   .resize(510, 310)
+                   .resize(800, 800)
                    .centerCrop()
                    .into(imageView)
 
@@ -186,6 +186,8 @@ fun HeroCard(
                        .fillMaxHeight(0.8f)
                )
            }
+
+           Spacer(modifier = Modifier.height(10.dp))
 
            Row(
                modifier = Modifier

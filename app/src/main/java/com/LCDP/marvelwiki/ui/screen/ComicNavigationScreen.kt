@@ -372,11 +372,23 @@ fun ComicThumbnail(
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
+
+                    val selectedComicTitle = selectedComic.title
+                    var selectedComicThumbnail = selectedComic.thumbnail?.path
+                    selectedComicThumbnail = selectedComicThumbnail?.replace("/","_")
+                    var selectedComicDescription = selectedComic.description
+
+                    if (selectedComicDescription.isNullOrEmpty()){
+                        selectedComicDescription = "DESCRIPTION NOT FOUND"
+                    }
+
+                    val selectedComicId = selectedComic.comicId
+
                     val args = listOf(
-                        selectedComic.title,
-                        selectedComic.thumbnail,
-                        selectedComic.description,
-                        selectedComic.comicId
+                        selectedComicTitle,
+                        selectedComicThumbnail,
+                        selectedComicDescription,
+                        selectedComicId
                     )
                     navController.navigate("comicScreen/${args.joinToString("/")}")
                 }
