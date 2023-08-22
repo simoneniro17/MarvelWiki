@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
+import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,9 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.LCDP.marvelwiki.data.model.Character
+import com.LCDP.marvelwiki.database.dao.FavouriteCharacterDAO
+import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -73,5 +77,31 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
                 }
             }
         }
+    }
+
+    fun unloadFavouriteCharacters(){
+        _characterList.clear()
+        loadCharacterList()
+    }
+    fun loadFavouriteCharacters() {
+        _characterList.clear()
+        viewModelScope.launch {
+            try {
+                val favouriteCharacterRepository = FavouriteCharacterRepository()
+                val favouriteCharacterViewModel = FavouriteCharacterViewModel(favouriteCharacterRepository)
+                val idList = favouriteCharacterViewModel.allFavouriteCharacterId
+                idList.forEach { id ->
+                    val characterResponse = charactersRepository.getChar_api(id = id)
+                    val characters = characterResponse.body()?.characterData?.results
+                    if (characters != null) {
+                        _characterList.addAll(characters.toMutableList())
+                    }
+                }
+            } catch (e: Exception) {
+                // Gestisco eventuali errori durante il caricamento
+                println("Errore durante il caricamento dei personaggi: ${e.message}")
+            }
+        }
+
     }
 }

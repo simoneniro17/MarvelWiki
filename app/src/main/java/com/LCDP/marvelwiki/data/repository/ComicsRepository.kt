@@ -14,4 +14,5 @@ class ComicsRepository {
 
     //Questo metodo chiama dalla ComicAPIbyIsbn il metodo getComicsByCharId
     suspend fun getComicsByName_api(name:String,offset:Int) = ComicInstance.comicsByName_api.getComicByName(name, offset = offset)
+
 }

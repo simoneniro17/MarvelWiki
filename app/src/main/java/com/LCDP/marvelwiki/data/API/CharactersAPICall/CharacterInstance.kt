@@ -54,4 +54,7 @@ object CharacterInstance {
         retrofit.create(CharacterByNameAPI::class.java)
     }
 
+    val charById_api by lazy {
+        retrofit.create(CharacterAPIById::class.java)
+    }
 }
