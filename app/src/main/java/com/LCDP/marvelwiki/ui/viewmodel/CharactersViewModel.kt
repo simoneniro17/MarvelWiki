@@ -1,9 +1,11 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,15 +16,18 @@ import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.LCDP.marvelwiki.data.model.Character
+import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.dao.FavouriteCharacterDAO
 import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
 import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+//import kotlinx.coroutines.flow.internal.NoOpContinuation.context
+//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 //In questa classe chiamiamo tutti i metodi relativi alla pi dei characters
-class CharactersViewModel(private val charactersRepository: CharactersRepository) : ViewModel() {
-
+class CharactersViewModel(private val charactersRepository: CharactersRepository, application: Application) : ViewModel() {
+    private val context: Context = application.applicationContext
     private val _searchQuery = mutableStateOf("")
 
     private val _characterList = mutableStateListOf<Character>()                                            //è una mutable list, quando la lista viene modificata, Compose rileva i cambiamenti e aggiorna automaticamente l'interfaccia utente.
@@ -87,7 +92,8 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
         _characterList.clear()
         viewModelScope.launch {
             try {
-                val favouriteCharacterRepository = FavouriteCharacterRepository()
+                val appDatabase = appDatabase.getDatabase(context)
+                val favouriteCharacterRepository = FavouriteCharacterRepository(favouriteCharacterDAO = appDatabase.favouriteCharacterDAO())
                 val favouriteCharacterViewModel = FavouriteCharacterViewModel(favouriteCharacterRepository)
                 val idList = favouriteCharacterViewModel.allFavouriteCharacterId
                 idList.forEach { id ->

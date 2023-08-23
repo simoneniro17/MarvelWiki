@@ -25,6 +25,7 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.squareup.picasso.MemoryPolicy
@@ -84,12 +86,19 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                currentFont,
                selectedHeroName
            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
-           HeroCard(
+          /* HeroCard(
                currentFont,
                selectedHeroThumbnail,
                selectedHeroDescription,
-               context
-           )                          //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+               context,
+               onFavoriteClicked = {isFavorite ->
+                   if(isFavorite){
+                       viewModel.addToFavorites(selectedHeroName)
+                   } else {
+                       viewModel.removeFromFavorites(selectedHeroName)
+                   }
+               }
+           ) */                         //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
        }
 
    }
@@ -148,7 +157,8 @@ fun HeroCard(
     fontFamily: FontFamily,
     selectedHeroThumbnail: String,
     selectedHeroDescription: String,
-    context: Context
+    context: Context,
+    onFavoriteClicked: (Boolean) -> Unit
 ) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
    Row {
        val scrollState = rememberScrollState()
@@ -201,7 +211,9 @@ fun HeroCard(
                val checkedState = remember { mutableStateOf(false) }  //La variabile checkedState tiene conto se l'ero è preferito o meno.
                Checkbox(
                    checked = checkedState.value,
-                   onCheckedChange = { checkedState.value = it },
+                   onCheckedChange = { checkedState.value = it
+                                     onFavoriteClicked(it)
+                                     },
                    colors = CheckboxDefaults.colors(
                        checkedColor = Color.Black,
                        uncheckedColor = Color.Black,

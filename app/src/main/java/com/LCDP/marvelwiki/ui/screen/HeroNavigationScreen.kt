@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.app.Application
 import android.content.Context
 import android.widget.ImageView
 import androidx.compose.foundation.*
@@ -40,6 +41,7 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.LCDP.marvelwiki.usefulStuff.Debouncer
@@ -51,13 +53,12 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun NavigationScreen(navController: NavController,context: Context) {
-
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
     val charactersRepository = CharactersRepository()               //creo la repository
     val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
-        factory = CharactersViewModelFactory(charactersRepository)
+        factory = CharactersViewModelFactory(charactersRepository, context.applicationContext as Application)
     )
 
     charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
@@ -335,10 +336,10 @@ fun AllHeroesList(
                         val name = selectedHero.name
                         var thumbnail = selectedHero.thumbnail?.path
 
-                        thumbnail = thumbnail?.replace("/","_")
+                        thumbnail = thumbnail?.replace("/", "_")
                         var description = selectedHero.description
 
-                        if (description.isNullOrEmpty()){
+                        if (description.isNullOrEmpty()) {
                             description = "DESCRIPTION NOT FOUND"
                         }
 
