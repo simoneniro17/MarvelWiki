@@ -25,7 +25,6 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.RememberObserver
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,9 +40,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
+import com.LCDP.marvelwiki.database.DatabaseAccess
+import com.LCDP.marvelwiki.database.appDatabase
+import com.LCDP.marvelwiki.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -55,9 +57,11 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroName = arguments[0]
     val selectedHeroThumbnail = arguments[1]
     val selectedHeroDescription = arguments[2]
+    val selectedHeroId = arguments[3]
 
-    println(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-
+    val appDatabase = appDatabase.getDatabase(context)
+    val databaseAccess = DatabaseAccess(appDatabase)
+    val favouriteCharacterViewModel = FavouriteCharacterViewModel(databaseAccess)
 
    //Setup del font
    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -86,26 +90,30 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                currentFont,
                selectedHeroName
            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
-          /* HeroCard(
+          HeroCard(
                currentFont,
                selectedHeroThumbnail,
                selectedHeroDescription,
                context,
                onFavoriteClicked = {isFavorite ->
                    if(isFavorite){
-                       viewModel.addToFavorites(selectedHeroName)
+                       favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
                    } else {
-                       viewModel.removeFromFavorites(selectedHeroName)
+                       favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
                    }
                }
-           ) */                         //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+           )                     //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
        }
 
    }
 }
 
 @Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName : String) {
+fun HeroScreenUpperBar(
+    navController: NavController,
+    fontFamily: FontFamily,
+    selectedHeroName: String
+) {
 
    Row(
        modifier = Modifier

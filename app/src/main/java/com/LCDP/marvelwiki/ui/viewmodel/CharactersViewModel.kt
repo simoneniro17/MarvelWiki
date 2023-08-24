@@ -1,27 +1,19 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
-import com.LCDP.marvelwiki.usefulStuff.Constant
-import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import com.LCDP.marvelwiki.data.model.Character
+import com.LCDP.marvelwiki.database.DatabaseAccess
 import com.LCDP.marvelwiki.database.appDatabase
-import com.LCDP.marvelwiki.database.dao.FavouriteCharacterDAO
 import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
 import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 //import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
@@ -85,6 +77,7 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
     }
 
     fun unloadFavouriteCharacters(){
+        offset = 0
         _characterList.clear()
         loadCharacterList()
     }
@@ -93,9 +86,9 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
         viewModelScope.launch {
             try {
                 val appDatabase = appDatabase.getDatabase(context)
-                val favouriteCharacterRepository = FavouriteCharacterRepository(favouriteCharacterDAO = appDatabase.favouriteCharacterDAO())
-                val favouriteCharacterViewModel = FavouriteCharacterViewModel(favouriteCharacterRepository)
-                val idList = favouriteCharacterViewModel.allFavouriteCharacterId
+                val databaseAccess = DatabaseAccess(appDatabase)
+                val idList = databaseAccess.getAllFavouriteCharacters()
+
                 idList.forEach { id ->
                     val characterResponse = charactersRepository.getChar_api(id = id)
                     val characters = characterResponse.body()?.characterData?.results

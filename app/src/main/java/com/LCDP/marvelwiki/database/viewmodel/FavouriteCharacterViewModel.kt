@@ -4,10 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.LCDP.marvelwiki.database.DatabaseAccess
 import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.model.FavouriteCharacter
 import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /*class FavouriteCharacterViewModel(application: Application): AndroidViewModel(application) {
@@ -42,21 +45,28 @@ import kotlinx.coroutines.launch
 
  */
 
-class FavouriteCharacterViewModel(
-    private val favouriteCharacterRepository: FavouriteCharacterRepository
-) : ViewModel() {
+class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) : ViewModel() {
 
-    val allFavouriteCharacterId: List<String> = favouriteCharacterRepository.allFavouriteCharacterId
+    private var favouriteCharacterList = emptyList<String>()
+    @OptIn(DelicateCoroutinesApi::class)
+    fun fetchData():List<String>{
+        GlobalScope.launch {
+            favouriteCharacterList = databaseAccess.getAllFavouriteCharacters()
+        }
+        return favouriteCharacterList
+    }
 
-    fun addFavouriteCharacter(favouriteCharacter: FavouriteCharacter) {
-        viewModelScope.launch(Dispatchers.IO) {
-            favouriteCharacterRepository.addFavouriteCharacter(favouriteCharacter)
+    @OptIn(DelicateCoroutinesApi::class)
+    fun insertData(favouriteCharacter: FavouriteCharacter) {
+        GlobalScope.launch {
+            databaseAccess.insertFavouriteCharacter(favouriteCharacter)
         }
     }
 
-    fun deleteFavouriteCharacter(favouriteCharacter: FavouriteCharacter) {
-        viewModelScope.launch(Dispatchers.IO) {
-            favouriteCharacterRepository.deleteFavouriteCharacter(favouriteCharacter)
+    @OptIn(DelicateCoroutinesApi::class)
+    fun deleteData(favouriteCharacter: FavouriteCharacter) {
+        GlobalScope.launch {
+            databaseAccess.deleteFavouriteCharacter(favouriteCharacter)
         }
     }
 }

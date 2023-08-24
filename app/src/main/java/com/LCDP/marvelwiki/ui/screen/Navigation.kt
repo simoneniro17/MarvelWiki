@@ -29,17 +29,19 @@ fun Navigation(context: Context) {
 
         // Controller associato alla schermata del singolo Eroe
         composable(
-            "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}",
+            "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}/{heroId}",
             arguments = listOf(
                 navArgument("heroName") { type = NavType.StringType },
                 navArgument("heroThumbnail") { type = NavType.StringType },
-                navArgument("heroDescription") { type = NavType.StringType }
+                navArgument("heroDescription") { type = NavType.StringType },
+                navArgument("heroId") {type = NavType.StringType}
             )
         ) { entry ->
             val heroName = entry.arguments?.getString("heroName") ?: ""
             val heroThumbnail = entry.arguments?.getString("heroThumbnail") ?: ""
             val heroDescription = entry.arguments?.getString("heroDescription") ?: ""
-            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription),context)
+            val heroId = entry.arguments?.getString("heroId") ?: ""
+            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription,heroId),context)
         }
 
         // Controller associato alla schermata iniziale
