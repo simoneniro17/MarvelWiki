@@ -2,14 +2,19 @@ package com.LCDP.marvelwiki.database.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.LCDP.marvelwiki.database.DatabaseAccess
 import com.LCDP.marvelwiki.database.appDatabase
+import com.LCDP.marvelwiki.database.model.FavouriteComic
 import com.LCDP.marvelwiki.database.model.ReadComic
 import com.LCDP.marvelwiki.database.repository.ReadComicRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ReadComicViewModel(application: Application): AndroidViewModel(application) {
+/* class ReadComicViewModel(application: Application): AndroidViewModel(application) {
 
     // Oggetto contenente la lista (degli ID) dei fumetti letti
     val allReadComicId: List<String>
@@ -35,6 +40,32 @@ class ReadComicViewModel(application: Application): AndroidViewModel(application
         // L'operazione di cancellazione è svolta in un contesto di coroutine in modo asincrono
         viewModelScope.launch(Dispatchers.IO){
             repository.deleteReadComic(readComic)
+        }
+    }
+} */
+
+class ReadComicViewModel( private val databaseAccess: DatabaseAccess) : ViewModel() {
+
+    private var readComicList = emptyList<String>()
+    @OptIn(DelicateCoroutinesApi::class)
+    fun fetchData():List<String>{
+        GlobalScope.launch {
+            readComicList = databaseAccess.getAllReadComics()
+        }
+        return readComicList
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun insertData(readComic: ReadComic) {
+        GlobalScope.launch {
+            databaseAccess.insertReadComic(readComic)
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun deleteData(readComic: ReadComic) {
+        GlobalScope.launch {
+            databaseAccess.deleteReadComic(readComic)
         }
     }
 }

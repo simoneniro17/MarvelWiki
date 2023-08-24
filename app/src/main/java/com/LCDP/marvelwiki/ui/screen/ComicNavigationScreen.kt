@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.app.Application
 import android.content.Context
 import android.widget.ImageView
 import androidx.compose.foundation.*
@@ -58,7 +59,7 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
     val comicsRepository = ComicsRepository()
-    val comicsViewModel : ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository))
+    val comicsViewModel : ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository, context.applicationContext as Application))
 
     Box(
         modifier = Modifier
@@ -82,8 +83,9 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
 
-            //ComicSeparator(currentFont)
+            ComicSeparator(fontFamily = currentFont, comicsViewModel = comicsViewModel)
             ComicSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont)
+
         }
     }
 }
@@ -277,7 +279,10 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 }
 
 @Composable
-fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla searchbar contenente le spunte per filtrare la ricerca dei fumetti (preferiti e letti).
+fun ComicSeparator(
+    fontFamily: FontFamily,
+    comicsViewModel: ComicsViewModel
+    ) {  //crea la barra sottostante alla searchbar contenente le spunte per filtrare la ricerca dei fumetti (preferiti e letti).
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -290,7 +295,12 @@ fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla s
         val checkedState1 = remember { mutableStateOf(false) }   //valore che filtra i fumetti preferiti
         Checkbox(
             checked = checkedState1.value,
-            onCheckedChange = { checkedState1.value = it },
+            onCheckedChange = { checkedState1.value = it
+                if (!it) {
+                    comicsViewModel.unloadFavouriteComics()
+                } else {
+                    comicsViewModel.loadFavouriteComics()
+                } },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black
@@ -306,7 +316,12 @@ fun ComicSeparator(fontFamily: FontFamily) {  //crea la barra sottostante alla s
         val checkedState2 = remember { mutableStateOf(false) }  //valore che filtra i fumetti letti.
         Checkbox(
             checked = checkedState2.value,
-            onCheckedChange = { checkedState2.value = it },
+            onCheckedChange = { checkedState2.value = it
+                if (!it) {
+                    comicsViewModel.unloadReadComics()
+                } else {
+                    comicsViewModel.loadReadComics()
+                } },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black
@@ -375,10 +390,10 @@ fun ComicThumbnail(
 
                     val selectedComicTitle = selectedComic.title
                     var selectedComicThumbnail = selectedComic.thumbnail?.path
-                    selectedComicThumbnail = selectedComicThumbnail?.replace("/","_")
+                    selectedComicThumbnail = selectedComicThumbnail?.replace("/", "_")
                     var selectedComicDescription = selectedComic.description
 
-                    if (selectedComicDescription.isNullOrEmpty()){
+                    if (selectedComicDescription.isNullOrEmpty()) {
                         selectedComicDescription = "DESCRIPTION NOT FOUND"
                     }
 
@@ -399,7 +414,7 @@ fun ComicThumbnail(
 
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                .placeholder(R.drawable.placeholder_comic)
+                .placeholder(R.drawable.background_tamarro)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)

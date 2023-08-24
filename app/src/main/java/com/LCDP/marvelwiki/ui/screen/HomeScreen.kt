@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.app.Application
 import android.content.Context
 import android.widget.ImageView
 import androidx.compose.foundation.*
@@ -45,7 +46,7 @@ fun HomeScreen(navController: NavController, context: Context) {
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Normal))
 
     val comicsRepository = ComicsRepository()
-    val comicsViewModel: ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository = comicsRepository))
+    val comicsViewModel: ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository = comicsRepository, context.applicationContext as Application))
     comicsViewModel.getLatestComic()
     //CREAZIONE DELLA SCHERMATA INTERA
     Box(

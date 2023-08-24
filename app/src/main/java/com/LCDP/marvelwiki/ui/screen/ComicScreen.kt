@@ -46,6 +46,14 @@ import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
+import com.LCDP.marvelwiki.database.DatabaseAccess
+import com.LCDP.marvelwiki.database.appDatabase
+import com.LCDP.marvelwiki.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.database.model.FavouriteComic
+import com.LCDP.marvelwiki.database.model.ReadComic
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteComicViewModel
+import com.LCDP.marvelwiki.database.viewmodel.ReadComicViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.usefulStuff.Resource
 import com.squareup.picasso.MemoryPolicy
@@ -60,6 +68,11 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val comicThumbnail = arguments[1]
     val comicDescription = arguments[2]
     val comicId = arguments[3]
+
+    val appDatabase = appDatabase.getDatabase(context)
+    val databaseAccess = DatabaseAccess(appDatabase)
+    val favouriteComicViewModel = FavouriteComicViewModel(databaseAccess)
+    val readComicViewModel = ReadComicViewModel(databaseAccess)
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -93,7 +106,22 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 currentFont,
                 comicThumbnail,
                 comicDescription,
-                context
+                context,
+                onFavoriteClicked = {isFavorite ->
+                    if(isFavorite){
+                        favouriteComicViewModel.insertData(FavouriteComic(comicId))
+                    } else {
+                        favouriteComicViewModel.deleteData(FavouriteComic(comicId))
+                    }
+                },
+                onReadClicked = {isRead ->
+                    if(isRead){
+                        readComicViewModel.insertData(ReadComic(comicId))
+                    } else {
+                        readComicViewModel.deleteData(ReadComic(comicId))
+                    }
+                }
+
             )                          //Metodo riusabile che, se fornito di un model fumetto (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
         }
 
@@ -149,7 +177,13 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
 }
 
 @Composable
-fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription : String, context : Context) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
+fun ComicCard(
+    fontFamily: FontFamily,
+    comicThumbnail : String,
+    comicDescription : String,
+    context : Context,
+    onFavoriteClicked: (Boolean) -> Unit,
+    onReadClicked: (Boolean) -> Unit) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
     Row {
         val scrollState = rememberScrollState()
         Column(
@@ -172,7 +206,7 @@ fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription 
 
                 Picasso.get()
                     .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                    .placeholder(R.drawable.placeholder_comic)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.background_tamarro)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(800, 800)
@@ -201,7 +235,9 @@ fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription 
                 val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è, rispettivamente, uno dei preferiti e se è stato letto o meno.
                 Checkbox(                                                      //Il resto del codice serve solo per la rappresentazione grafica dei checbox su cui clickare per mettere la spunta.
                     checked = checkedState1.value,
-                    onCheckedChange = { checkedState1.value = it },
+                    onCheckedChange = { checkedState1.value = it
+                                      onFavoriteClicked(it)
+                                      },
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
@@ -218,7 +254,8 @@ fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription 
                 val checkedState2 = remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checkedState2.value,
-                    onCheckedChange = { checkedState2.value = it },
+                    onCheckedChange = { checkedState2.value = it
+                                      onReadClicked(it)},
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,

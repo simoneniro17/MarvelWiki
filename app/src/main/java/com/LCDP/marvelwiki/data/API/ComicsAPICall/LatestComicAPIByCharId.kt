@@ -15,7 +15,7 @@ interface LatestComicAPIByCharId {
             L'annotazione '@Path("id")' indica che il valore dell'ID del personaggio di cui
             si vogliono ottenere i fumetti sarà sostituito nella parte dell'URL specificata.
         */
-        @Path("id") id: Int,
+        @Path("id") id: String,
         @Query("dateDescriptor") dateDescriptor: String = "thisMonth",
         @Query("ts") apiKey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,

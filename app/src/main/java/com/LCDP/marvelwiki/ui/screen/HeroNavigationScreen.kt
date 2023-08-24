@@ -360,7 +360,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.placeholder)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.avengers_logo)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)

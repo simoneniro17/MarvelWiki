@@ -1,8 +1,10 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +14,17 @@ import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.model.Comic
 import com.LCDP.marvelwiki.data.model.ComicResponse
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.database.DatabaseAccess
+import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.usefulStuff.Constant
 import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ComicsViewModel(private val comicsRepository: ComicsRepository) : ViewModel() {
+class ComicsViewModel(private val comicsRepository: ComicsRepository, application: Application) : ViewModel() {
     // Questa classe estente la classe viewModel
+
+    private val context: Context = application.applicationContext
 
     //La variabile comics è di tipo MutableLiveData, che è una classe fornita da Android Jetpack che può essere osservata per il cambiamento dei dati
     //Resource rappresenta lo stato dei dati (caricamento, successo, errore) e CharacterResponse è il tipo dei dati dei comics
@@ -38,7 +44,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository) : ViewMode
         viewModelScope.launch {
             try {
                 val comicResponse =
-                    comicsRepository.getComicsByCharId_api(offset)                   //viene fatta una chiamata alla api specificando l'offset
+                    comicsRepository.getComicsByCharId_api(charId)                   //viene fatta una chiamata alla api specificando l'offset
                 val comics =
                     comicResponse.body()?.comicData?.results                  //prendo il corpo della  risposta che contiene i dati
 
@@ -126,6 +132,62 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository) : ViewMode
             }
         }
         }
+    }
+
+    fun unloadFavouriteComics(){
+        offset = 0
+        _comicList.clear()
+        //loadCharacterList()
+    }
+    fun loadFavouriteComics() {
+        _comicList.clear()
+        viewModelScope.launch {
+            try {
+                val appDatabase = appDatabase.getDatabase(context)
+                val databaseAccess = DatabaseAccess(appDatabase)
+                val idList = databaseAccess.getAllFavouriteComics()
+
+                idList.forEach { id ->
+                    val comicResponse = comicsRepository.getComicsByCharId_api(id = id)
+                    val comics = comicResponse.body()?.comicData?.results
+                    if (comics != null) {
+                        _comicList.addAll(comics.toMutableList())
+                    }
+                }
+            } catch (e: Exception) {
+                // Gestisco eventuali errori durante il caricamento
+                println("Errore durante il caricamento dei fumetti preferiti: ${e.message}")
+            }
+        }
+
+    }
+
+    fun unloadReadComics(){
+        offset = 0
+        _comicList.clear()
+        //loadCharacterList()
+    }
+    fun loadReadComics() {
+        _comicList.clear()
+        viewModelScope.launch {
+            try {
+                val appDatabase = appDatabase.getDatabase(context)
+                val databaseAccess = DatabaseAccess(appDatabase)
+                val idList = databaseAccess.getAllReadComics()
+
+                idList.forEach { id ->
+                    val comicResponse = comicsRepository.getComicsByCharId_api(id = id)
+                    val comics = comicResponse.body()?.comicData?.results
+                    if (comics != null) {
+                        _comicList.addAll(comics.toMutableList())
+                    }
+                }
+            } catch (e: Exception) {
+                // Gestisco eventuali errori durante il caricamento
+                println("Errore durante il caricamento dei fumetti letti: ${e.message}")
+            }
+        }
+
     }
 }
 

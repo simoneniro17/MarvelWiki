@@ -5,7 +5,7 @@ import com.LCDP.marvelwiki.data.API.ComicsAPICall.ComicInstance
 
 class ComicsRepository {
     //Questo metodo chiama dalla ComicAPIbyCharId il metodo getComicsByCharId
-    suspend fun getComicsByCharId_api(id: Int) = ComicInstance.latestComicByCharId_api.getLatestComicsByCharId(id)
+    suspend fun getComicsByCharId_api(id: String) = ComicInstance.latestComicByCharId_api.getLatestComicsByCharId(id)
     //Questo metodo chiama dalla ComicAPIbyIsbn il metodo getComicsByCharId
     suspend fun getComicsByIsbn_api(isbn:String) = ComicInstance.comicsByIsbn_api.getComicByIsbn(isbn)
 
