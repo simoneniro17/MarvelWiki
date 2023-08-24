@@ -372,10 +372,25 @@ fun ComicThumbnail(
                 )
                 .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
-                    val comicTitle = selectedComic.title
-                    val comicThumbnail = selectedComic.thumbnail
-                    val comicDescription = "ciao"
-                    navController.navigate(route ="${Screens.ComicScreen.route}/$comicTitle/$comicThumbnail/$comicDescription")
+
+                    val selectedComicTitle = selectedComic.title
+                    var selectedComicThumbnail = selectedComic.thumbnail?.path
+                    selectedComicThumbnail = selectedComicThumbnail?.replace("/","_")
+                    var selectedComicDescription = selectedComic.description
+
+                    if (selectedComicDescription.isNullOrEmpty()){
+                        selectedComicDescription = "DESCRIPTION NOT FOUND"
+                    }
+
+                    val selectedComicId = selectedComic.comicId
+
+                    val args = listOf(
+                        selectedComicTitle,
+                        selectedComicThumbnail,
+                        selectedComicDescription,
+                        selectedComicId
+                    )
+                    navController.navigate("comicScreen/${args.joinToString("/")}")
                 }
                 ),
             verticalArrangement = Arrangement.Top
@@ -384,6 +399,7 @@ fun ComicThumbnail(
 
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .placeholder(R.drawable.placeholder_comic)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)

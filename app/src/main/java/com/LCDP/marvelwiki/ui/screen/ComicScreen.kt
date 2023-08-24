@@ -54,7 +54,12 @@ import com.squareup.picasso.Picasso
 
 //NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
 @Composable
-fun ComicScreen(navController: NavController, comicName : String, comicThumbnail : String, comicDescription : String) {
+fun ComicScreen(navController: NavController, arguments: List<String>, context : Context) {
+
+    val comicTitle = arguments[0]
+    val comicThumbnail = arguments[1]
+    val comicDescription = arguments[2]
+    val comicId = arguments[3]
 
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
@@ -81,10 +86,14 @@ fun ComicScreen(navController: NavController, comicName : String, comicThumbnail
 
             ComicScreenUpperBar(
                 navController,
-                currentFont
+                currentFont,
+                comicTitle
             )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
             ComicCard(
-                currentFont
+                currentFont,
+                comicThumbnail,
+                comicDescription,
+                context
             )                          //Metodo riusabile che, se fornito di un model fumetto (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
         }
 
@@ -92,7 +101,7 @@ fun ComicScreen(navController: NavController, comicName : String, comicThumbnail
 }
 
 @Composable
-fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String) {
 
     Row(
         modifier = Modifier
@@ -101,7 +110,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
             .background(Color.Red)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(110.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -129,8 +138,8 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
         }
 
         Text(
-            text = "Sample".uppercase(),
-            fontSize = 30.sp,
+            text = comicTitle.uppercase(),
+            fontSize = 20.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -140,7 +149,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
 }
 
 @Composable
-fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
+fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription : String, context : Context) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
     Row {
         val scrollState = rememberScrollState()
         Column(
@@ -159,12 +168,26 @@ fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine d
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                UnclickableImageCard(
-                    painterResource(R.drawable.sfondo_muro),
-                    contentDescription = "none",
-                    modifier = Modifier.fillMaxSize()
+                val imageView = remember { ImageView(context) }
+
+                Picasso.get()
+                    .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
+                    .placeholder(R.drawable.placeholder_comic)                                                                            //attesa del carimento, da cmabiare
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .resize(800, 800)
+                    .centerCrop()
+                    .into(imageView)
+
+                AndroidView(
+                    factory = { imageView },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.8f)
                 )
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 modifier = Modifier
@@ -210,7 +233,7 @@ fun ComicCard(fontFamily: FontFamily) {  //Crea la lista contenente l'immagine d
                 )
             }
 
-            TextChip("Info", 20.sp, fontFamily)
+            TextChip(comicDescription.uppercase(), 20.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }

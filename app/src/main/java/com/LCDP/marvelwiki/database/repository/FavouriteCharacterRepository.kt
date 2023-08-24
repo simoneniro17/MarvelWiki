@@ -7,7 +7,7 @@ import com.LCDP.marvelwiki.database.model.FavouriteCharacter
 // Classe che fa da intermediario tra il rispettivo ViewModel e il DAO
 class FavouriteCharacterRepository(private val favouriteCharacterDAO: FavouriteCharacterDAO) {
 
-    // Oggetto che contiene una lista degli ID di tutti i personaggi preferiti, ottenuta tramite il DAO
+ /*   // Oggetto che contiene una lista degli ID di tutti i personaggi preferiti, ottenuta tramite il DAO
     val allFavouriteCharacterId: List<String> = favouriteCharacterDAO.getAllFavoriteCharacterId()
 
     // Funzione che permette di aggiungere (l'ID di) un personaggio ai preferiti
@@ -19,4 +19,6 @@ class FavouriteCharacterRepository(private val favouriteCharacterDAO: FavouriteC
     suspend fun deleteFavouriteCharacter(favouriteCharacter: FavouriteCharacter){
         favouriteCharacterDAO.deleteFavouriteCharacter(favouriteCharacter)
     }
+
+  */
 }

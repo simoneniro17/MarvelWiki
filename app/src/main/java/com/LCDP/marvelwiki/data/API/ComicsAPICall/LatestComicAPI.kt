@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface LatestComicAPI {
-
     @GET("comics")
     suspend fun getLatestComic(
         //Specifico le componenti dell'URL

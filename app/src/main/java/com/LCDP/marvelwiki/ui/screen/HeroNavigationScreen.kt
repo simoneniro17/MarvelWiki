@@ -1,12 +1,11 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.app.Application
 import android.content.Context
-import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +17,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,37 +36,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
-import com.LCDP.marvelwiki.data.model.HeroModel
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
-import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
-import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
-import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
 import com.LCDP.marvelwiki.usefulStuff.Debouncer
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
 @Composable
 fun NavigationScreen(navController: NavController,context: Context) {
-
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
     val charactersRepository = CharactersRepository()               //creo la repository
     val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
-        factory = CharactersViewModelFactory(charactersRepository)
+        factory = CharactersViewModelFactory(charactersRepository, context.applicationContext as Application)
     )
 
     charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
@@ -98,7 +88,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            //Separator(fontFamily = currentFont)
+            Separator(fontFamily = currentFont,charactersViewModel)
             SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont)
             AllHeroesList(navController, currentFont,context, charactersViewModel)
         }
@@ -112,7 +102,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(Color.Red)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+                .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
                 .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(50.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -223,25 +213,31 @@ fun SearchScreen(navController: NavController,
 }
 
 @Composable
-    fun Separator(fontFamily: FontFamily) {
+    fun Separator(fontFamily: FontFamily, charactersViewModel: CharactersViewModel) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
                 .background(color = Color.Red)
-                .border(border = BorderStroke(1.dp, Color.Black)),
+                .border(border = BorderStroke((0.5).dp, Color.Black)),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             val checkedState = remember { mutableStateOf(false) }
             Checkbox(
                 checked = checkedState.value,
-                onCheckedChange = { checkedState.value = it },
+                onCheckedChange = { checkedState.value = it
+                    if (!it) {
+                        charactersViewModel.unloadFavouriteCharacters()
+                    } else {
+                        charactersViewModel.loadFavouriteCharacters()
+                    } },
                 colors = CheckboxDefaults.colors(
                     checkedColor = Color.Black,
                     uncheckedColor = Color.Black,
                     //checkmarkColor = Color.Black
                 )
+
             )
 
             Text(
@@ -311,10 +307,10 @@ fun AllHeroesList(
 
 @Composable
     fun HeroThumbnail(
-        navController: NavController,
-        fontFamily: FontFamily,
-        selectedHero: Character,
-        context: Context
+    navController: NavController,
+    fontFamily: FontFamily,
+    selectedHero: Character,
+    context: Context
     ) {
 
         Row(
@@ -336,10 +332,23 @@ fun AllHeroesList(
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
 
+                        val name = selectedHero.name
+                        var thumbnail = selectedHero.thumbnail?.path
+
+                        thumbnail = thumbnail?.replace("/", "_")
+                        var description = selectedHero.description
+
+                        if (description.isNullOrEmpty()) {
+                            description = "DESCRIPTION NOT FOUND"
+                        }
+
+                        val id = selectedHero.id
+
                         val args = listOf(
-                            selectedHero.name,
-                            "thumbnail_sample",//selectedHero.thumbnail,
-                            "description_sample"//selectedHero.description
+                            name,
+                            thumbnail,
+                            description,
+                            id
                         )
                         navController.navigate("heroScreen/${args.joinToString("/")}")
 
@@ -351,7 +360,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.placeholder)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)

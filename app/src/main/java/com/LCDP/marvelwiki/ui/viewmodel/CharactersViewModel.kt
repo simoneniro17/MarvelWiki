@@ -1,24 +1,25 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
-import androidx.compose.runtime.State
+import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
-import com.LCDP.marvelwiki.usefulStuff.Constant
-import com.LCDP.marvelwiki.usefulStuff.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import com.LCDP.marvelwiki.data.model.Character
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.LCDP.marvelwiki.database.DatabaseAccess
+import com.LCDP.marvelwiki.database.appDatabase
+import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
+//import kotlinx.coroutines.flow.internal.NoOpContinuation.context
+//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 //In questa classe chiamiamo tutti i metodi relativi alla pi dei characters
-class CharactersViewModel(private val charactersRepository: CharactersRepository) : ViewModel() {
-
+class CharactersViewModel(private val charactersRepository: CharactersRepository, application: Application) : ViewModel() {
+    private val context: Context = application.applicationContext
     private val _searchQuery = mutableStateOf("")
 
     private val _characterList = mutableStateListOf<Character>()                                            //è una mutable list, quando la lista viene modificata, Compose rileva i cambiamenti e aggiorna automaticamente l'interfaccia utente.
@@ -73,5 +74,33 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
                 }
             }
         }
+    }
+
+    fun unloadFavouriteCharacters(){
+        offset = 0
+        _characterList.clear()
+        loadCharacterList()
+    }
+    fun loadFavouriteCharacters() {
+        _characterList.clear()
+        viewModelScope.launch {
+            try {
+                val appDatabase = appDatabase.getDatabase(context)
+                val databaseAccess = DatabaseAccess(appDatabase)
+                val idList = databaseAccess.getAllFavouriteCharacters()
+
+                idList.forEach { id ->
+                    val characterResponse = charactersRepository.getChar_api(id = id)
+                    val characters = characterResponse.body()?.characterData?.results
+                    if (characters != null) {
+                        _characterList.addAll(characters.toMutableList())
+                    }
+                }
+            } catch (e: Exception) {
+                // Gestisco eventuali errori durante il caricamento
+                println("Errore durante il caricamento dei personaggi: ${e.message}")
+            }
+        }
+
     }
 }
