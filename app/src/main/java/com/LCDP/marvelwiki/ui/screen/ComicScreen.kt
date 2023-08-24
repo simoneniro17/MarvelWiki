@@ -172,7 +172,7 @@ fun ComicCard(fontFamily: FontFamily, comicThumbnail : String, comicDescription 
 
                 Picasso.get()
                     .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.placeholder_comic)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(800, 800)

@@ -399,6 +399,7 @@ fun ComicThumbnail(
 
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .placeholder(R.drawable.placeholder_comic)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)
