@@ -190,7 +190,7 @@ fun HeroCard(
 
                Picasso.get()
                    .load(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                   .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                   .placeholder(R.drawable.placeholder)                                                                            //attesa del carimento, da cmabiare
                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                    .networkPolicy(NetworkPolicy.NO_CACHE)
                    .resize(800, 800)

@@ -102,7 +102,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(Color.Red)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+                .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
                 .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(50.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -219,7 +219,7 @@ fun SearchScreen(navController: NavController,
                 .fillMaxWidth()
                 .height(40.dp)
                 .background(color = Color.Red)
-                .border(border = BorderStroke(1.dp, Color.Black)),
+                .border(border = BorderStroke((0.5).dp, Color.Black)),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -360,7 +360,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.sfondo_muro)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.placeholder)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)
