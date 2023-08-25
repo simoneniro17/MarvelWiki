@@ -111,7 +111,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 onFavoriteClicked = {isFavorite ->
                     if(isFavorite){
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
-                        Log.i("TEST PREFERITO", comicThumbnail)
+                        Log.i("TEST PREFERITO", comicId)
                     } else {
                         favouriteComicViewModel.deleteData(FavouriteComic(comicId))
                     }
