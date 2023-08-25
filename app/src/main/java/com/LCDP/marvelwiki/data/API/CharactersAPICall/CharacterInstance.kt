@@ -7,54 +7,37 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object CharacterInstance {
-    /*
-        L'utilizzo della dicitura "by lazy" indica che l'inizializzazione della variabile "retrofit"
-        viene ritardata fino al momento in cui viene effettivamente utilizzata, ottimizzando così
-        le risorse e migliorando leggermente le prestazioni.
-        Inoltre, le chiamate successive all'accesso a 'retrofit' utilizzeranno l'istanza precedentemente
-        creata, senza re-inizializzarla.
-     */
+
+    // Istanza di Retrofit per le chiamate alle API dei personaggi
     private val retrofit by lazy {
 
-        /*
-            Creiamo un oggetto per la registrazione delle richieste e delle risposte di rete.
-            Viene impostato il livello di log su 'BODY', che registra tutti i dettagli sia dell'header,
-            sia del body.
-         */
+        // Creazione di un interceptor per registrare i dettagli delle richieste e delle risposte di rete
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
-        /*
-            Creiamo un'istanza di OkHttpClient, ossia il client HTTP utilizzato da Retrofit per eseguire
-            le richieste di rete.
-         */
+        // Configurazione di OkHttpClient per le richieste di rete con log dettagliato
         val client = OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
 
-        /*
-            Creiamo l'istanza di Retrofit specificando la URL di base dell'API dei personaggi.
-            Aggiungiamo un convertitore Gson per consentire a Retrofit di convertire in maniera automatica
-            le risposte JSON nelle classi model. Impostiamo l'istanza di 'OkHttpClient' da utilizzare
-            come client HTTP sottostante per le richieste di rete.
-         */
+        // Configurazione e creazione dell'istanza Retrofit
         Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .baseUrl(Constant.BASE_URL) // URL di base dell'API dei personaggi
+            .addConverterFactory(GsonConverterFactory.create()) // Conversione automatica JSON in classi model
+            .client(client) // Utilizzo del client HTTP configurato
             .build()
     }
 
+    // Istanze delle diverse interfacce API per le chiamate ai diversi endpoint
     val char_api by lazy {
-        // Al metodo create() passiamo l'oggetto 'Class' associato all'interfaccia 'CharacterAPI'
-        retrofit.create(CharacterAPI::class.java)
+        retrofit.create(CharacterAPI::class.java) // Elenco dei personaggi
     }
 
     val charByName_api by lazy {
-        retrofit.create(CharacterByNameAPI::class.java)
+        retrofit.create(CharacterByNameAPI::class.java) // Elenco personaggi per nome
     }
 
     val charById_api by lazy {
-        retrofit.create(CharacterAPIById::class.java)
+        retrofit.create(CharacterAPIById::class.java) // Personaggio per ID
     }
 }

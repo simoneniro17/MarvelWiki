@@ -7,11 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+// Interfaccia per recuperare un personaggio specifico tramite ID utilizzando la libreria Retrofit
 interface CharacterAPIById {
     @GET("characters/{characterId}")
     suspend fun getCharacterByIdAPI(
-
-        // La funzione prende in input diversi parametri, passati come parametri di query nell'URL della richiesta.
         @Path("characterId") id: String,
         @Query("ts") apikey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,
