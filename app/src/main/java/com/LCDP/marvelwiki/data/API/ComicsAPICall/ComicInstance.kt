@@ -62,4 +62,8 @@ object ComicInstance {
         retrofit.create(LatestComicAPIByCharId::class.java)
     }
 
+    val comicsById_api by lazy {
+        retrofit.create(ComicAPIById::class.java)
+    }
+
 }

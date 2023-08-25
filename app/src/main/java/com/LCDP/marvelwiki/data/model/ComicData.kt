@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
     ossia la lista dei fumetti stessi.
  */
 data class ComicData(
-    val limit: Int,
+    //val limit: Int,
 
     /*
         La notazione '@SerializedName' viene utilizzata per specificare il nome del campo nel JSON

@@ -140,7 +140,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
         //loadCharacterList()
     }
     fun loadFavouriteComics() {
-        _comicList.clear()
+        // _comicList.clear()
         viewModelScope.launch {
             try {
                 val appDatabase = appDatabase.getDatabase(context)
@@ -148,7 +148,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
                 val idList = databaseAccess.getAllFavouriteComics()
 
                 idList.forEach { id ->
-                    val comicResponse = comicsRepository.getComicsByCharId_api(id = id)
+                    val comicResponse = comicsRepository.getComicsById_api(id = id)
                     val comics = comicResponse.body()?.comicData?.results
                     if (comics != null) {
                         _comicList.addAll(comics.toMutableList())
@@ -176,7 +176,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
                 val idList = databaseAccess.getAllReadComics()
 
                 idList.forEach { id ->
-                    val comicResponse = comicsRepository.getComicsByCharId_api(id = id)
+                    val comicResponse = comicsRepository.getComicsById_api(id = id)
                     val comics = comicResponse.body()?.comicData?.results
                     if (comics != null) {
                         _comicList.addAll(comics.toMutableList())

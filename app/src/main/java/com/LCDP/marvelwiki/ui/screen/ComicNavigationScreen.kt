@@ -306,7 +306,7 @@ fun ComicSeparator(
                 uncheckedColor = Color.Black
             )
         )
-
+        // "id": 106565
         Text(
             "Favorite comics".uppercase(),
             fontSize = 20.sp,

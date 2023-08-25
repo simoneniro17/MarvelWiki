@@ -61,7 +61,7 @@ fun Navigation(context: Context) {
                 navArgument("comicTitle") { type = NavType.StringType },
                 navArgument("comicThumbnail") { type = NavType.StringType },
                 navArgument("comicDescription") { type = NavType.StringType },
-                navArgument("comicId") {type = NavType.IntType}
+                navArgument("comicId") {type = NavType.StringType}
             )
         ) { entry ->
             val comicTitle = entry.arguments?.getString("comicTitle") ?: ""

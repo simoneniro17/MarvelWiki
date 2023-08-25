@@ -1,6 +1,7 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -110,6 +111,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 onFavoriteClicked = {isFavorite ->
                     if(isFavorite){
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
+                        Log.i("TEST PREFERITO", comicThumbnail)
                     } else {
                         favouriteComicViewModel.deleteData(FavouriteComic(comicId))
                     }
@@ -117,6 +119,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 onReadClicked = {isRead ->
                     if(isRead){
                         readComicViewModel.insertData(ReadComic(comicId))
+                        Log.i("TEST LETTO", comicId)
                     } else {
                         readComicViewModel.deleteData(ReadComic(comicId))
                     }

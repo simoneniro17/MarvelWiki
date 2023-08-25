@@ -14,7 +14,7 @@ import java.io.Serializable
 data class Comic(
     @SerializedName("id")
     @Expose
-    var comicId: Int? = null,
+    var comicId: Int,
 
     @SerializedName("title")
     @Expose
