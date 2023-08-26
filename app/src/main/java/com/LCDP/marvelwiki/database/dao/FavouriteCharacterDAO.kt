@@ -23,4 +23,7 @@ interface FavouriteCharacterDAO {
     // Metodo per ottenere la lista dei personaggi (gli ID) preferiti
     @Query("SELECT * FROM favourite_character")
     fun getAllFavoriteCharacterId(): List<String>
+
+    @Query("SELECT count(*) FROM favourite_character WHERE characterId = :characterId")
+    fun provaPreferito(characterId : String): Int
 }

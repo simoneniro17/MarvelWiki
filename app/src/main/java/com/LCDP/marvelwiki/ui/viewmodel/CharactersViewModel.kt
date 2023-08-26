@@ -14,28 +14,39 @@ import com.LCDP.marvelwiki.database.DatabaseAccess
 import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
 import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 //import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 //In questa classe chiamiamo tutti i metodi relativi alla pi dei characters
-class CharactersViewModel(private val charactersRepository: CharactersRepository, application: Application) : ViewModel() {
+class CharactersViewModel(
+    private val charactersRepository: CharactersRepository,
+    application: Application
+) : ViewModel() {
     private val context: Context = application.applicationContext
     private val _searchQuery = mutableStateOf("")
 
-    private val _characterList = mutableStateListOf<Character>()                                            //è una mutable list, quando la lista viene modificata, Compose rileva i cambiamenti e aggiorna automaticamente l'interfaccia utente.
+    private val _characterList =
+        mutableStateListOf<Character>()                                            //è una mutable list, quando la lista viene modificata, Compose rileva i cambiamenti e aggiorna automaticamente l'interfaccia utente.
     val characterList: List<Character> get() = _characterList                                       //prendiamo i dati dalla lista come lista immutabile
 
 
-    private var offset = 0                                                                          //offset per comunicare alla api da quale punto deve iniziare a prendere gli eroi
+    private var offset =
+        0                                                                          //offset per comunicare alla api da quale punto deve iniziare a prendere gli eroi
+
     fun loadCharacterList() {                                                                       //carica la lista di personaggi 100 alla volta
         viewModelScope.launch {
             try {
-                val charactersResponse = charactersRepository.getChar_api(offset)                   //viene fatta una chiamata alla api specificando l'offset
-                val characters = charactersResponse.body()?.characterData?.results                  //prendo il corpo della  risposta che contiene i dati
+                val charactersResponse =
+                    charactersRepository.getChar_api(offset)                   //viene fatta una chiamata alla api specificando l'offset
+                val characters =
+                    charactersResponse.body()?.characterData?.results                  //prendo il corpo della  risposta che contiene i dati
 
                 if (characters != null) {
                     _characterList.addAll(characters.toMutableList())                               //aggiungo alla mutable list gli altri personaggi appena caricati. È importante notare il cast della lista immutabile appena presa
-                                                                                                    // ad una mutabile per potergli inserire i dati
+                    // ad una mutabile per potergli inserire i dati
                     offset += characters.size                                                       //aggiorno l'offset
                 }
             } catch (e: Exception) {
@@ -48,8 +59,8 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
     fun loadCharacterByNameList(newQuery: String) { //carica la lista di personaggi 100 alla volta
         _characterList.clear()
         if (newQuery.isEmpty()) {
-                offset = 0
-                loadCharacterList()
+            offset = 0
+            loadCharacterList()
         } else {
             viewModelScope.launch {
                 try {
@@ -76,11 +87,12 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
         }
     }
 
-    fun unloadFavouriteCharacters(){
+    fun unloadFavouriteCharacters() {
         offset = 0
         _characterList.clear()
         loadCharacterList()
     }
+
     fun loadFavouriteCharacters() {
         _characterList.clear()
         viewModelScope.launch {
@@ -101,6 +113,7 @@ class CharactersViewModel(private val charactersRepository: CharactersRepository
                 println("Errore durante il caricamento dei personaggi: ${e.message}")
             }
         }
-
     }
+
+
 }

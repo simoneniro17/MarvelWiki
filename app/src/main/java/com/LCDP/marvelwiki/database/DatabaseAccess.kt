@@ -45,7 +45,15 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
+    suspend fun isCharacterFavourite(selectedId: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            val idList = myDatabase.favouriteCharacterDAO().getAllFavoriteCharacterId()
+            idList.contains(selectedId)
+        }
+    }
+
     /*
+
     suspend fun isComicFavourite(favouriteComic: FavouriteComic): Boolean {
         return withContext(Dispatchers.IO) {
             myDatabase.favouriteComicDAO().isComicFavourite(favouriteComic.comicId)

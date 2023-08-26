@@ -70,4 +70,8 @@ class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) :
             databaseAccess.deleteFavouriteCharacter(favouriteCharacter)
         }
     }
+
+    suspend fun isCharacterFavourite(selectedId: String): Boolean {
+        return databaseAccess.isCharacterFavourite(selectedId)
+    }
 }

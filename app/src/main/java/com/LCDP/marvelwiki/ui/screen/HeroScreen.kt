@@ -26,6 +26,8 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,6 +49,7 @@ import com.LCDP.marvelwiki.database.DatabaseAccess
 import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.model.FavouriteCharacter
 import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
+import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -64,6 +67,19 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val appDatabase = appDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
     val favouriteCharacterViewModel = FavouriteCharacterViewModel(databaseAccess)
+
+    val isFav = remember {mutableStateOf(false)}
+
+    LaunchedEffect(selectedHeroId) {
+        val isFavourite = favouriteCharacterViewModel.isCharacterFavourite(selectedHeroId)
+        isFav.value = isFavourite
+    }
+
+    if(isFav.value) {
+        Log.i("SIIIIIIIIIIIIIIII", "AAAAAAAAAAAAAAAAAAA")
+    } else {
+       Log.i("NOOOOOOOOOOOOOOOO", "BBBBBBBBBBBBBBBBBB")
+    }
 
    //Setup del font
    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
