@@ -7,11 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+// Interfaccia per recuperare un fumetto specifico tramite ID utilizzando la libreria Retrofit
 interface ComicAPIById {
-
     @GET("comics/{comicId}")
     suspend fun getComicByIdAPI(
-        //Specifico le componenti dell'URL
         @Path("comicId") id: String,
         @Query("ts") apiKey: String = Constant.ts,
         @Query("apikey") ts: String = Constant.PUBLIC_KEY,

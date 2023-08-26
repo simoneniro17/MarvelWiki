@@ -4,13 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-/*
-    Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
-    alla proprietà della nostra classe 'Comic' durante il funzionamento di Gson.
-
-    Con l'annotazione '@Expose' indichiamo che il campo è incluso nel processo di serializzazione
-    e deserializzazione con Gson.
- */
+/*  '@SerializedName' specifica il nome del campo JSON corrispondente alla proprietà
+    della classe 'Comic' durante il funzionamento di Gson.
+    '@Expose' indica che il campo è incluso nel processo di serializzazione
+    e deserializzazione con Gson.   */
 data class Comic(
     @SerializedName("id")
     @Expose
@@ -27,5 +24,4 @@ data class Comic(
     @SerializedName("description")
     @Expose
     val description: String? = null,
-    var images: List<Images>
-) :Serializable
+) : Serializable

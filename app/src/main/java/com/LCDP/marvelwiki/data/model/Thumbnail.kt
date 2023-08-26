@@ -3,13 +3,10 @@ package com.LCDP.marvelwiki.data.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-/*
-    Con l'annotazione '@SerializedName' specifichiamo il nome del campo nel JSON corrispondente
-    alla proprietà della nostra classe 'Thumbnail' durante il funzionamento di Gson.
-
-    Con l'annotazione '@Expose' indichiamo che il campo è incluso nel processo di serializzazione
-    e deserializzazione con Gson.
- */
+/*  '@SerializedName' specifica il nome del campo JSON corrispondente alla proprietà
+    della classe 'Thumbnail' durante il funzionamento di Gson.
+    '@Expose' indica che il campo è incluso nel processo di serializzazione
+    e deserializzazione con Gson.   */
 data class Thumbnail(
 
     // 'path' indica il percorso dell'immagine associata ad un elemento specifico della Marvel API

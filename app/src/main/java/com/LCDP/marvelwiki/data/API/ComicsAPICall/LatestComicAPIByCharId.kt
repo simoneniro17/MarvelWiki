@@ -7,14 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+// Interfaccia per recuperare gli ultimi fumetti di un personaggio specifico utilizzando la libreria Retrofit
 interface LatestComicAPIByCharId {
-    // Questo metodo ci consente di ottenere i fumetti di un personaggio specifico.
     @GET("characters/{id}/comics")
     suspend fun getLatestComicsByCharId(
-        /*
-            L'annotazione '@Path("id")' indica che il valore dell'ID del personaggio di cui
-            si vogliono ottenere i fumetti sarà sostituito nella parte dell'URL specificata.
-        */
         @Path("id") id: String,
         @Query("dateDescriptor") dateDescriptor: String = "thisMonth",
         @Query("ts") apiKey: String = Constant.ts,

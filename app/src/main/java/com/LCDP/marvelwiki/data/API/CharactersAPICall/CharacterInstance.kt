@@ -22,7 +22,7 @@ object CharacterInstance {
 
         // Configurazione e creazione dell'istanza Retrofit
         Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL) // URL di base dell'API dei personaggi
+            .baseUrl(Constant.BASE_URL) // URL di base delle API
             .addConverterFactory(GsonConverterFactory.create()) // Conversione automatica JSON in classi model
             .client(client) // Utilizzo del client HTTP configurato
             .build()
