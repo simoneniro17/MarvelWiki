@@ -26,6 +26,12 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
+    suspend fun isCharacterFavourite(favouriteCharacter: FavouriteCharacter): Boolean {
+        return withContext(Dispatchers.IO) {
+            myDatabase.favouriteCharacterDAO().isCharacterFavourite(favouriteCharacter.characterId)
+        }
+    }
+
     suspend fun getAllFavouriteComics():List<String>{
         return withContext(Dispatchers.IO) {
             myDatabase.favouriteComicDAO().getAllFavoriteComicId()
@@ -41,6 +47,12 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
     suspend fun insertFavouriteComic(favouriteComic: FavouriteComic) {
         withContext(Dispatchers.IO) {
             myDatabase.favouriteComicDAO().insertFavoriteComic(favouriteComic)
+        }
+    }
+
+    suspend fun isComicFavourite(favouriteComic: FavouriteComic): Boolean {
+        return withContext(Dispatchers.IO) {
+            myDatabase.favouriteComicDAO().isComicFavourite(favouriteComic.comicId)
         }
     }
 
@@ -62,4 +74,9 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
+    suspend fun isComicRead(readComic: ReadComic): Boolean {
+        return withContext(Dispatchers.IO) {
+            myDatabase.readComicDAO().isComicRead(readComic.comicId)
+        }
+    }
 }

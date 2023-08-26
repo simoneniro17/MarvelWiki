@@ -47,6 +47,8 @@ import kotlinx.coroutines.launch
 class ReadComicViewModel( private val databaseAccess: DatabaseAccess) : ViewModel() {
 
     private var readComicList = emptyList<String>()
+    private var isFavourite : Boolean = false
+
     @OptIn(DelicateCoroutinesApi::class)
     fun fetchData():List<String>{
         GlobalScope.launch {
@@ -67,5 +69,13 @@ class ReadComicViewModel( private val databaseAccess: DatabaseAccess) : ViewMode
         GlobalScope.launch {
             databaseAccess.deleteReadComic(readComic)
         }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun isComicRead(readComic: ReadComic) : Boolean {
+        GlobalScope.launch {
+            isFavourite = databaseAccess.isComicRead(readComic)
+        }
+        return isFavourite
     }
 }

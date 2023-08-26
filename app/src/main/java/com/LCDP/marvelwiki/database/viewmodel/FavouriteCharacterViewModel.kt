@@ -48,6 +48,8 @@ import kotlinx.coroutines.launch
 class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) : ViewModel() {
 
     private var favouriteCharacterList = emptyList<String>()
+    private var isFavourite : Boolean = false
+
     @OptIn(DelicateCoroutinesApi::class)
     fun fetchData():List<String>{
         GlobalScope.launch {
@@ -68,5 +70,13 @@ class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) :
         GlobalScope.launch {
             databaseAccess.deleteFavouriteCharacter(favouriteCharacter)
         }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun isCharacterFavourite(favouriteCharacter: FavouriteCharacter) : Boolean {
+        GlobalScope.launch {
+            isFavourite = databaseAccess.isCharacterFavourite(favouriteCharacter)
+        }
+        return isFavourite
     }
 }

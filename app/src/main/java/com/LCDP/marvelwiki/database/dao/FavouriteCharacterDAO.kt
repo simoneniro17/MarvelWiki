@@ -22,4 +22,8 @@ interface FavouriteCharacterDAO {
     // Metodo per ottenere la lista dei personaggi (gli ID) preferiti
     @Query("SELECT * FROM favourite_character")
     fun getAllFavoriteCharacterId(): List<String>
+
+    @Query("SELECT EXISTS (SELECT 1 FROM favourite_character WHERE characterId = :characterId LIMIT 1)")
+    suspend fun isCharacterFavourite(characterId: String): Boolean
+
 }
