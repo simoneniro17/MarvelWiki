@@ -1,6 +1,7 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -49,6 +50,7 @@ import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 
 @Composable

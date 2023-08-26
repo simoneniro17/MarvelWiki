@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.database
 
+import androidx.lifecycle.LiveData
 import com.LCDP.marvelwiki.database.model.FavouriteCharacter
 import com.LCDP.marvelwiki.database.model.FavouriteComic
 import com.LCDP.marvelwiki.database.model.ReadComic
@@ -26,12 +27,6 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
-    suspend fun isCharacterFavourite(favouriteCharacter: FavouriteCharacter): Boolean {
-        return withContext(Dispatchers.IO) {
-            myDatabase.favouriteCharacterDAO().isCharacterFavourite(favouriteCharacter.characterId)
-        }
-    }
-
     suspend fun getAllFavouriteComics():List<String>{
         return withContext(Dispatchers.IO) {
             myDatabase.favouriteComicDAO().getAllFavoriteComicId()
@@ -50,11 +45,14 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
+    /*
     suspend fun isComicFavourite(favouriteComic: FavouriteComic): Boolean {
         return withContext(Dispatchers.IO) {
             myDatabase.favouriteComicDAO().isComicFavourite(favouriteComic.comicId)
         }
     }
+
+     */
 
     suspend fun getAllReadComics():List<String>{
         return withContext(Dispatchers.IO) {
@@ -74,9 +72,12 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
+    /*
     suspend fun isComicRead(readComic: ReadComic): Boolean {
         return withContext(Dispatchers.IO) {
             myDatabase.readComicDAO().isComicRead(readComic.comicId)
         }
     }
+
+     */
 }

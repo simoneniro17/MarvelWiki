@@ -71,6 +71,7 @@ class FavouriteComicViewModel( private val databaseAccess: DatabaseAccess) : Vie
         }
     }
 
+    /*
     @OptIn(DelicateCoroutinesApi::class)
     fun isComicFavourite(favouriteComic: FavouriteComic) : Boolean {
         GlobalScope.launch {
@@ -78,4 +79,6 @@ class FavouriteComicViewModel( private val databaseAccess: DatabaseAccess) : Vie
         }
         return isFavourite
     }
+
+     */
 }

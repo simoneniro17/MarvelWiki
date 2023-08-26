@@ -23,6 +23,9 @@ interface ReadComicDAO {
     @Query("SELECT * FROM read_comic")
     fun getAllReadComicId(): List<String>
 
+    /*
     @Query("SELECT EXISTS (SELECT 1 FROM read_comic WHERE comicId = :comicId LIMIT 1)")
     suspend fun isComicRead(comicId: String): Boolean
+
+     */
 }
