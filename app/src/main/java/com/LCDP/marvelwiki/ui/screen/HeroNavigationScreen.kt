@@ -17,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +57,9 @@ fun NavigationScreen(navController: NavController,context: Context) {
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
+    //Setup stato della checkbox
+    val checkedState = remember { mutableStateOf(false) }
+
     val charactersRepository = CharactersRepository()               //creo la repository
     val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
         factory = CharactersViewModelFactory(charactersRepository, context.applicationContext as Application)
@@ -88,8 +92,8 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 navController,
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            Separator(fontFamily = currentFont,charactersViewModel)
-            SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont)
+            Separator(fontFamily = currentFont,charactersViewModel, checkedState)
+            SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont, checkedState)
             AllHeroesList(navController, currentFont,context, charactersViewModel)
         }
     }
@@ -145,7 +149,8 @@ fun NavigationScreen(navController: NavController,context: Context) {
 @Composable
 fun SearchBar(
     fontFamily: FontFamily,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
+    checkedState : MutableState<Boolean>
 ) {
     var textFieldState by remember { mutableStateOf("") }
     val debouncer = remember { Debouncer(300)}
@@ -189,19 +194,25 @@ fun SearchBar(
 
         )
     }
+    if (textFieldState.isNotEmpty()) {
+        checkedState.value = false
+    }
 }
 
 @Composable
 fun SearchScreen(navController: NavController,
                  charactersViewModel: CharactersViewModel,
-                 fontFamily: FontFamily) {
+                 fontFamily: FontFamily,
+                 checkedState : MutableState<Boolean>
+) {
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         SearchBar(
             fontFamily = fontFamily,
-            onSearchQueryChange =  charactersViewModel::loadCharacterByNameList
+            onSearchQueryChange =  charactersViewModel::loadCharacterByNameList,
+            checkedState
         )
         AllHeroesList(
             navController = navController,
@@ -213,7 +224,7 @@ fun SearchScreen(navController: NavController,
 }
 
 @Composable
-    fun Separator(fontFamily: FontFamily, charactersViewModel: CharactersViewModel) {
+    fun Separator(fontFamily: FontFamily, charactersViewModel: CharactersViewModel, checkedState : MutableState<Boolean>) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -223,7 +234,6 @@ fun SearchScreen(navController: NavController,
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val checkedState = remember { mutableStateOf(false) }
             Checkbox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it

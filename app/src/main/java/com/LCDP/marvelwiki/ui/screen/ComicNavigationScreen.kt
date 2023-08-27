@@ -17,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.model.Comic
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
+import com.LCDP.marvelwiki.database.viewmodel.FavouriteComicViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
@@ -56,10 +58,16 @@ import kotlinx.coroutines.flow.map
 @Composable
 fun ComicNavigationScreen(navController: NavController, context : Context) {
 
+    //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
+    //Creazione del comicsViewModel
     val comicsRepository = ComicsRepository()
     val comicsViewModel : ComicsViewModel = viewModel(factory = ComicViewModelFactory(comicsRepository, context.applicationContext as Application))
+
+    //Stati delle checkbox per visualizzare solo preferiti o solo letti
+    val checkedState1 = remember { mutableStateOf(false) }   //valore che filtra i fumetti preferiti
+    val checkedState2 = remember { mutableStateOf(false) }   //valore che filtra i fumetti letti
 
     Box(
         modifier = Modifier
@@ -83,10 +91,59 @@ fun ComicNavigationScreen(navController: NavController, context : Context) {
                 currentFont
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
 
-            ComicSeparator(fontFamily = currentFont, comicsViewModel = comicsViewModel)
-            ComicSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont)
+            ComicSeparator(fontFamily = currentFont, comicsViewModel = comicsViewModel, checkedState1, checkedState2)
+            ComicSearchScreen(navController = navController, comicsViewModel = comicsViewModel, fontFamily = currentFont, checkedState1, checkedState2)
 
         }
+    }
+}
+
+@Composable
+fun ComicByNameSearchBar(
+    fontFamily: FontFamily,
+    onSearchQueryChange: (String) -> Unit
+) {
+    var textFieldState by remember { mutableStateOf("") }
+    val debouncer = remember { Debouncer(400) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        OutlinedTextField(
+            value = textFieldState,
+            onValueChange = {
+                textFieldState = it
+                debouncer.debounce { onSearchQueryChange(it) }
+            },
+            label = {
+                Text(
+                    text = "Search comic by name".uppercase(),
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = fontFamily
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painterResource(R.drawable.search_icon),
+                    contentDescription = "Search Icon",
+                    modifier = Modifier.size(30.dp, 30.dp)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Black,
+                focusedIndicatorColor = Color.Red,
+                leadingIconColor = Color.White,
+                cursorColor = Color.Red,
+                textColor = Color.White
+            ),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+
+            )
     }
 }
 
@@ -102,7 +159,7 @@ fun ComicByIsbnSearchBar(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(5.dp)
     ) {
         OutlinedTextField(
             value = textFieldState,
@@ -143,8 +200,11 @@ fun ComicByIsbnSearchBar(
 fun ComicSearchScreen(
     navController: NavController,
     comicsViewModel: ComicsViewModel,
-    fontFamily: FontFamily
+    fontFamily: FontFamily,
+    checkedState1 : MutableState<Boolean>,
+    checkedState2 : MutableState<Boolean>
 ) {
+    //Stati delle searchbar
     var searchQueryByName by remember { mutableStateOf("") }
     var searchQueryByISBN by remember {mutableStateOf("")}
 
@@ -168,7 +228,11 @@ fun ComicSearchScreen(
                 }
             }
         )
+
+        //SE UNA DELLE DUE SEARCHBAR CONTIENE TESTO, VIENE CARICATA LA LISTA CON I RISULTATI RELATIVI
         if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
+            checkedState1.value = false
+            checkedState2.value = false
             AllComicList(
                 navController = navController,
                 fontFamily = fontFamily,
@@ -176,58 +240,38 @@ fun ComicSearchScreen(
                 comicsViewModel = comicsViewModel
             )
         }
-    }
-}
 
-
-
-
-@Composable
-fun ComicByNameSearchBar(
-    fontFamily: FontFamily,
-    onSearchQueryChange: (String) -> Unit
-) {
-    var textFieldState by remember { mutableStateOf("") }
-    val debouncer = remember { Debouncer(400) }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        OutlinedTextField(
-            value = textFieldState,
-            onValueChange = {
-                textFieldState = it
-                debouncer.debounce { onSearchQueryChange(it) }
-            },
-            label = {
-                Text(
-                    text = "Search comic by name".uppercase(),
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = fontFamily
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    painterResource(R.drawable.search_icon),
-                    contentDescription = "Search Icon",
-                    modifier = Modifier.size(30.dp, 30.dp)
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Black,
-                focusedIndicatorColor = Color.Red,
-                leadingIconColor = Color.White,
-                cursorColor = Color.Red,
-                textColor = Color.White
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-
+        //SE LA PRIMA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I PREFERITI
+        if (checkedState1.value) {
+            println("Mostro solo i preferiti")
+            FavoriteComicList(
+                navController = navController,
+                fontFamily = fontFamily,
+                context = LocalContext.current,
+                comicsViewModel = comicsViewModel
             )
+        }
+
+        //SE LA SECONDA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I LETTI
+        if (checkedState2.value) {
+            println("Mostro solo i letti")
+            ReadComicList(
+                navController = navController,
+                fontFamily = fontFamily,
+                context = LocalContext.current,
+                comicsViewModel = comicsViewModel
+            )
+        }
+
+        //SE NIENE E' STATO SPUNTATO E NESSUN TESTO E' STATO SCRITTO NELLA BARRA DI RICERCA ALLORA VIENE MOSTRATO UN MESSAGGIO
+        else {
+            DefaultComicList(
+                navController = navController,
+                fontFamily = fontFamily,
+                context = LocalContext.current,
+                comicsViewModel = comicsViewModel,
+            )
+        }
     }
 }
 
@@ -238,7 +282,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(50.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -281,18 +325,19 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 @Composable
 fun ComicSeparator(
     fontFamily: FontFamily,
-    comicsViewModel: ComicsViewModel
+    comicsViewModel: ComicsViewModel,
+    checkedState1 : MutableState<Boolean>,
+    checkedState2 : MutableState<Boolean>
     ) {  //crea la barra sottostante alla searchbar contenente le spunte per filtrare la ricerca dei fumetti (preferiti e letti).
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
             .background(color = Color.Red)
-            .border(border = BorderStroke(1.dp, Color.Black)),
+            .border(border = BorderStroke((0.5).dp, Color.Black)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val checkedState1 = remember { mutableStateOf(false) }   //valore che filtra i fumetti preferiti
         Checkbox(
             checked = checkedState1.value,
             onCheckedChange = { checkedState1.value = it
@@ -308,12 +353,11 @@ fun ComicSeparator(
         )
         // "id": 106565
         Text(
-            "Favorite comics".uppercase(),
-            fontSize = 20.sp,
+            "Favorites".uppercase(),
+            fontSize = 15.sp,
             fontFamily = fontFamily,
             color = Color.White
         )
-        val checkedState2 = remember { mutableStateOf(false) }  //valore che filtra i fumetti letti.
         Checkbox(
             checked = checkedState2.value,
             onCheckedChange = { checkedState2.value = it
@@ -330,7 +374,7 @@ fun ComicSeparator(
 
         Text(
             "Read comics".uppercase(),
-            fontSize = 20.sp,
+            fontSize = 15.sp,
             fontFamily = fontFamily,
             color = Color.White
         )
@@ -338,7 +382,7 @@ fun ComicSeparator(
 }
 
 @Composable
-fun AllComicList(
+fun AllComicList( //LISTA CONTENENTE RISULTATI DELLE RICERCE NELLE SEARCHBAR
     navController: NavController,
     fontFamily: FontFamily,
     context: Context,
@@ -350,6 +394,62 @@ fun AllComicList(
     val comicList = comicsViewModel.comicList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
     LazyColumn(state = listState) {                                  //ora carichiamo gli elementi della lista
+        items(comicList.size) { index ->
+            ComicThumbnail(
+                navController,
+                fontFamily,
+                comicList[index],
+                context
+            )
+        }
+    }
+}
+
+@Composable
+fun DefaultComicList( // MESSAGGIO DI DEFAULT SE NON VIENE CERCATO NULLA
+    navController : NavController,
+    fontFamily : FontFamily,
+    context : Context,
+    comicsViewModel : ComicsViewModel
+) {
+    TextChip("Search for a comic by using its name or ISBN", 20.sp, fontFamily)
+}
+
+@Composable
+fun FavoriteComicList( // LISTA CONTENENTE SOLO I PREFERITI
+    navController : NavController,
+    fontFamily : FontFamily,
+    context : Context,
+    comicsViewModel : ComicsViewModel
+) {
+    val listState = rememberLazyListState()
+    comicsViewModel.loadFavouriteComics()
+    val comicList = comicsViewModel.comicList
+
+    LazyColumn(state = listState) {
+        items(comicList.size) { index ->
+            ComicThumbnail(
+                navController,
+                fontFamily,
+                comicList[index],
+                context
+            )
+        }
+    }
+}
+
+@Composable
+fun ReadComicList( // LISTA CONTENENTE SOLO I FUMETTI LETTI
+    navController : NavController,
+    fontFamily : FontFamily,
+    context : Context,
+    comicsViewModel : ComicsViewModel
+) {
+    val listState = rememberLazyListState()
+    comicsViewModel.loadReadComics()
+    val comicList = comicsViewModel.comicList
+
+    LazyColumn(state = listState) {
         items(comicList.size) { index ->
             ComicThumbnail(
                 navController,
