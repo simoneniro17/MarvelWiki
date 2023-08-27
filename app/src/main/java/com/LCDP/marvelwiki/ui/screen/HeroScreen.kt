@@ -27,6 +27,7 @@ import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,17 +69,17 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val databaseAccess = DatabaseAccess(appDatabase)
     val favouriteCharacterViewModel = FavouriteCharacterViewModel(databaseAccess)
 
-    val isFav = remember {mutableStateOf(false)}
+    val isFavorite = remember {mutableStateOf(false)}
 
     LaunchedEffect(selectedHeroId) {
-        val isFavourite = favouriteCharacterViewModel.isCharacterFavourite(selectedHeroId)
-        isFav.value = isFavourite
+        val isFav = favouriteCharacterViewModel.isCharacterFavourite(selectedHeroId)
+        isFavorite.value = isFav
     }
 
-    if(isFav.value) {
-        Log.i("SIIIIIIIIIIIIIIII", "AAAAAAAAAAAAAAAAAAA")
+    if(isFavorite.value) {
+        println("L' eroe selezionato con ID $selectedHeroId presente nei preferiti")
     } else {
-       Log.i("NOOOOOOOOOOOOOOOO", "BBBBBBBBBBBBBBBBBB")
+        println("L' eroe selezionato con ID $selectedHeroId NON presente nei preferiti")
     }
 
    //Setup del font
@@ -113,6 +114,7 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                selectedHeroThumbnail,
                selectedHeroDescription,
                context,
+               isFavorite,
                onFavoriteClicked = {isFavorite ->
                    if(isFavorite){
                        favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
@@ -184,6 +186,7 @@ fun HeroCard(
     selectedHeroThumbnail: String,
     selectedHeroDescription: String,
     context: Context,
+    isFavorite : MutableState<Boolean>,
     onFavoriteClicked: (Boolean) -> Unit
 ) {   //Crea la lista contenente l'immagine dell'eroe e i checkmark per segnare se è preferito
    Row {
@@ -234,12 +237,12 @@ fun HeroCard(
                horizontalArrangement = Arrangement.Center,
                verticalAlignment = Alignment.CenterVertically
            ) {
-               val checkedState = remember { mutableStateOf(false) }  //La variabile checkedState tiene conto se l'ero è preferito o meno.
                Checkbox(
-                   checked = checkedState.value,
-                   onCheckedChange = { checkedState.value = it
-                                     onFavoriteClicked(it)
-                                     },
+                   checked = isFavorite.value,
+                   onCheckedChange = {
+                       isFavorite.value = it
+                       onFavoriteClicked(it)
+                   },
                    colors = CheckboxDefaults.colors(
                        checkedColor = Color.Black,
                        uncheckedColor = Color.Black,
