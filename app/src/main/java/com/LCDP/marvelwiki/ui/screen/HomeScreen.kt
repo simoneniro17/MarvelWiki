@@ -33,7 +33,7 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
-
+//aaaaa
 //SCHERMATA HOME
 @Composable
 fun HomeScreen(navController: NavController, context: Context) {
