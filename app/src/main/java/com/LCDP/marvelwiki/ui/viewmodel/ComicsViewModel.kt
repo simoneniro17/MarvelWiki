@@ -137,10 +137,10 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
     fun unloadFavouriteComics(){
         offset = 0
         _comicList.clear()
-        //loadCharacterList()
     }
+
     fun loadFavouriteComics() {
-        // _comicList.clear()
+        _comicList.clear()
         viewModelScope.launch {
             try {
                 val appDatabase = appDatabase.getDatabase(context)

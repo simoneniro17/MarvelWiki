@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -264,12 +265,13 @@ fun ComicSearchScreen(
         }
 
         //SE NIENE E' STATO SPUNTATO E NESSUN TESTO E' STATO SCRITTO NELLA BARRA DI RICERCA ALLORA VIENE MOSTRATO UN MESSAGGIO
-        else {
+        if (!checkedState1.value && !checkedState2.value) {
             DefaultComicList(
                 navController = navController,
                 fontFamily = fontFamily,
                 context = LocalContext.current,
                 comicsViewModel = comicsViewModel,
+                text = "Search for a comic by using its name or ISBN"
             )
         }
     }
@@ -340,12 +342,7 @@ fun ComicSeparator(
     ) {
         Checkbox(
             checked = checkedState1.value,
-            onCheckedChange = { checkedState1.value = it
-                if (!it) {
-                    comicsViewModel.unloadFavouriteComics()
-                } else {
-                    comicsViewModel.loadFavouriteComics()
-                } },
+            onCheckedChange = { checkedState1.value = it },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black
@@ -360,12 +357,7 @@ fun ComicSeparator(
         )
         Checkbox(
             checked = checkedState2.value,
-            onCheckedChange = { checkedState2.value = it
-                if (!it) {
-                    comicsViewModel.unloadReadComics()
-                } else {
-                    comicsViewModel.loadReadComics()
-                } },
+            onCheckedChange = { checkedState2.value = it },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black
@@ -410,9 +402,10 @@ fun DefaultComicList( // MESSAGGIO DI DEFAULT SE NON VIENE CERCATO NULLA
     navController : NavController,
     fontFamily : FontFamily,
     context : Context,
-    comicsViewModel : ComicsViewModel
+    comicsViewModel : ComicsViewModel,
+    text: String
 ) {
-    TextChip("Search for a comic by using its name or ISBN", 20.sp, fontFamily)
+    TextChip(text, 20.sp, fontFamily)
 }
 
 @Composable
