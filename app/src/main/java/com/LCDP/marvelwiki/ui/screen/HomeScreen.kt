@@ -2,6 +2,7 @@ package com.LCDP.marvelwiki.ui.screen
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -299,7 +300,28 @@ fun ClickableImageCard(
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .clickable(onClick = {/*TODO*/}) //navController.navigate(route = Screens.ComicScreen)
+            .clickable(onClick = {
+
+                val title = comicsViewModel.comicList[0].title
+                var thumbnail = comicsViewModel.comicList[0].thumbnail?.path
+                thumbnail = thumbnail?.replace("/","_")
+                var description = comicsViewModel.comicList[0].description
+
+                if (description.isNullOrEmpty()) {
+                    description = "DESCRIPTION NOT FOUND"
+                }
+
+                val id = comicsViewModel.comicList[0].comicId
+
+                val args = listOf(
+                    title,
+                    thumbnail,
+                    description,
+                    id
+                )
+                navController.navigate("comicScreen/${args.joinToString("/")}")
+
+            })
             .border(
                 border = BorderStroke(width = 2.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
@@ -313,15 +335,31 @@ fun ClickableImageCard(
         ) {
             val imageView = remember { ImageView(context) }
 
-            /*Picasso.get()
-                .load((comicsViewModel.comicList[0].thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .resize(200, 300)
-                .centerCrop()
-                .into(imageView)
-
-             */
+            if (comicsViewModel.comicList.isNotEmpty()) {
+                try {
+                    Picasso.get()
+                        .load(
+                            (comicsViewModel.comicList[0].thumbnail?.path?.replace(
+                                "http://",
+                                "https://"
+                            )) + ".jpg"
+                        )
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .resize(200, 300)
+                        .centerCrop()
+                        .into(imageView)
+                } catch (e: Exception) {
+                    Log.e("PicassoError", "Error loading image: ${e.message}")
+                }
+            } else {
+                // Load a placeholder image when the comicList is empty
+                Picasso.get()
+                    .load(R.drawable.avengers_logo)
+                    .resize(200, 300)
+                    .centerCrop()
+                    .into(imageView)
+            }
 
 
 
