@@ -12,9 +12,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -26,6 +32,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -69,17 +76,25 @@ fun NavigationScreen(navController: NavController,context: Context) {
     //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
     Box(
-        modifier = Modifier
-            .background(Color.Transparent)
+        /*modifier = Modifier
             .fillMaxSize()
-    ) {
+            .background(Color.Transparent)*/
+    modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.Red, Color.Black)
+                )
+            )
 
+    ) {
+/*
         Image(
             painter = painterResource(R.drawable.background_tamarro),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
-        )
+        )*/
 
         //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
         //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
@@ -90,9 +105,11 @@ fun NavigationScreen(navController: NavController,context: Context) {
         ) {
             NavigationScreenUpperBar(
                 navController,
-                currentFont
+                currentFont,
+                checkedState,
+                charactersViewModel
             )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
-            Separator(fontFamily = currentFont,charactersViewModel, checkedState)
+            //Separator(fontFamily = currentFont,charactersViewModel, checkedState)
             SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont, checkedState)
             AllHeroesList(navController, currentFont,context, charactersViewModel)
         }
@@ -100,7 +117,8 @@ fun NavigationScreen(navController: NavController,context: Context) {
 }
 
     @Composable
-    fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+    fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily, checkedState : MutableState<Boolean>, charactersViewModel: CharactersViewModel,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -141,6 +159,16 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 color = Color.White,
                 fontFamily = fontFamily,
                 textAlign = TextAlign.Center,
+            )
+            FavouriteCheckbox(
+                isChecked = checkedState.value,
+                onCheckedChange = { checkedState.value = it
+                    if (!it) {
+                        charactersViewModel.unloadFavouriteCharacters()
+                    } else {
+                        charactersViewModel.loadFavouriteCharacters()
+                    }
+                }
             )
 
         }
@@ -214,6 +242,7 @@ fun SearchScreen(navController: NavController,
             onSearchQueryChange =  charactersViewModel::loadCharacterByNameList,
             checkedState
         )
+
         AllHeroesList(
             navController = navController,
             fontFamily = fontFamily,
@@ -225,7 +254,8 @@ fun SearchScreen(navController: NavController,
 
 @Composable
     fun Separator(fontFamily: FontFamily, charactersViewModel: CharactersViewModel, checkedState : MutableState<Boolean>) {
-        Row(
+    var isChecked by remember { mutableStateOf(false) }
+    Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
@@ -234,21 +264,30 @@ fun SearchScreen(navController: NavController,
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                checked = checkedState.value,
-                onCheckedChange = { checkedState.value = it
-                    if (!it) {
-                        charactersViewModel.unloadFavouriteCharacters()
-                    } else {
-                        charactersViewModel.loadFavouriteCharacters()
-                    } },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color.Black,
-                    uncheckedColor = Color.Black,
-                    //checkmarkColor = Color.Black
-                )
-
+        FavouriteCheckbox(
+            isChecked = checkedState.value,
+            onCheckedChange = { checkedState.value = it
+                if (!it) {
+                    charactersViewModel.unloadFavouriteCharacters()
+                } else {
+                    charactersViewModel.loadFavouriteCharacters()
+                }
+            }
+        )
+        /*Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it
+                if (!it) {
+                    charactersViewModel.unloadFavouriteCharacters()
+                } else {
+                    charactersViewModel.loadFavouriteCharacters()
+                } },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Black,
+                uncheckedColor = Color.Black,
             )
+
+        )*/
 
             Text(
                 "Visualize only favorite heroes".uppercase(),
@@ -400,3 +439,20 @@ fun AllHeroesList(
 
         }
     }
+@Composable
+fun FavouriteCheckbox(
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row {
+        IconButton(
+            onClick = { onCheckedChange(!isChecked) },
+        ) {
+            if (isChecked) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favourite", modifier = Modifier.size(32.dp))
+            } else {
+                Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Not Favourite", modifier = Modifier.size(32.dp))
+            }
+        }
+    }
+}
