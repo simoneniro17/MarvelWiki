@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -126,7 +127,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 .background(Color.Red)
                 .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
                 .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
+            horizontalArrangement = Arrangement.spacedBy(80.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -154,7 +155,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
             }
 
             Text(
-                text = "HEROES".uppercase(),
+                text = stringResource(R.string.heroes).uppercase(),
                 fontSize = 30.sp,
                 color = Color.White,
                 fontFamily = fontFamily,
@@ -197,7 +198,7 @@ fun SearchBar(
             },
             label = {
                 Text(
-                    text = "Search a character".uppercase(),
+                    text = stringResource(R.string.search_a_character).uppercase(),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontFamily = fontFamily
@@ -290,7 +291,7 @@ fun SearchScreen(navController: NavController,
         )*/
 
             Text(
-                "Visualize only favorite heroes".uppercase(),
+                stringResource(R.string.visualize_only_favorite_heroes).uppercase(),
                 fontSize = 12.sp,
                 fontFamily = fontFamily,
                 color = Color.White
@@ -409,7 +410,7 @@ fun AllHeroesList(
 
                 Picasso.get()
                     .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.avengers_logo)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.hero_placeholder)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(510, 310)

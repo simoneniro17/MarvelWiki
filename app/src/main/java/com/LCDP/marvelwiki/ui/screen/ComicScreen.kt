@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -72,6 +73,12 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val comicDescription = arguments[2]
     val comicId = arguments[3]
     val isLatest = arguments[4]
+
+    val fontSize : TextUnit = if (comicTitle.length <= 28) {
+        20.sp
+    } else {
+        15.sp
+    }
 
     val appDatabase = appDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
@@ -115,7 +122,8 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 navController,
                 currentFont,
                 comicTitle,
-                isLatest
+                isLatest,
+                fontSize
             )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
             ComicCard(
                 currentFont,
@@ -148,7 +156,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
 }
 
 @Composable
-fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String, isLatest: String) {
+fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String, isLatest: String, fontSize : TextUnit) {
 
     Row(
         modifier = Modifier
@@ -192,7 +200,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
 
         Text(
             text = comicTitle.uppercase(),
-            fontSize = 20.sp,
+            fontSize = fontSize,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
@@ -233,7 +241,7 @@ fun ComicCard(
 
                 Picasso.get()
                     .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                    .placeholder(R.drawable.background_tamarro)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.comic_placeholder)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(800, 800)
