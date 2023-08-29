@@ -28,7 +28,7 @@ class Constant {
         // Eduard PRIVATE_KEY: ""
 
         // Federico PUBLIC_KEY: ""
-        // Federico PRIVATE_KEY: ""
+        // Federico PRIVATE_KEY: """
 
         // Alessandro PUBLIC_KEY: ""
         // Alessandro PRIVATE_KEY: ""
