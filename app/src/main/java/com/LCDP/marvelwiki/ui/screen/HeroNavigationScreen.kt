@@ -109,7 +109,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
                 .background(Color.Red)
                 .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
                 .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
+            horizontalArrangement = Arrangement.spacedBy(80.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
