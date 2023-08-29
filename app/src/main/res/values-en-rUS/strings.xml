@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarvelWiki</string>
+    <string name="home">home</string>
+    <string name="heroes">heroes</string>
+    <string name="library">library</string>
+    <string name="latest_comic">latest comic</string>
+    <string name="visualize_only_favorite_heroes">visualize only favorite heroes</string>
+    <string name="search_a_character">search a character</string>
+    <string name="favorite">favorite</string>
+    <string name="description_not_found">description not found</string>
+    <string name="comics">comics</string>
+    <string name="favorites">favorites</string>
+    <string name="read_comics">read comics</string>
+    <string name="search_comic_by_name">search comic by name</string>
+    <string name="search_comic_by_isbn">search comic by ISBN</string>
+    <string name="search_for_a_comic">search for a comic by using its name or isbn</string>
+    <string name="select_only_one_option">please, select only one option: favorites or read</string>
+</resources>

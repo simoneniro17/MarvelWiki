@@ -233,7 +233,7 @@ fun ComicCard(
 
                 Picasso.get()
                     .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                    .placeholder(R.drawable.background_tamarro)                                                                            //attesa del carimento, da cmabiare
+                    .placeholder(R.drawable.comic_placeholder)                                                                            //attesa del carimento, da cmabiare
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(800, 800)

@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -55,7 +56,6 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun HeroScreen(navController: NavController, arguments: List<String>, context: Context) {
@@ -211,7 +211,7 @@ fun HeroCard(
 
                Picasso.get()
                    .load(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                   .placeholder(R.drawable.avengers_logo)                                                                            //attesa del carimento, da cmabiare
+                   .placeholder(R.drawable.hero_placeholder)                                                                            //attesa del carimento, da cmabiare
                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                    .networkPolicy(NetworkPolicy.NO_CACHE)
                    .resize(800, 800)
@@ -251,7 +251,7 @@ fun HeroCard(
                )
 
                Text(
-                   "Favorite".uppercase(),
+                   text = stringResource(R.string.favorite).uppercase(),
                    fontSize = 20.sp,
                    fontFamily = fontFamily,
                    color = Color.White

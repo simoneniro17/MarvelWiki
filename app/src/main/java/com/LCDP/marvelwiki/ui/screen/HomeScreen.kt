@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -78,8 +79,6 @@ fun HomeScreen(navController: NavController, context: Context) {
                 context,
                 comicsViewModel
             )
-
-
               // +INSERIRE COMIC MODEL)       //Setup of the scrollable daily hero card (same card as the navigation ones) - bottom screen
 
         }
@@ -99,7 +98,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "home".uppercase(),
+            text = stringResource(R.string.home).uppercase(),
             fontSize = 30.sp,
             color = Color.White,
             fontFamily = fontFamily,
@@ -143,7 +142,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
             )
 
             Text(
-                text = "HEROES".uppercase(),
+                text = stringResource(R.string.heroes).uppercase(),
                 fontSize = 18.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
@@ -191,7 +190,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
             )
 
             Text(
-                text = "LIBRARY".uppercase(),
+                text = stringResource(R.string.library).uppercase(),
                 fontSize = 18.sp,
                 fontFamily = fontFamily,
                 color = Color.White,
@@ -224,7 +223,7 @@ fun LatestComicBanner(fontFamily: FontFamily) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "LATEST COMIC",
+                text = stringResource(R.string.latest_comic).uppercase(),
                 color = Color.White,
                 fontSize = 30.sp,
                 fontFamily = fontFamily,
@@ -345,6 +344,7 @@ fun ClickableImageCard(
                                 "https://"
                             )) + ".jpg"
                         )
+                        .placeholder(R.drawable.loading_placeholder)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .resize(200, 300)
@@ -356,7 +356,7 @@ fun ClickableImageCard(
             } else {
                 // Load a placeholder image when the comicList is empty
                 Picasso.get()
-                    .load(R.drawable.avengers_logo)
+                    .load(R.drawable.loading_placeholder)
                     .resize(200, 300)
                     .centerCrop()
                     .into(imageView)

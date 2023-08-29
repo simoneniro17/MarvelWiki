@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -121,7 +122,7 @@ fun ComicByNameSearchBar(
             },
             label = {
                 Text(
-                    text = "Search comic by name".uppercase(),
+                    text = stringResource(R.string.search_comic_by_name).uppercase(),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontFamily = fontFamily
@@ -170,7 +171,7 @@ fun ComicByIsbnSearchBar(
             },
             label = {
                 Text(
-                    text = "Search comic by ISBN".uppercase(),
+                    text = stringResource(R.string.search_comic_by_isbn).uppercase(),
                     color = Color.White,
                     fontSize = 15.sp,
                     fontFamily = fontFamily
@@ -243,7 +244,7 @@ fun ComicSearchScreen(
                 fontFamily = fontFamily,
                 context = LocalContext.current,
                 comicsViewModel = comicsViewModel,
-                text = "Please, select only one option: Favourites or Read"
+                text = stringResource(R.string.select_only_one_option).uppercase(),
             )
         } else {
             if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
@@ -254,7 +255,6 @@ fun ComicSearchScreen(
                     comicsViewModel = comicsViewModel
                 )
             } else if (checkedState1.value) {
-                println("Mostro solo i preferiti")
                 FavoriteComicList(
                     navController = navController,
                     fontFamily = fontFamily,
@@ -263,7 +263,6 @@ fun ComicSearchScreen(
                 )
 
             } else if (checkedState2.value) {
-                println("Mostro solo i letti")
                 ReadComicList(
                     navController = navController,
                     fontFamily = fontFamily,
@@ -277,7 +276,7 @@ fun ComicSearchScreen(
                     fontFamily = fontFamily,
                     context = LocalContext.current,
                     comicsViewModel = comicsViewModel,
-                    text = "Search for a comic by using its name or ISBN"
+                    text = stringResource(R.string.search_for_a_comic).uppercase(),
                 )
             }
         }
@@ -322,7 +321,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
         }
 
         Text(
-            text = "COMICS".uppercase(),
+            text = stringResource(R.string.comics).uppercase(),
             fontSize = 30.sp,
             color = Color.White,
             fontFamily = fontFamily,
@@ -358,7 +357,7 @@ fun ComicSeparator(
         )
         // "id": 106565
         Text(
-            "Favorites".uppercase(),
+            stringResource(R.string.favorites).uppercase(),
             fontSize = 15.sp,
             fontFamily = fontFamily,
             color = Color.White
@@ -371,9 +370,8 @@ fun ComicSeparator(
                 uncheckedColor = Color.Black
             )
         )
-
         Text(
-            "Read comics".uppercase(),
+            stringResource(R.string.read_comics).uppercase(),
             fontSize = 15.sp,
             fontFamily = fontFamily,
             color = Color.White
@@ -516,7 +514,7 @@ fun ComicThumbnail(
 
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                .placeholder(R.drawable.background_tamarro)
+                .placeholder(R.drawable.comic_placeholder)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)
