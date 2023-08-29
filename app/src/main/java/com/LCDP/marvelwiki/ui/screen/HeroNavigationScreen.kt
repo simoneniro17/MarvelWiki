@@ -375,10 +375,10 @@ fun AllHeroesList(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(
+                    /*.border(
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                         shape = RoundedCornerShape(10.dp)
-                    )
+                    ) */
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
 
