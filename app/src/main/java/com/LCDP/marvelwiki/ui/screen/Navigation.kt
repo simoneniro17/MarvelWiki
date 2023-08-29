@@ -29,19 +29,25 @@ fun Navigation(context: Context) {
 
         // Controller associato alla schermata del singolo Eroe
         composable(
-            "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}/{heroId}",
+            "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}/{heroId}/{heroEvents}/{heroStories}/{heroComics}",
             arguments = listOf(
                 navArgument("heroName") { type = NavType.StringType },
                 navArgument("heroThumbnail") { type = NavType.StringType },
                 navArgument("heroDescription") { type = NavType.StringType },
-                navArgument("heroId") {type = NavType.StringType}
+                navArgument("heroId") {type = NavType.StringType},
+                navArgument("heroEvents") {type = NavType.StringType},
+                navArgument("heroStories") {type = NavType.StringType},
+                navArgument("heroComics") {type = NavType.StringType},
             )
         ) { entry ->
             val heroName = entry.arguments?.getString("heroName") ?: ""
             val heroThumbnail = entry.arguments?.getString("heroThumbnail") ?: ""
             val heroDescription = entry.arguments?.getString("heroDescription") ?: ""
             val heroId = entry.arguments?.getString("heroId") ?: ""
-            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription,heroId),context)
+            val heroEvents = entry.arguments?.getString("heroEvents") ?: ""
+            val heroStories = entry.arguments?.getString("heroStories") ?: ""
+            val heroComics = entry.arguments?.getString("heroComics") ?: ""
+            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription,heroId, heroEvents, heroStories, heroComics),context)
         }
 
         // Controller associato alla schermata iniziale

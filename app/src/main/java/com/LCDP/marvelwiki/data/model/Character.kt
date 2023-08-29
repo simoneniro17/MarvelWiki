@@ -24,4 +24,34 @@ data class Character(
     @SerializedName("description")
     @Expose
     var description: String? = null,
+
+    @SerializedName("events")
+    @Expose
+    var events: EventWrapper? = null, // Qui puoi usare una classe EventWrapper simile a ComicsWrapper
+
+    @SerializedName("comics")
+    @Expose
+    var comics: ComicsWrapper? = null, // Qui puoi usare una classe ComicsWrapper simile a ComicsWrapper
+
+    @SerializedName("stories")
+    @Expose
+    var stories: StoriesWrapper? = null // Qui puoi usare una classe StoriesWrapper simile a ComicsWrapper
+) : Serializable
+
+data class EventWrapper(
+    @SerializedName("available")
+    @Expose
+    var available: Int
+) : Serializable
+
+data class ComicsWrapper(
+    @SerializedName("available")
+    @Expose
+    var available: Int
+) : Serializable
+
+data class StoriesWrapper(
+    @SerializedName("available")
+    @Expose
+    var available: Int
 ) : Serializable

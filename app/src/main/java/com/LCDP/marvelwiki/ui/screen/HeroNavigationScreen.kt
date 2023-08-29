@@ -394,11 +394,18 @@ fun AllHeroesList(
 
                         val id = selectedHero.id
 
+                        val eventsAvailable = selectedHero.events?.available
+                        val storiesAvailable = selectedHero.stories?.available
+                        val comicsAvailable = selectedHero.comics?.available
+
                         val args = listOf(
                             name,
                             thumbnail,
                             description,
-                            id
+                            id,
+                            eventsAvailable,
+                            storiesAvailable,
+                            comicsAvailable
                         )
                         navController.navigate("heroScreen/${args.joinToString("/")}")
 

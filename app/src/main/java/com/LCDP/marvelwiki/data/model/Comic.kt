@@ -24,4 +24,20 @@ data class Comic(
     @SerializedName("description")
     @Expose
     val description: String? = null,
+/*
+    @SerializedName("pageCount")
+    @Expose
+    val pageCount: Int,
+
+    @SerializedName("prices")
+    @Expose
+    val price: String? = null,
+
+ */
 ) : Serializable
+
+/*data class PricesWrapper(
+    @SerializedName("price")
+    @Expose
+    var available:
+) : Serializable */

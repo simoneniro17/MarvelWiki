@@ -65,6 +65,9 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroThumbnail = arguments[1]
     val selectedHeroDescription = arguments[2]
     val selectedHeroId = arguments[3]
+    val selectedHeroEvents = arguments[4]
+    val selectedHeroStories = arguments[5]
+    val selectedHeroComics = arguments[6]
 
     //SETUP DATABASE
     val appDatabase = appDatabase.getDatabase(context)
@@ -115,6 +118,9 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                currentFont,
                selectedHeroThumbnail,
                selectedHeroDescription,
+              selectedHeroEvents,
+              selectedHeroStories,
+              selectedHeroComics,
                context,
                isFavorite,
                onFavoriteClicked = {isFavorite ->
@@ -187,6 +193,9 @@ fun HeroCard(
     fontFamily: FontFamily,
     selectedHeroThumbnail: String,
     selectedHeroDescription: String,
+    selectedHeroEvents: String,
+    selectedHeroStories: String,
+    selectedHeroComics: String,
     context: Context,
     isFavorite : MutableState<Boolean>,
     onFavoriteClicked: (Boolean) -> Unit
@@ -261,6 +270,9 @@ fun HeroCard(
            }
 
            TextChip(selectedHeroDescription, 15.sp, fontFamily)
+           TextChip("Events: $selectedHeroEvents", 15.sp, fontFamily)
+           TextChip("Stories: $selectedHeroStories", 15.sp, fontFamily)
+           TextChip("Comics: $selectedHeroComics", 15.sp, fontFamily)
 
            Spacer(modifier = Modifier.height(10.dp))
        }
