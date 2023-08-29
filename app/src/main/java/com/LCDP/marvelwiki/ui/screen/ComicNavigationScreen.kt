@@ -209,7 +209,7 @@ fun ComicSearchScreen(
     var searchQueryByName by remember { mutableStateOf("") }
     var searchQueryByISBN by remember {mutableStateOf("")}
 
-    var showMessage by remember { mutableStateOf(false) }
+    val showMessage = checkedState1.value && checkedState2.value
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -218,6 +218,8 @@ fun ComicSearchScreen(
             fontFamily = fontFamily,
             onSearchQueryChange = {
                 searchQueryByName = it
+                checkedState1.value = false
+                checkedState2.value = false
                 comicsViewModel.getComicByName(it)
             }
         )
@@ -226,62 +228,14 @@ fun ComicSearchScreen(
             fontFamily = fontFamily,
             onSearchQueryChange = {
                 searchQueryByISBN = it // Update the search query
-                if(searchQueryByISBN.length == 13){
+                checkedState1.value = false
+                checkedState2.value = false
+                if (searchQueryByISBN.length == 13) {
                     comicsViewModel.getComicsByIsbn(it)
                 }
+
             }
         )
-
-        //SE UNA DELLE DUE SEARCHBAR CONTIENE TESTO, VIENE CARICATA LA LISTA CON I RISULTATI RELATIVI
-        if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
-            showMessage = false
-            checkedState1.value = false
-            checkedState2.value = false
-            AllComicList(
-                navController = navController,
-                fontFamily = fontFamily,
-                context = LocalContext.current,
-                comicsViewModel = comicsViewModel
-            )
-        }
-
-        //SE LA PRIMA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I PREFERITI
-        if (checkedState1.value) {
-            showMessage = false
-            println("Mostro solo i preferiti")
-            FavoriteComicList(
-                navController = navController,
-                fontFamily = fontFamily,
-                context = LocalContext.current,
-                comicsViewModel = comicsViewModel
-            )
-        }
-
-        //SE LA SECONDA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I LETTI
-        if (checkedState2.value) {
-            showMessage = false
-            println("Mostro solo i letti")
-            ReadComicList(
-                navController = navController,
-                fontFamily = fontFamily,
-                context = LocalContext.current,
-                comicsViewModel = comicsViewModel
-            )
-        }
-
-        //SE NIENE E' STATO SPUNTATO E NESSUN TESTO E' STATO SCRITTO NELLA BARRA DI RICERCA ALLORA VIENE MOSTRATO UN MESSAGGIO
-        if (checkedState1.value && checkedState2.value) {
-            showMessage = true
-        } else if (!checkedState1.value && !checkedState2.value) {
-            showMessage = false
-            DefaultComicList(
-                navController = navController,
-                fontFamily = fontFamily,
-                context = LocalContext.current,
-                comicsViewModel = comicsViewModel,
-                text = "Search for a comic by using its name or ISBN"
-            )
-        }
 
         if (showMessage) {
             DefaultComicList(
@@ -291,9 +245,45 @@ fun ComicSearchScreen(
                 comicsViewModel = comicsViewModel,
                 text = "Please, select only one option: Favourites or Read"
             )
+        } else {
+            if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
+                AllComicList(
+                    navController = navController,
+                    fontFamily = fontFamily,
+                    context = LocalContext.current,
+                    comicsViewModel = comicsViewModel
+                )
+            } else if (checkedState1.value) {
+                println("Mostro solo i preferiti")
+                FavoriteComicList(
+                    navController = navController,
+                    fontFamily = fontFamily,
+                    context = LocalContext.current,
+                    comicsViewModel = comicsViewModel
+                )
+
+            } else if (checkedState2.value) {
+                println("Mostro solo i letti")
+                ReadComicList(
+                    navController = navController,
+                    fontFamily = fontFamily,
+                    context = LocalContext.current,
+                    comicsViewModel = comicsViewModel
+                )
+
+            } else {
+                DefaultComicList(
+                    navController = navController,
+                    fontFamily = fontFamily,
+                    context = LocalContext.current,
+                    comicsViewModel = comicsViewModel,
+                    text = "Search for a comic by using its name or ISBN"
+                )
+            }
         }
     }
 }
+
 
 @Composable
 fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) { //crea la barra superiore contenente il pulsante per tornare alla home.
@@ -360,7 +350,7 @@ fun ComicSeparator(
     ) {
         Checkbox(
             checked = checkedState1.value,
-            onCheckedChange = { checkedState1.value = it },
+            onCheckedChange = { checkedState1.value = it},
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black
