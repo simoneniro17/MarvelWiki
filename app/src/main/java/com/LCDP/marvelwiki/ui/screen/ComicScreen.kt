@@ -26,6 +26,8 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -76,6 +78,16 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val favouriteComicViewModel = FavouriteComicViewModel(databaseAccess)
     val readComicViewModel = ReadComicViewModel(databaseAccess)
 
+    val isComicFavourite = remember { mutableStateOf(false) }
+    val isComicRead = remember { mutableStateOf(false) }
+
+    LaunchedEffect(comicId) {
+        val isFavourite = favouriteComicViewModel.isComicFavourite(comicId)
+        val isRead = readComicViewModel.isComicRead(comicId)
+        isComicFavourite.value = isFavourite
+        isComicRead.value = isRead
+    }
+
     //Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
@@ -110,6 +122,8 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 comicThumbnail,
                 comicDescription,
                 context,
+                isComicFavourite,
+                isComicRead,
                 onFavoriteClicked = {isFavorite ->
                     if(isFavorite){
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
@@ -193,6 +207,8 @@ fun ComicCard(
     comicThumbnail : String,
     comicDescription : String,
     context : Context,
+    isComicFavourite: MutableState<Boolean>,
+    isComicRead: MutableState<Boolean>,
     onFavoriteClicked: (Boolean) -> Unit,
     onReadClicked: (Boolean) -> Unit) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
     Row {
@@ -243,7 +259,7 @@ fun ComicCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è, rispettivamente, uno dei preferiti e se è stato letto o meno.
+                /*val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è, rispettivamente, uno dei preferiti e se è stato letto o meno.
                 Checkbox(                                                      //Il resto del codice serve solo per la rappresentazione grafica dei checbox su cui clickare per mettere la spunta.
                     checked = checkedState1.value,
                     onCheckedChange = { checkedState1.value = it
@@ -254,6 +270,19 @@ fun ComicCard(
                         uncheckedColor = Color.Black,
                     )
                 )
+                */
+                
+                Checkbox(
+                    checked = isComicFavourite.value,
+                    onCheckedChange = {
+                        isComicFavourite.value = it
+                        onFavoriteClicked(it)
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color.Black,
+                        uncheckedColor = Color.Black,
+                        //checkmarkColor = Color.Black
+                    ))
 
                 Text(
                     "Favorite".uppercase(),
@@ -262,6 +291,7 @@ fun ComicCard(
                     color = Color.White
                 )
 
+                /*
                 val checkedState2 = remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checkedState2.value,
@@ -272,6 +302,20 @@ fun ComicCard(
                         uncheckedColor = Color.Black,
                     )
                 )
+
+                 */
+
+                Checkbox(
+                    checked = isComicRead.value,
+                    onCheckedChange = {
+                        isComicRead.value = it
+                        onReadClicked(it)
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color.Black,
+                        uncheckedColor = Color.Black,
+                        //checkmarkColor = Color.Black
+                    ))
 
                 Text(
                     "Read".uppercase(),

@@ -71,14 +71,7 @@ class ReadComicViewModel( private val databaseAccess: DatabaseAccess) : ViewMode
         }
     }
 
-    /*
-    @OptIn(DelicateCoroutinesApi::class)
-    fun isComicRead(readComic: ReadComic) : Boolean {
-        GlobalScope.launch {
-            isFavourite = databaseAccess.isComicRead(readComic)
-        }
-        return isFavourite
+    suspend fun isComicRead(selectedId: String): Boolean {
+        return databaseAccess.isComicRead(selectedId)
     }
-
-     */
 }

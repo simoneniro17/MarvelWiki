@@ -52,15 +52,12 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
-    /*
-
-    suspend fun isComicFavourite(favouriteComic: FavouriteComic): Boolean {
+    suspend fun isComicFavourite(selectedId: String): Boolean {
         return withContext(Dispatchers.IO) {
-            myDatabase.favouriteComicDAO().isComicFavourite(favouriteComic.comicId)
+            val idList = myDatabase.favouriteComicDAO().getAllFavoriteComicId()
+            idList.contains(selectedId)
         }
     }
-
-     */
 
     suspend fun getAllReadComics():List<String>{
         return withContext(Dispatchers.IO) {
@@ -80,12 +77,10 @@ class DatabaseAccess(private val myDatabase: appDatabase) {
         }
     }
 
-    /*
-    suspend fun isComicRead(readComic: ReadComic): Boolean {
+    suspend fun isComicRead(selectedId: String): Boolean {
         return withContext(Dispatchers.IO) {
-            myDatabase.readComicDAO().isComicRead(readComic.comicId)
+            val idList = myDatabase.readComicDAO().getAllReadComicId()
+            idList.contains(selectedId)
         }
     }
-
-     */
 }
