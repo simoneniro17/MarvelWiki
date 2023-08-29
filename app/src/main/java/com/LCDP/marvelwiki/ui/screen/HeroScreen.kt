@@ -60,11 +60,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun HeroScreen(navController: NavController, arguments: List<String>, context: Context) {
 
+    //SELEZIONE ARGOMENTI
     val selectedHeroName = arguments[0]
     val selectedHeroThumbnail = arguments[1]
     val selectedHeroDescription = arguments[2]
     val selectedHeroId = arguments[3]
 
+    //SETUP DATABASE
     val appDatabase = appDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
     val favouriteCharacterViewModel = FavouriteCharacterViewModel(databaseAccess)
