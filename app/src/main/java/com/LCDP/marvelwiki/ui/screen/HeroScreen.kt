@@ -142,7 +142,7 @@ fun HeroScreenUpperBar(
            .background(Color.Red)
            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
            .padding(horizontal = 20.dp),
-       horizontalArrangement = Arrangement.spacedBy(80.dp),
+       horizontalArrangement = Arrangement.spacedBy(50.dp),
        verticalAlignment = Alignment.CenterVertically
    ) {
 
@@ -211,10 +211,10 @@ fun HeroCard(
 
                Picasso.get()
                    .load(selectedHeroThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                   .placeholder(R.drawable.hero_placeholder)                                                                            //attesa del carimento, da cmabiare
+                   .placeholder(R.drawable.hero_placeholder)                                                                       //attesa del carimento, da cmabiare
                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                   .resize(800, 800)
+                   .resize(900, 600)
                    .centerCrop()
                    .into(imageView)
 
