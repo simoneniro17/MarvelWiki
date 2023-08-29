@@ -156,7 +156,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Text(
                 text = stringResource(R.string.heroes).uppercase(),
-                fontSize = 30.sp,
+                fontSize = 20.sp,
                 color = Color.White,
                 fontFamily = fontFamily,
                 textAlign = TextAlign.Center,
@@ -440,6 +440,7 @@ fun AllHeroesList(
 
         }
     }
+
 @Composable
 fun FavouriteCheckbox(
     isChecked: Boolean,
@@ -447,13 +448,14 @@ fun FavouriteCheckbox(
 ) {
     Row {
         IconButton(
-            onClick = { onCheckedChange(!isChecked) },
+            onClick = { onCheckedChange(!isChecked) }
         ) {
-            if (isChecked) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favourite", modifier = Modifier.size(32.dp))
-            } else {
-                Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Not Favourite", modifier = Modifier.size(32.dp))
-            }
+            Icon(
+                imageVector = if (isChecked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = if (isChecked) "Favourite" else "Not Favourite",
+                tint = Color.White,
+                modifier = Modifier.size(32.dp)
+            )
         }
     }
 }

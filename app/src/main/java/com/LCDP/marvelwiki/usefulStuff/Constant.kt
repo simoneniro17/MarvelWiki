@@ -12,8 +12,8 @@ class Constant {
         const val BASE_URL = "https://gateway.marvel.com/v1/public/"  //  URL di base per le chiamate alle API di Marvel
 
         val ts = Timestamp(System.currentTimeMillis()).time.toString()  // Timestamp corrente convertito in una stringa
-        const val PUBLIC_KEY = "16f753b79a1eb2e3b865079df5849df8"
-        const val PRIVATE_KEY = "b5bc8d30250a1484b783ba513a94f555c5310394"
+        const val PUBLIC_KEY = "802a20828584c07127363491a6e1a431"
+        const val PRIVATE_KEY = "19b4bbe049302f56eb3f60963965fef177f01dd0"
         const val limit = 100
 
         // const val AVENGERS_URL = "http://gateway.marvel.com/v1/public/events/29/"
@@ -28,7 +28,7 @@ class Constant {
         // Eduard PRIVATE_KEY: ""
 
         // Federico PUBLIC_KEY: ""
-        // Federico PRIVATE_KEY: """
+        // Federico PRIVATE_KEY: ""
 
         // Alessandro PUBLIC_KEY: ""
         // Alessandro PRIVATE_KEY: ""
