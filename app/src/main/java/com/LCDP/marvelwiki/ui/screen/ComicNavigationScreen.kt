@@ -209,6 +209,8 @@ fun ComicSearchScreen(
     var searchQueryByName by remember { mutableStateOf("") }
     var searchQueryByISBN by remember {mutableStateOf("")}
 
+    var showMessage by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -232,6 +234,7 @@ fun ComicSearchScreen(
 
         //SE UNA DELLE DUE SEARCHBAR CONTIENE TESTO, VIENE CARICATA LA LISTA CON I RISULTATI RELATIVI
         if (searchQueryByName.isNotEmpty() || searchQueryByISBN.isNotEmpty()) {
+            showMessage = false
             checkedState1.value = false
             checkedState2.value = false
             AllComicList(
@@ -244,6 +247,7 @@ fun ComicSearchScreen(
 
         //SE LA PRIMA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I PREFERITI
         if (checkedState1.value) {
+            showMessage = false
             println("Mostro solo i preferiti")
             FavoriteComicList(
                 navController = navController,
@@ -255,6 +259,7 @@ fun ComicSearchScreen(
 
         //SE LA SECONDA SPUNTA E' SELEZIONATA VENGONO MOSTRATI SOLO I LETTI
         if (checkedState2.value) {
+            showMessage = false
             println("Mostro solo i letti")
             ReadComicList(
                 navController = navController,
@@ -265,13 +270,26 @@ fun ComicSearchScreen(
         }
 
         //SE NIENE E' STATO SPUNTATO E NESSUN TESTO E' STATO SCRITTO NELLA BARRA DI RICERCA ALLORA VIENE MOSTRATO UN MESSAGGIO
-        if (!checkedState1.value && !checkedState2.value) {
+        if (checkedState1.value && checkedState2.value) {
+            showMessage = true
+        } else if (!checkedState1.value && !checkedState2.value) {
+            showMessage = false
             DefaultComicList(
                 navController = navController,
                 fontFamily = fontFamily,
                 context = LocalContext.current,
                 comicsViewModel = comicsViewModel,
                 text = "Search for a comic by using its name or ISBN"
+            )
+        }
+
+        if (showMessage) {
+            DefaultComicList(
+                navController = navController,
+                fontFamily = fontFamily,
+                context = LocalContext.current,
+                comicsViewModel = comicsViewModel,
+                text = "Please, select only one option: Favourites or Read"
             )
         }
     }
