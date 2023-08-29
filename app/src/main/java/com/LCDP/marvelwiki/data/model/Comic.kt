@@ -3,6 +3,7 @@ package com.LCDP.marvelwiki.data.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.math.BigDecimal
 
 /*  '@SerializedName' specifica il nome del campo JSON corrispondente alla proprietà
     della classe 'Comic' durante il funzionamento di Gson.
@@ -24,20 +25,22 @@ data class Comic(
     @SerializedName("description")
     @Expose
     val description: String? = null,
-/*
+
+    @SerializedName("isbn")
+    @Expose
+    val isbn: String ?= null,
+
     @SerializedName("pageCount")
     @Expose
     val pageCount: Int,
 
-    @SerializedName("prices")
+    @SerializedName("series")
     @Expose
-    val price: String? = null,
-
- */
+    var series: SeriesWrapper? = null
 ) : Serializable
 
-/*data class PricesWrapper(
-    @SerializedName("price")
+data class SeriesWrapper(
+    @SerializedName("name")
     @Expose
-    var available:
-) : Serializable */
+    var name: String? = null
+) : Serializable

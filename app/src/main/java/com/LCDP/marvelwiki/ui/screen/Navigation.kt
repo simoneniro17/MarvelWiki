@@ -62,13 +62,16 @@ fun Navigation(context: Context) {
 
         //Controller associato alla schermata del singolo fumetto
         composable(
-            "comicScreen/{comicTitle}/{comicThumbnail}/{comicDescription}/{comicId}/{isLatest}",
+            "comicScreen/{comicTitle}/{comicThumbnail}/{comicDescription}/{comicId}/{isLatest}/{comicIsbn}/{comicPageCount}/{comicSeries}",
             arguments = listOf(
                 navArgument("comicTitle") { type = NavType.StringType },
                 navArgument("comicThumbnail") { type = NavType.StringType },
                 navArgument("comicDescription") { type = NavType.StringType },
                 navArgument("comicId") {type = NavType.StringType},
-                navArgument("isLatest") {type = NavType.StringType}
+                navArgument("isLatest") {type = NavType.StringType},
+                navArgument("comicIsbn") {type = NavType.StringType},
+                navArgument("comicPageCount") {type = NavType.StringType},
+                navArgument("comicSeries") {type = NavType.StringType}
             )
         ) { entry ->
             val comicTitle = entry.arguments?.getString("comicTitle") ?: ""
@@ -76,7 +79,11 @@ fun Navigation(context: Context) {
             val comicDescription = entry.arguments?.getString("comicDescription") ?: ""
             val comicId = entry.arguments?.getString("comicId") ?: ""
             val isLatest = entry.arguments?.getString("isLatest") ?: ""
-            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId, isLatest), context)
+            val comicIsbn = entry.arguments?.getString("comicIsbn") ?: ""
+            val comicPageCount = entry.arguments?.getString("comicPageCount") ?: ""
+            val comicSeries = entry.arguments?.getString("comicSeries") ?: ""
+
+            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId, isLatest, comicIsbn, comicPageCount, comicSeries), context)
         }
 
     }

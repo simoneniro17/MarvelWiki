@@ -497,13 +497,27 @@ fun ComicThumbnail(
                     }
 
                     val selectedComicId = selectedComic.comicId
+                    var selectedComicIsbn = selectedComic.isbn
+                    val selectedComicPageCount = selectedComic.pageCount
+                    var selectedComicSeries = selectedComic.series?.name
+
+                    if (selectedComicIsbn.isNullOrEmpty()) {
+                        selectedComicIsbn = "Not available"
+                    }
+
+                    if (selectedComicSeries.isNullOrEmpty()) {
+                        selectedComicIsbn = "Not available"
+                    }
 
                     val args = listOf(
                         selectedComicTitle,
                         selectedComicThumbnail,
                         selectedComicDescription,
                         selectedComicId,
-                        "NO"
+                        "NO",
+                        selectedComicIsbn,
+                        selectedComicPageCount,
+                        selectedComicSeries
                     )
                     navController.navigate("comicScreen/${args.joinToString("/")}")
                 }

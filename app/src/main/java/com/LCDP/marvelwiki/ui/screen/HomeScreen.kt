@@ -311,13 +311,27 @@ fun ClickableImageCard(
                 }
 
                 val id = comicsViewModel.comicList[0].comicId
+                var isbn = comicsViewModel.comicList[0].isbn
+                val pageCount = comicsViewModel.comicList[0].pageCount
+                var series = comicsViewModel.comicList[0].series?.name
+
+                if (isbn.isNullOrEmpty()) {
+                    isbn = "Not available"
+                }
+
+                if (series.isNullOrEmpty()) {
+                    series = "Not available"
+                }
 
                 val args = listOf(
                     title,
                     thumbnail,
                     description,
                     id,
-                    "YES"
+                    "YES",
+                    isbn,
+                    pageCount,
+                    series
                 )
                 navController.navigate("comicScreen/${args.joinToString("/")}")
 

@@ -73,6 +73,9 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val comicDescription = arguments[2]
     val comicId = arguments[3]
     val isLatest = arguments[4]
+    val comicIsbn = arguments[5]
+    val comicPageCount = arguments[6]
+    val comicSeries = arguments[7]
 
     val fontSize : TextUnit = if (comicTitle.length <= 28) {
         20.sp
@@ -129,6 +132,9 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 currentFont,
                 comicThumbnail,
                 comicDescription,
+                comicIsbn,
+                comicPageCount,
+                comicSeries,
                 context,
                 isComicFavourite,
                 isComicRead,
@@ -214,6 +220,9 @@ fun ComicCard(
     fontFamily: FontFamily,
     comicThumbnail : String,
     comicDescription : String,
+    comicIsbn: String,
+    comicPageCount: String,
+    comicSeries: String,
     context : Context,
     isComicFavourite: MutableState<Boolean>,
     isComicRead: MutableState<Boolean>,
@@ -334,6 +343,9 @@ fun ComicCard(
             }
 
             TextChip(comicDescription.uppercase(), 20.sp, fontFamily)
+            TextChip("ISBN: $comicIsbn", 20.sp, fontFamily)
+            TextChip("Page count: $comicPageCount", 20.sp, fontFamily)
+            TextChip("Series: $comicSeries", 20.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }
