@@ -56,19 +56,21 @@ fun Navigation(context: Context) {
 
         //Controller associato alla schermata del singolo fumetto
         composable(
-            "comicScreen/{comicTitle}/{comicThumbnail}/{comicDescription}/{comicId}",
+            "comicScreen/{comicTitle}/{comicThumbnail}/{comicDescription}/{comicId}/{isLatest}",
             arguments = listOf(
                 navArgument("comicTitle") { type = NavType.StringType },
                 navArgument("comicThumbnail") { type = NavType.StringType },
                 navArgument("comicDescription") { type = NavType.StringType },
-                navArgument("comicId") {type = NavType.StringType}
+                navArgument("comicId") {type = NavType.StringType},
+                navArgument("isLatest") {type = NavType.StringType}
             )
         ) { entry ->
             val comicTitle = entry.arguments?.getString("comicTitle") ?: ""
             val comicThumbnail = entry.arguments?.getString("comicThumbnail") ?: ""
             val comicDescription = entry.arguments?.getString("comicDescription") ?: ""
             val comicId = entry.arguments?.getString("comicId") ?: ""
-            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId), context)
+            val isLatest = entry.arguments?.getString("isLatest") ?: ""
+            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId, isLatest), context)
         }
 
     }

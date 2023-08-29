@@ -317,7 +317,8 @@ fun ClickableImageCard(
                     title,
                     thumbnail,
                     description,
-                    id
+                    id,
+                    "YES"
                 )
                 navController.navigate("comicScreen/${args.joinToString("/")}")
 

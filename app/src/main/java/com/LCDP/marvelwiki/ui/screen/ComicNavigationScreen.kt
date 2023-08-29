@@ -496,7 +496,8 @@ fun ComicThumbnail(
                         selectedComicTitle,
                         selectedComicThumbnail,
                         selectedComicDescription,
-                        selectedComicId
+                        selectedComicId,
+                        "NO"
                     )
                     navController.navigate("comicScreen/${args.joinToString("/")}")
                 }

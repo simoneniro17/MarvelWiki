@@ -69,6 +69,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val comicThumbnail = arguments[1]
     val comicDescription = arguments[2]
     val comicId = arguments[3]
+    val isLatest = arguments[4]
 
     val appDatabase = appDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
@@ -101,7 +102,8 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
             ComicScreenUpperBar(
                 navController,
                 currentFont,
-                comicTitle
+                comicTitle,
+                isLatest
             )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
             ComicCard(
                 currentFont,
@@ -132,7 +134,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
 }
 
 @Composable
-fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String) {
+fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String, isLatest: String) {
 
     Row(
         modifier = Modifier
@@ -164,7 +166,13 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
                         shape = CircleShape
                     )
                     .clip(shape = CircleShape)
-                    .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) })
+                    .clickable(onClick = {
+                        if (isLatest == "YES") {
+                            navController.navigate(Screens.HomeScreen.route)
+                        } else {
+                            navController.navigate(Screens.ComicNavigationScreen.route)
+                        }
+                    })
             )
         }
 
