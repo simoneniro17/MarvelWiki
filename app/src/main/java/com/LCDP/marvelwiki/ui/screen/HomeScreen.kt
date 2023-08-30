@@ -410,19 +410,16 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
 @Composable
 fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
 
-    //  Aggiunta spazio vuoto per l'interlinea
-    Spacer(modifier = Modifier.height(5.dp))
-
     //  Creazione riquadro contenente il testo
     Box(
         modifier = Modifier
-            .padding(30.dp)
+            .padding(25.dp)
             .border(
                 border = BorderStroke(width = 1.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(shape = RoundedCornerShape(10.dp))
-            .background(Color.Gray),
+            .background(Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         //  Testo all'interno del riquadro
@@ -433,7 +430,7 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
             fontFamily = fontFamily,
             textAlign = TextAlign.Left,
             modifier = Modifier
-                .background(Color.Black)
+                .background(Color.Transparent)
                 .padding(10.dp)
         )
     }

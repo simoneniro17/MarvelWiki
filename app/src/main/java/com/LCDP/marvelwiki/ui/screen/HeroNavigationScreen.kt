@@ -124,7 +124,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
-                .background(Color.Red)
+                .background(Color.Transparent)
                 .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
                 .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(80.dp),
@@ -156,7 +156,7 @@ fun NavigationScreen(navController: NavController,context: Context) {
 
             Text(
                 text = stringResource(R.string.heroes).uppercase(),
-                fontSize = 20.sp,
+                fontSize = 30.sp,
                 color = Color.White,
                 fontFamily = fontFamily,
                 textAlign = TextAlign.Center,
@@ -213,13 +213,14 @@ fun SearchBar(
             },
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Black,
-                focusedIndicatorColor = Color.Red,
+                focusedIndicatorColor = Color.Black,
                 leadingIconColor = Color.White,
-                cursorColor = Color.Red,
-                textColor = Color.White
+                cursorColor = Color.White,
+                textColor = Color.White,
+                backgroundColor = Color.Transparent
             ),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.95f),
 
         )
     }
@@ -375,10 +376,10 @@ fun AllHeroesList(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    /*.border(
+                    .border(
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                         shape = RoundedCornerShape(10.dp)
-                    ) */
+                    )
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
 
@@ -458,10 +459,10 @@ fun FavouriteCheckbox(
             onClick = { onCheckedChange(!isChecked) }
         ) {
             Icon(
-                imageVector = if (isChecked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                imageVector = if (isChecked) Icons.Default.Star else Icons.Default.Star,
                 contentDescription = if (isChecked) "Favourite" else "Not Favourite",
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
+                tint = if (isChecked) Color.Yellow else Color.White,
+                modifier = Modifier.size(32.dp),
             )
         }
     }

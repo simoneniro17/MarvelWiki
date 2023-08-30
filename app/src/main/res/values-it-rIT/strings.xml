@@ -9,6 +9,7 @@
     <string name="search_a_character">cerca un personaggio</string>
     <string name="favorite">preferito</string>
     <string name="description_not_found">descrizione non disponibile</string>
+    <string name="events">eventi:</string>
     <string name="comics">fumetti</string>
     <string name="favorites">preferiti</string>
     <string name="read_comics">fumetti letti</string>
@@ -16,4 +17,6 @@
     <string name="search_comic_by_isbn">cerca fumetto per isbn</string>
     <string name="search_for_a_comic">cerca un fumetto usando il suo nome o il suo ISBN</string>
     <string name="select_only_one_option">per favore, seleziona soltanto una delle due opzioni: preferiti o letti</string>
+    <string name="stories">storie:</string>
+    <string name="comics_explanation">fumetti:</string>
 </resources>

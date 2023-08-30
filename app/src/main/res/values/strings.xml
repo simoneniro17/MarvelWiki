@@ -11,6 +11,9 @@
 
     <string name="favorite">Favorite</string>
     <string name="description_not_found">Description Not Found</string>
+    <string name="events">Events</string>
+    <string name="stories">Stories</string>
+    <string name="comics_explanation">comics explanation</string>
 
     <string name="comics">Comics</string>
     <string name="favorites">Favorites</string>

@@ -1,6 +1,7 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -12,18 +13,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -32,7 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -77,27 +84,23 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
         isFavorite.value = isFav
     }
 
-    if(isFavorite.value) {
-        println("L' eroe selezionato con ID $selectedHeroId presente nei preferiti")
-    } else {
-        println("L' eroe selezionato con ID $selectedHeroId NON presente nei preferiti")
-    }
-
    //Setup del font
    val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
    Box(
        modifier = Modifier
-           .background(Color.Transparent)
+           .background(brush = Brush.verticalGradient(
+               colors = listOf(Color.LightGray, Color.Black)
+           ))
            .fillMaxSize()
    ) {
+       /*
        Image(
            painter = painterResource(R.drawable.sfondo_muro),
            contentDescription = "none",
            contentScale = ContentScale.FillBounds,
            modifier = Modifier.fillMaxSize()
-       )
-
+       ) */
        Column(
            modifier = Modifier
                .background(Color.Transparent)
@@ -111,9 +114,9 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                selectedHeroName
            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
           HeroCard(
-               currentFont,
-               selectedHeroThumbnail,
-               selectedHeroDescription,
+              currentFont,
+              selectedHeroThumbnail,
+              selectedHeroDescription,
               selectedHeroEvents,
               selectedHeroStories,
               selectedHeroComics,
@@ -126,7 +129,7 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                        favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
                    }
                }
-           )                     //Metodo riusabile che, se fornito di un model eroe (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+          )
        }
 
    }
@@ -146,7 +149,7 @@ fun HeroScreenUpperBar(
            .background(Color.Red)
            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
            .padding(horizontal = 20.dp),
-       horizontalArrangement = Arrangement.spacedBy(50.dp),
+       horizontalArrangement = Arrangement.spacedBy(70.dp),
        verticalAlignment = Alignment.CenterVertically
    ) {
 
@@ -226,10 +229,31 @@ fun HeroCard(
                    .into(imageView)
 
                AndroidView(
-                   factory = { imageView },
+                   factory = { context ->
+                       val imageView = ImageView(context).apply {
+                           layoutParams = ViewGroup.LayoutParams(
+                               ViewGroup.LayoutParams.MATCH_PARENT,
+                               ViewGroup.LayoutParams.MATCH_PARENT
+                           )
+                       }
+
+                       val imageUrl = selectedHeroThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg"
+
+                       Picasso.get()
+                           .load(imageUrl)
+                           .placeholder(R.drawable.hero_placeholder)
+                           .memoryPolicy(MemoryPolicy.NO_CACHE)
+                           .networkPolicy(NetworkPolicy.NO_CACHE)
+                           .resize(900, 600)
+                           .centerCrop()
+                           .into(imageView)
+
+                       imageView
+                   },
                    modifier = Modifier
-                       .fillMaxWidth()
-                       .fillMaxHeight(0.8f)
+                       .fillMaxSize()
+                       .padding(12.dp)
+                       .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RectangleShape)
                )
            }
 
@@ -244,17 +268,13 @@ fun HeroCard(
                horizontalArrangement = Arrangement.Center,
                verticalAlignment = Alignment.CenterVertically
            ) {
-               Checkbox(
-                   checked = isFavorite.value,
+
+               FavouriteCheckbox(
+                   isFavorite.value,
                    onCheckedChange = {
                        isFavorite.value = it
                        onFavoriteClicked(it)
-                   },
-                   colors = CheckboxDefaults.colors(
-                       checkedColor = Color.Black,
-                       uncheckedColor = Color.Black,
-                       //checkmarkColor = Color.Black
-                   )
+                   }
                )
 
                Text(
@@ -265,12 +285,36 @@ fun HeroCard(
                )
            }
 
-           TextChip(selectedHeroDescription, 15.sp, fontFamily)
-           TextChip("Events: $selectedHeroEvents", 15.sp, fontFamily)
-           TextChip("Stories: $selectedHeroStories", 15.sp, fontFamily)
-           TextChip("Comics: $selectedHeroComics", 15.sp, fontFamily)
+           if (selectedHeroDescription == "DESCRIPTION NOT FOUND") {
+               TextChip(stringResource(R.string.description_not_found), 15.sp, fontFamily)
+           } else {
+               TextChip("$selectedHeroDescription", 15.sp, fontFamily)
+           }
+           TextChip(stringResource(R.string.events)+" $selectedHeroEvents", 15.sp, fontFamily)
+           TextChip(stringResource(R.string.stories) + " $selectedHeroStories", 15.sp, fontFamily)
+           TextChip(stringResource(R.string.comics_explanation) + " $selectedHeroComics", 15.sp, fontFamily)
 
            Spacer(modifier = Modifier.height(10.dp))
        }
    }
+
+    @Composable
+    fun FavouriteCheckbox(
+        isChecked: Boolean,
+        onCheckedChange: (Boolean) -> Unit
+    ) {
+        Row {
+            IconButton(
+                onClick = { onCheckedChange(!isChecked) }
+            ) {
+                Icon(
+                    imageVector = if (isChecked) Icons.Default.Star else Icons.Default.Star,
+                    contentDescription = if (isChecked) "Favourite" else "Not Favourite",
+                    tint = if (isChecked) Color.Yellow else Color.White,
+                    modifier = Modifier.size(32.dp),
+                )
+            }
+        }
+    }
+
 }
