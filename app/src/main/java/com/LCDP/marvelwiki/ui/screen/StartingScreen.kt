@@ -13,14 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.repository.ComicsRepository
-import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
-import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
 
-//COMPOSIZIONE TOTALE DELLA SCHERMATA DI APERTURA
+//  Creazione della schermata d'avvio
 @Composable
 fun StartingScreen(navController: NavController) {
     Box(
@@ -28,6 +24,7 @@ fun StartingScreen(navController: NavController) {
             .background(Color.Transparent)
             .fillMaxSize()
     ) {
+        //  Immagine di sfondo che riempie l'intero spazio del Box
         Image(
             painter = painterResource(R.drawable.background_colored),
             contentDescription = "none",
@@ -35,6 +32,7 @@ fun StartingScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize()
         )
 
+        //  Colonna che centra il suo contenuto
         Column(
             modifier = Modifier
                 .background(Color.Transparent)
@@ -42,6 +40,7 @@ fun StartingScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            //  Immagine del logo degli Avengers che, se cliccata, porta alla HomeScreen
             Image(
                 painter = painterResource(R.drawable.avengers_logo),
                 contentDescription = "none",
