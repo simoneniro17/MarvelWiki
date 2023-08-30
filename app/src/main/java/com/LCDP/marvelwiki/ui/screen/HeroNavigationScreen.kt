@@ -9,17 +9,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +45,6 @@ import androidx.navigation.NavController
 import com.LCDP.marvelwiki.R
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
-import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
 import com.LCDP.marvelwiki.usefulStuff.Debouncer
@@ -60,129 +54,143 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
+//  Schermata di navigazione degli eroi
 @Composable
-fun NavigationScreen(navController: NavController,context: Context) {
-    //Setup del font
+fun NavigationScreen(navController: NavController, context: Context) {
+
+    //  Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
-    //Setup stato della checkbox
+    //  Setup stato della checkbox per i preferiti
     val checkedState = remember { mutableStateOf(false) }
 
-    val charactersRepository = CharactersRepository()               //creo la repository
-    val charactersViewModel: CharactersViewModel = viewModel(       //creo il viewModel dalla sua factory
-        factory = CharactersViewModelFactory(charactersRepository, context.applicationContext as Application)
-    )
+    //  Inizializzazione del repository e del ViewModel per i Character
+    val charactersRepository = CharactersRepository()
+    val charactersViewModel: CharactersViewModel =
+        viewModel(
+            factory = CharactersViewModelFactory(
+                charactersRepository = charactersRepository,
+                context.applicationContext as Application
+            )
+        )
 
-    charactersViewModel.loadCharacterList()                     //chiamo il metodo del viewModel che permette di caricare
-    //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
+    //  Caricamento iniziale della lista dei primi 100 personaggi
+    charactersViewModel.loadCharacterList()
 
+    //  Schermata principale con sfondo gradiente
     Box(
-        /*modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Transparent)*/
-    modifier = Modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(Color.Red, Color.Black)
                 )
             )
-
     ) {
-/*
-        Image(
-            painter = painterResource(R.drawable.background_tamarro),
-            contentDescription = "none",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )*/
-
-        //Costruzione dei dettagli (ho associato ad ogni parte della schermata un metodo (evidenziato in rosso) che la crea per motivi di ordine)
-        //DA NOTARE che ai NavigationButtons deve essere passato il navController, per poterlo utilizzare per switchare schermata quando clicchi il bottone)
+        //  Colonna per contenere tutti gli elementi della schermata
+        //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         Column(
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxSize()
         ) {
+            //  Barra superiore con opzioni di navigazione e filtro dei preferiti
             NavigationScreenUpperBar(
                 navController,
                 currentFont,
                 checkedState,
                 charactersViewModel
-            )             //Creazione del layout esterno alla lazy list (la barra fissa in alto)
+            )
+
             //Separator(fontFamily = currentFont,charactersViewModel, checkedState)
-            SearchScreen(navController = navController, charactersViewModel = charactersViewModel, fontFamily = currentFont, checkedState)
-            AllHeroesList(navController, currentFont,context, charactersViewModel)
+
+            //  Area per la ricerca
+            SearchScreen(
+                navController = navController,
+                charactersViewModel = charactersViewModel,
+                fontFamily = currentFont,
+                checkedState
+            )
+
+            //  Lista di tutti gli eroi
+            AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
     }
 }
 
-    @Composable
-    fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily, checkedState : MutableState<Boolean>, charactersViewModel: CharactersViewModel,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(Color.Transparent)
-                .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-                .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(80.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(40.dp)
-                    .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
-                    .clip(shape = CircleShape)
-                    .background(Color.Green)
-            ) {
-                Image(
-                    painterResource(R.drawable.back_arrow),
-                    contentDescription = "HOME",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = CircleShape
-                        )
-                        .clip(shape = CircleShape)
-                        .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
-                )
-            }
-
-            Text(
-                text = stringResource(R.string.heroes).uppercase(),
-                fontSize = 30.sp,
-                color = Color.White,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center,
-            )
-            FavouriteCheckbox(
-                isChecked = checkedState.value,
-                onCheckedChange = { checkedState.value = it
-                    if (!it) {
-                        charactersViewModel.unloadFavouriteCharacters()
-                    } else {
-                        charactersViewModel.loadFavouriteCharacters()
-                    }
-                }
-            )
-
-        }
-    }
-
+//  Barra superiore
 @Composable
-fun SearchBar(
-    fontFamily: FontFamily,
-    onSearchQueryChange: (String) -> Unit,
-    checkedState : MutableState<Boolean>
-) {
+fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily, checkedState: MutableState<Boolean>, charactersViewModel: CharactersViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .background(Color.Transparent)
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(80.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        //  Pulsante per tornare alla HomeScreen
+        Column(
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+                .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
+                .clip(shape = CircleShape)
+                .background(Color.Green)
+        ) {
+            Image(
+                painterResource(R.drawable.back_arrow),
+                contentDescription = "HOME",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = CircleShape
+                    )
+                    .clip(shape = CircleShape)
+                    .clickable(onClick = { navController.navigate(Screens.HomeScreen.route) })
+            )
+        }
+
+        //  Testo nella barra superiore
+        Text(
+            text = stringResource(R.string.heroes).uppercase(),
+            fontSize = 25.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center
+        )
+
+        //  "Checkbox" per il filtro dei preferiti
+        FavouriteCheckbox(
+            isChecked = checkedState.value,
+            onCheckedChange = {
+                checkedState.value = it
+                if (!it) {
+                    charactersViewModel.unloadFavouriteCharacters()
+                } else {
+                    charactersViewModel.loadFavouriteCharacters()
+                }
+            }
+        )
+
+    }
+}
+
+//  Barra di ricerca
+@Composable
+fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, checkedState: MutableState<Boolean>) {
+
+    //  Stato locale per il valore dell'input della barra di ricerca
     var textFieldState by remember { mutableStateOf("") }
-    val debouncer = remember { Debouncer(300)}
+
+    //  Debouncer per gestire la ricerca ritardata in base all'input dell'utente
+    val debouncer = remember { Debouncer(300) }
+
+    //  Creazione della barra di ricerca
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -190,11 +198,13 @@ fun SearchBar(
             .fillMaxWidth()
             .padding(10.dp)
     ) {
+        //  Campo di testo con icona di ricerca
         OutlinedTextField(
             value = textFieldState,
             onValueChange = {
                 textFieldState = it
-                debouncer.debounce {onSearchQueryChange(it)}
+                //  Utilizzo del debouncer èer ritardare la ricerca
+                debouncer.debounce { onSearchQueryChange(it) }
             },
             label = {
                 Text(
@@ -221,30 +231,29 @@ fun SearchBar(
             ),
             singleLine = true,
             modifier = Modifier.fillMaxWidth(0.95f),
-
         )
     }
+
+    //  Se il campo di ricerca non è vuoto, il filtro dei preferiti viene disabilitato
     if (textFieldState.isNotEmpty()) {
         checkedState.value = false
     }
 }
 
 @Composable
-fun SearchScreen(navController: NavController,
-                 charactersViewModel: CharactersViewModel,
-                 fontFamily: FontFamily,
-                 checkedState : MutableState<Boolean>
-) {
-
+fun SearchScreen(navController: NavController, charactersViewModel: CharactersViewModel, fontFamily: FontFamily, checkedState: MutableState<Boolean>) {
+    //  Colonna che contiene il layout della schermata di ricerca
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        //  Barra di ricerca
         SearchBar(
             fontFamily = fontFamily,
-            onSearchQueryChange =  charactersViewModel::loadCharacterByNameList,
+            onSearchQueryChange = charactersViewModel::loadCharacterByNameList,
             checkedState
         )
 
+        //  Lista di tutti gli eroi preferiti
         AllHeroesList(
             navController = navController,
             fontFamily = fontFamily,
@@ -254,98 +263,62 @@ fun SearchScreen(navController: NavController,
     }
 }
 
-@Composable
-    fun Separator(fontFamily: FontFamily, charactersViewModel: CharactersViewModel, checkedState : MutableState<Boolean>) {
-    var isChecked by remember { mutableStateOf(false) }
-    Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(color = Color.Red)
-                .border(border = BorderStroke((0.5).dp, Color.Black)),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-        FavouriteCheckbox(
-            isChecked = checkedState.value,
-            onCheckedChange = { checkedState.value = it
-                if (!it) {
-                    charactersViewModel.unloadFavouriteCharacters()
-                } else {
-                    charactersViewModel.loadFavouriteCharacters()
-                }
-            }
-        )
-        /*Checkbox(
-            checked = checkedState.value,
-            onCheckedChange = { checkedState.value = it
-                if (!it) {
-                    charactersViewModel.unloadFavouriteCharacters()
-                } else {
-                    charactersViewModel.loadFavouriteCharacters()
-                } },
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color.Black,
-                uncheckedColor = Color.Black,
-            )
-
-        )*/
-
-            Text(
-                stringResource(R.string.visualize_only_favorite_heroes).uppercase(),
-                fontSize = 12.sp,
-                fontFamily = fontFamily,
-                color = Color.White
-            )
-        }
-    }
-
-
-
 
 @Composable
-fun AllHeroesList(
-    navController: NavController,
-    fontFamily: FontFamily,
-    context: Context,
-    charactersViewModel: CharactersViewModel
+fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context: Context, charactersViewModel: CharactersViewModel) {
 
-) {
-    // listState utilizzata per avere un controllo preciso sullo stato di scorrimento della lazyColumn
+    //  Stato di scorrimento della lazyColumn
     val listState = rememberLazyListState()
-    val characterList = charactersViewModel.characterList       //prendo dal viewModel la characterList caricata che, alla prima apertura contiene solo i primi 100 eroi
 
-    //in blocco viene avviato quando il composable viene avviato o quando la dipendenza Unit cambia
-    //in questo caso, stiamo utilizzando Unit come dipendenza, quindi l'effetto viene avviato solo una volta all'avvio del compose
+    //  Caricamento dei primi 100 eroi
+    val characterList =
+        charactersViewModel.characterList
+
+    /*  Il blocco si avvia o quando il composable viene avviato, o quando la dipendenza Unit cambia.
+        Utilizzando Unit come dipendenza l'effetto viene avviato solo una volta all'avvio del composable */
     LaunchedEffect(Unit) {
 
-        //snapshotFlow { listState.layoutInfo.visibleItemsInfo } viene utilizzato per creare un flusso di snapshot basato sulle informazioni
-        //sugli elementi visibili ottenute da listState.layoutInfo.visibleItemsInfo.
-        //Questo flusso emette un nuovo valore ogni volta che le informazioni sugli elementi visibili cambiano
+        /*  snapshotFlow crea un flusso di snapshot basato sugli elementi visibili ottenuti da
+            listState.layoutInfo.visibleItemsInfo. Il flusso emette un nuovo valroe ogni volta
+            che le informazioni sugli elementi visibili cambiano    */
         snapshotFlow { listState.layoutInfo.visibleItemsInfo }
-            //.map lo utilizziamo per trasformare ogni valore emesso dal flusso nel valore booleano isAtEnd che indica che lo scorrimento è alla fine della lista
-            //controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
-            //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
-            //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
+
+            //  .map trasforma ogni valore del flusso nel booleano isAtEnd, che indica se lo scorrimento è alla fine della lista
             .map { visibleItemsInfo ->
+
+                //controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
+                //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
+                //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
+
+                //  Ultimo indice visbile
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
+
+                //  Elementi totali
                 val totalCount = listState.layoutInfo.totalItemsCount
-                val isAtEnd = lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
+
+                /*  Controlliamo se l'ultimo indice visibile è diverso da null e corrisponde all'ultimo
+                elemento della lista ed il conteggio degli elementi totali è maggiore di 0  */
+                val isAtEnd =
+                    lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
+
                 isAtEnd
             }
-            //utilizziamo il seguente operatore per filtrare solo i cambiamenti di stato nel flusso. In questo modo il flusso emetterà
-            //solo valori diversi consecutivi
+
+            //  Filtriamo solo i cambiamenti di stato, in modo che il flusso emetta solo valori diversi consecutivi
             .distinctUntilChanged()
-            //raccoglie i valori emessi dal flusso, quando endOfListReached diventa true eseguiamo la if
+
+            //  Raccogliamo i valori emessi dal flusso e quando raggiungiamo la fine della lista eseguiamo l'if
             .collect { endOfListReached ->
                 if (endOfListReached) {
-                    charactersViewModel.loadCharacterList()                         //richiama dal viewModel il metodo che richiama la api per caricare nuovi personaggi
+                    charactersViewModel.loadCharacterList()
                 }
             }
     }
 
-    LazyColumn(state = listState) {                                  //ora carichiamo gli elementi della lista
+    //  LazyColumn in cui vengono caricati gli elementi della lista
+    LazyColumn(state = listState) {
         items(characterList.size) { index ->
+            //  Thumbnail relativa all'eroe
             HeroThumbnail(
                 navController,
                 fontFamily,
@@ -356,110 +329,106 @@ fun AllHeroesList(
     }
 }
 
+//  Thumbnail relativa ad un eroe
 @Composable
-    fun HeroThumbnail(
-    navController: NavController,
-    fontFamily: FontFamily,
-    selectedHero: Character,
-    context: Context
-    ) {
+fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selectedHero: Character, context: Context) {
 
-        Row(
+    //  Riga che contiene il composable dell'immagine e il nome dell'eroe
+    Row(
+        modifier = Modifier
+            .width(400.dp)
+            .height(300.dp)
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        //  Colonna che contiene l'immagine dell'eroe e il suo nome
+        Column(
             modifier = Modifier
-                .width(400.dp)
-                .height(300.dp)
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+                .fillMaxSize()
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clip(shape = RoundedCornerShape(10.dp))
+                .clickable(onClick = {
+
+                    //  Estrazione dei dettagli dell'eroe selezionato
+                    val name = selectedHero.name
+                    var thumbnail = selectedHero.thumbnail?.path
+                    var description = selectedHero.description
+                    val id = selectedHero.id
+                    val eventsAvailable = selectedHero.events?.available
+                    val storiesAvailable = selectedHero.stories?.available
+                    val comicsAvailable = selectedHero.comics?.available
+
+                    if (description.isNullOrEmpty()) {
+                        description = "Not available"
+                    }
+
+                    thumbnail = thumbnail?.replace("/", "_")
+
+                    //  Creazione degli argomenti per la navigazione alla schermata dell'eroe
+                    val args = listOf(
+                        name, thumbnail, description, id, eventsAvailable, storiesAvailable, comicsAvailable
+                    )
+
+                    navController.navigate("heroScreen/${args.joinToString("/")}")
+                }),
+            verticalArrangement = Arrangement.Top
         ) {
 
-            Column(
+            //  ImageView per mostrare l'immagine dell'eroe
+            val imageView = remember { ImageView(context) }
+
+            //  Caricamento dell'immagine dell'eroe utilizzando Picasso
+            Picasso.get()
+                .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
+                .placeholder(R.drawable.hero_placeholder)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .resize(510, 310)
+                .centerCrop()
+                .into(imageView)
+
+            //  Rappresentazione dell'immagine come Composable AndroidView
+            AndroidView(
+                factory = { imageView },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black),
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clip(shape = RoundedCornerShape(10.dp))
-                    .clickable(onClick = {
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)
+            )
 
-                        val name = selectedHero.name
-                        var thumbnail = selectedHero.thumbnail?.path
-
-                        thumbnail = thumbnail?.replace("/", "_")
-                        var description = selectedHero.description
-
-                        if (description.isNullOrEmpty()) {
-                            description = "DESCRIPTION NOT FOUND"
-                        }
-
-                        val id = selectedHero.id
-
-                        val eventsAvailable = selectedHero.events?.available
-                        val storiesAvailable = selectedHero.stories?.available
-                        val comicsAvailable = selectedHero.comics?.available
-
-                        val args = listOf(
-                            name,
-                            thumbnail,
-                            description,
-                            id,
-                            eventsAvailable,
-                            storiesAvailable,
-                            comicsAvailable
-                        )
-                        navController.navigate("heroScreen/${args.joinToString("/")}")
-
-                    }
-                    ),
-                verticalArrangement = Arrangement.Top
-            ) {
-                val imageView = remember { ImageView(context) }
-
-                Picasso.get()
-                    .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
-                    .placeholder(R.drawable.hero_placeholder)                                                                            //attesa del carimento, da cmabiare
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(510, 310)
-                    .centerCrop()
-                    .into(imageView)
-
-                AndroidView(
-                    factory = { imageView },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                )
-
-                Text(
-                    text = selectedHero.name!!.uppercase(),
-                    fontSize = 20.sp,
-                    fontFamily = fontFamily,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .background(color = Color.Red)
-                        .height(50.dp)
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
-                )
-            }
-
+            //  Testo con il nome dell'eroe sopra l'immagine
+            Text(
+                text = selectedHero.name!!.uppercase(),
+                fontSize = 20.sp,
+                fontFamily = fontFamily,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(color = Color.Red)
+                    .height(50.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            )
         }
     }
+}
 
+//  "Stellina" per i preferiti
 @Composable
-fun FavouriteCheckbox(
-    isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
+fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+
+    //  Riga che contiene l'icona dei preferiti
     Row {
+        //  Icona che cambia lo stato quando viene cliccata
         IconButton(
             onClick = { onCheckedChange(!isChecked) }
         ) {
+            //  Icona a forma di stella, cambia colore in base allo stato
             Icon(
-                imageVector = if (isChecked) Icons.Default.Star else Icons.Default.Star,
+                imageVector = Icons.Default.Star,
                 contentDescription = if (isChecked) "Favourite" else "Not Favourite",
                 tint = if (isChecked) Color.Yellow else Color.White,
                 modifier = Modifier.size(32.dp),
