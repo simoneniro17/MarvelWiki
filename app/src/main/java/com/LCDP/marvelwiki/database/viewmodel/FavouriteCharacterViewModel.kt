@@ -1,62 +1,27 @@
 package com.LCDP.marvelwiki.database.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.LCDP.marvelwiki.database.DatabaseAccess
-import com.LCDP.marvelwiki.database.appDatabase
 import com.LCDP.marvelwiki.database.model.FavouriteCharacter
-import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-/*class FavouriteCharacterViewModel(application: Application): AndroidViewModel(application) {
+class FavouriteCharacterViewModel(private val databaseAccess: DatabaseAccess) : ViewModel() {
 
-    // Oggetto contenente la lista (degli ID) dei personaggi preferiti
-    val allFavouriteCharacterId: List<String>
-
-    // Istanza del FavouriteCharacterRepository
-    private val repository: FavouriteCharacterRepository
-
-    // Viene inizializzato il FavouriteCharacterRepository utilizzando il DAO e viene impostato l'oggetto 'allFavouriteCharacterId'
-    init {
-        val favouriteCharacterDAO = appDatabase.getDatabase(application).favouriteCharacterDAO()
-        repository = FavouriteCharacterRepository(favouriteCharacterDAO)
-        allFavouriteCharacterId = repository.allFavouriteCharacterId
-    }
-
-    fun addFavouriteCharacter(favouriteCharacter: FavouriteCharacter){
-        // L'operazione di inserimento è svolta in un contesto di coroutine in modo asincrono
-        viewModelScope.launch(Dispatchers.IO){
-            repository.addFavouriteCharacter(favouriteCharacter)
-        }
-    }
-
-    fun deleteFavouriteCharacter(favouriteCharacter: FavouriteCharacter){
-        // L'operazione di cancellazione è svolta in un contesto di coroutine in modo asincrono
-        viewModelScope.launch(Dispatchers.IO){
-            repository.deleteFavouriteCharacter(favouriteCharacter)
-        }
-    }
-}
-
- */
-
-class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) : ViewModel() {
-
+    //  Lista degli ID dei personaggi preferiti (inizialmente vuota)
     var favouriteCharacterList = emptyList<String>()
 
+    //  Per ottenere gli ID dei personaggi preferiti
     @OptIn(DelicateCoroutinesApi::class)
-    fun fetchData():List<String>{
+    fun fetchData(): List<String> {
         GlobalScope.launch {
             favouriteCharacterList = databaseAccess.getAllFavouriteCharacters()
         }
         return favouriteCharacterList
     }
 
+    //  Per inserire l'ID di un personaggio nei preferiti
     @OptIn(DelicateCoroutinesApi::class)
     fun insertData(favouriteCharacter: FavouriteCharacter) {
         GlobalScope.launch {
@@ -64,6 +29,7 @@ class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) :
         }
     }
 
+    //  Per rimuovere l'ID di un personaggio dai preferiti
     @OptIn(DelicateCoroutinesApi::class)
     fun deleteData(favouriteCharacter: FavouriteCharacter) {
         GlobalScope.launch {
@@ -71,6 +37,7 @@ class FavouriteCharacterViewModel( private val databaseAccess: DatabaseAccess) :
         }
     }
 
+    //  Per verificare se l'ID di un personaggio è tra i preferiti
     suspend fun isCharacterFavourite(selectedId: String): Boolean {
         return databaseAccess.isCharacterFavourite(selectedId)
     }

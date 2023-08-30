@@ -9,8 +9,7 @@ import java.sql.Timestamp
 
 class Constant {
     companion object {
-        const val BASE_URL =
-            "https://gateway.marvel.com/v1/public/"  //  URL di base per le chiamate alle API di Marvel
+        const val BASE_URL = "https://gateway.marvel.com/v1/public/"  //  URL di base per le chiamate alle API di Marvel
 
         val ts = Timestamp(System.currentTimeMillis()).time.toString()  // Timestamp corrente convertito in una stringa
         const val PUBLIC_KEY = "802a20828584c07127363491a6e1a431"

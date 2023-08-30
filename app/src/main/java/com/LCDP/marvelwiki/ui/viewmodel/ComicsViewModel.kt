@@ -1,25 +1,16 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.LCDP.marvelwiki.data.API.ComicsAPICall.ComicInstance
-import com.LCDP.marvelwiki.data.model.Character
-import com.LCDP.marvelwiki.data.model.CharacterResponse
 import com.LCDP.marvelwiki.data.model.Comic
-import com.LCDP.marvelwiki.data.model.ComicResponse
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
 import com.LCDP.marvelwiki.database.DatabaseAccess
-import com.LCDP.marvelwiki.database.appDatabase
-import com.LCDP.marvelwiki.usefulStuff.Constant
-import com.LCDP.marvelwiki.usefulStuff.Resource
+import com.LCDP.marvelwiki.database.AppDatabase
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class ComicsViewModel(private val comicsRepository: ComicsRepository, application: Application) : ViewModel() {
     // Questa classe estente la classe viewModel
@@ -143,7 +134,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
         _comicList.clear()
         viewModelScope.launch {
             try {
-                val appDatabase = appDatabase.getDatabase(context)
+                val appDatabase = AppDatabase.getDatabase(context)
                 val databaseAccess = DatabaseAccess(appDatabase)
                 val idList = databaseAccess.getAllFavouriteComics()
 
@@ -171,7 +162,7 @@ class ComicsViewModel(private val comicsRepository: ComicsRepository, applicatio
         _comicList.clear()
         viewModelScope.launch {
             try {
-                val appDatabase = appDatabase.getDatabase(context)
+                val appDatabase = AppDatabase.getDatabase(context)
                 val databaseAccess = DatabaseAccess(appDatabase)
                 val idList = databaseAccess.getAllReadComics()
 

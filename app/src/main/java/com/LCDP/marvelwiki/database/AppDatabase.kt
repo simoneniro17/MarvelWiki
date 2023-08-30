@@ -17,7 +17,7 @@ import com.LCDP.marvelwiki.database.model.ReadComic
     version = 1,
     exportSchema = false
 )
-abstract class appDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     // Definiamo il metodo per ottenere il DAO associato al database
     abstract fun favouriteCharacterDAO(): FavouriteCharacterDAO
@@ -29,28 +29,28 @@ abstract class appDatabase : RoomDatabase() {
 
         // Assicura la coerenza dei dati tra i thread
         @Volatile
-        private var INSTANCE: appDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
         // Funzione per ottenere un'istanza del database
-        fun getDatabase(context: Context): appDatabase {
+        fun getDatabase(context: Context): AppDatabase {
 
             val tempInstance = INSTANCE
 
             // Verifichiamo se esiste un'istanza già creata
-            if (tempInstance != null) {
-                return tempInstance
+            return if (tempInstance != null) {
+                tempInstance
             } else {
 
                 // Creiamo una nuova istanza del database
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    appDatabase::class.java,
+                    AppDatabase::class.java,
                     "marvelwiki_database"
                 ).build()
 
                 // Assegniamo l'istanza appena creata alla variabile 'INSTANCE'
                 INSTANCE = instance
-                return instance
+                instance
             }
         }
     }

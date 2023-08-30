@@ -1,6 +1,5 @@
 package com.LCDP.marvelwiki.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,7 +22,4 @@ interface FavouriteCharacterDAO {
     // Metodo per ottenere la lista dei personaggi (gli ID) preferiti
     @Query("SELECT * FROM favourite_character")
     fun getAllFavoriteCharacterId(): List<String>
-
-    @Query("SELECT count(*) FROM favourite_character WHERE characterId = :characterId")
-    fun provaPreferito(characterId : String): Int
 }

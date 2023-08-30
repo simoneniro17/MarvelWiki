@@ -1,6 +1,5 @@
 package com.LCDP.marvelwiki.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
@@ -11,11 +10,7 @@ import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import kotlinx.coroutines.launch
 import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.database.DatabaseAccess
-import com.LCDP.marvelwiki.database.appDatabase
-import com.LCDP.marvelwiki.database.repository.FavouriteCharacterRepository
-import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.LCDP.marvelwiki.database.AppDatabase
 
 //import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
@@ -97,7 +92,7 @@ class CharactersViewModel(
         _characterList.clear()
         viewModelScope.launch {
             try {
-                val appDatabase = appDatabase.getDatabase(context)
+                val appDatabase = AppDatabase.getDatabase(context)
                 val databaseAccess = DatabaseAccess(appDatabase)
                 val idList = databaseAccess.getAllFavouriteCharacters()
 

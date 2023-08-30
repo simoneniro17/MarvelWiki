@@ -45,21 +45,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import androidx.navigation.navArgument
 import com.LCDP.marvelwiki.R
-import com.LCDP.marvelwiki.data.model.Character
-import com.LCDP.marvelwiki.data.model.HeroModel
-import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import com.LCDP.marvelwiki.database.DatabaseAccess
-import com.LCDP.marvelwiki.database.appDatabase
-import com.LCDP.marvelwiki.database.model.FavouriteCharacter
+import com.LCDP.marvelwiki.database.AppDatabase
 import com.LCDP.marvelwiki.database.model.FavouriteComic
 import com.LCDP.marvelwiki.database.model.ReadComic
-import com.LCDP.marvelwiki.database.viewmodel.FavouriteCharacterViewModel
 import com.LCDP.marvelwiki.database.viewmodel.FavouriteComicViewModel
 import com.LCDP.marvelwiki.database.viewmodel.ReadComicViewModel
-import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
-import com.LCDP.marvelwiki.usefulStuff.Resource
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -83,7 +75,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
         15.sp
     }
 
-    val appDatabase = appDatabase.getDatabase(context)
+    val appDatabase = AppDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
     val favouriteComicViewModel = FavouriteComicViewModel(databaseAccess)
     val readComicViewModel = ReadComicViewModel(databaseAccess)

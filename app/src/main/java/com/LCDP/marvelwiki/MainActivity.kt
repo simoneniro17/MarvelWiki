@@ -3,7 +3,6 @@ package com.LCDP.marvelwiki
 import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.LCDP.marvelwiki.ui.screen.Navigation
