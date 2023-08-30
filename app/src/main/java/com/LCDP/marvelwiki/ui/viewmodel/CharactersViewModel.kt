@@ -57,8 +57,13 @@ class CharactersViewModel(
                 }
 
             } catch (e: Exception) {
-                // Gestisco eventuali errori durante il caricamento
+                //  Gestione eventuali errori durante il caricamento
                 println("Errore durante il caricamento dei personaggi: ${e.message}")
+
+                /*  Toast con il messaggio di errore
+                val errorMessage = "Errore durante il caricamento dei personaggi: ${e.message}"
+                Toast.makeText(application, errorMessage, Toast.LENGTH_SHORT).show()
+                 */
             }
         }
     }
@@ -87,15 +92,15 @@ class CharactersViewModel(
                     //  Viene preso il corpo della risposta che contiene i dati
                     val characters = charactersResponse.body()?.characterData?.results
 
-                    //  La risposta contiene dei dati
+                    //  La risposta contiene dei dati che vengono aggiunti alla lista
                     if (characters != null) {
                         _characterList.addAll(characters.toMutableList())
                         offset += characters.size
                     }
 
                 } catch (e: Exception) {
-                    // Gestisco eventuali errori durante il caricamento
-                    println("Errore durante il caricamento dei personaggi: ${e.message}")
+                    // Gestione eventuali errori durante il caricamento
+                    println("Errore durante il caricamento del fumetto cercato: ${e.message}")
                 }
             }
         }
