@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -411,9 +410,6 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
 @Composable
 fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
 
-    //  Testo da visualizzare nel TextChip
-    val text = text
-
     //  Aggiunta spazio vuoto per l'interlinea
     Spacer(modifier = Modifier.height(5.dp))
 
@@ -442,34 +438,3 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
         )
     }
 }
-
-/*
-@Composable
-fun UnclickableImageCard(
-    painter: Painter,
-    contentDescription: String,
-    modifier: Modifier
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .border(
-                border = BorderStroke(width = 1.dp, Color.Black),
-                shape = RoundedCornerShape(10.dp)
-            )
-            .clip(shape = RoundedCornerShape(10.dp))
-    ) {
-        Box(
-            modifier = Modifier
-                .height(300.dp)
-        ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painter,
-                contentDescription = contentDescription,
-                contentScale = ContentScale.FillBounds
-            )
-        }
-    }
-} */
