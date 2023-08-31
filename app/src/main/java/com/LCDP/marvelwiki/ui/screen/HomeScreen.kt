@@ -1,18 +1,31 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import android.app.Application
 import android.content.Context
 import android.util.Log
+//import android.util.Size
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.unit.dp
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Size
+
+import androidx.compose.ui.graphics.Brush
+
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -101,11 +114,13 @@ fun HomeScreen(navController: NavController, context: Context) {
 fun HomeScreenUpperBar(fontFamily: FontFamily) {
 
     //  La riga che costituirà la barra superiore
+    val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red,  Color.Red, Color.Red, Color.Black)
+    val gradientBrush = Brush.verticalGradient(gradientColors)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Red)
+            .background(brush = gradientBrush)
             .border(border = BorderStroke(width = 1.dp, color = Color.Black))
             .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
@@ -162,6 +177,8 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
             )
 
             //  Testo del primo bottone
+            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
+            val gradientBrush = Brush.verticalGradient(gradientColors)
             Text(
                 text = stringResource(R.string.heroes).uppercase(),
                 fontSize = 18.sp,
@@ -169,7 +186,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .background(color = Color.Red)
+                    .background(brush = gradientBrush)
                     .fillMaxSize()
                     .padding(vertical = 2.dp)
             )
@@ -210,7 +227,8 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
                         border = BorderStroke(width = 1.dp, color = Color.Black),
                     )
             )
-
+            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
+            val gradientBrush = Brush.verticalGradient(gradientColors)
             //  Testo del secondo bottone
             Text(
                 text = stringResource(R.string.library).uppercase(),
@@ -219,7 +237,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .background(color = Color.Red)
+                    .background(brush = gradientBrush)
                     .fillMaxSize()
                     .padding(vertical = 2.dp)
             )
@@ -235,10 +253,12 @@ fun LatestComicBanner(fontFamily: FontFamily) {
     Spacer(modifier = Modifier.height(5.dp))
 
     //  La riga che costituisce il banner
+    val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Black)
+    val gradientBrush = Brush.verticalGradient(gradientColors)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Red)
+            .background(brush = gradientBrush)
             .height(50.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
