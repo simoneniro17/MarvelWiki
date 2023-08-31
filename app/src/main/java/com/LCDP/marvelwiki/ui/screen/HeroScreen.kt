@@ -257,10 +257,10 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             }
 
             //  Visualizza la descrizione dell'eroe
-            if (selectedHeroDescription == "DESCRIPTION NOT FOUND") {
-                TextChip("Description: " + stringResource(R.string.description_not_found), 15.sp, fontFamily)
+            if (selectedHeroDescription == "NOT AVAILABLE") {
+                TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
-                TextChip("Description: $selectedHeroDescription", 15.sp, fontFamily)
+                TextChip("$selectedHeroDescription".uppercase(), 15.sp, fontFamily)
             }
 
             //  Visualizza numero di eventi, storie e fumetti dell'eroe

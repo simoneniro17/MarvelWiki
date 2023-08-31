@@ -10,6 +10,8 @@
     <string name="search_a_character">Search A Character</string>
 
     <string name="favorite">Favorite</string>
+    <string name="read">read</string>
+
     <string name="description_not_found">Description Not Found</string>
     <string name="events">Events</string>
     <string name="stories">Stories</string>
@@ -22,5 +24,10 @@
     <string name="search_comic_by_isbn">search comic by isbn</string>
     <string name="search_for_a_comic">search for a comic by using its name or isbn</string>
     <string name="select_only_one_option">please, select only one option: favorite or read</string>
+
+    <string name="isbn">isbn</string>
+    <string name="isbn_not_found">isbn not available</string>
+    <string name="page_count">page count</string>
+    <string name="series">series</string>
 
 </resources>

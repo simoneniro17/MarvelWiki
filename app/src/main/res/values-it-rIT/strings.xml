@@ -19,4 +19,9 @@
     <string name="select_only_one_option">per favore, seleziona soltanto una delle due opzioni: preferiti o letti</string>
     <string name="stories">storie:</string>
     <string name="comics_explanation">fumetti:</string>
+    <string name="isbn">"ISBN: "</string>
+    <string name="page_count">Pagine:</string>
+    <string name="series">"Serie: "</string>
+    <string name="read">Letto</string>
+    <string name="isbn_not_found">ISBN non disponibile</string>
 </resources>

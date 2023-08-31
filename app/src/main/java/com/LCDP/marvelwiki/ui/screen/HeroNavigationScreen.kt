@@ -363,7 +363,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                     val comicsAvailable = selectedHero.comics?.available
 
                     if (description.isNullOrEmpty()) {
-                        description = "Not available"
+                        description = "NOT AVAILABLE"
                     }
 
                     thumbnail = thumbnail?.replace("/", "_")

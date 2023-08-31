@@ -34,8 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -70,6 +72,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
     val comicPageCount = arguments[6]
     val comicSeries = arguments[7]
 
+    //Selezione della grandezza del font in modo tale da mostrare correttamente anche titoli particolarmente lunghi
     val fontSize: TextUnit = if (comicTitle.length <= 28) {
         20.sp
     } else {
@@ -242,18 +245,23 @@ fun ComicCard(
                     .placeholder(R.drawable.comic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(800, 800)
+                    .resize(900, 600)
                     .centerCrop()
                     .into(imageView)
 
                 AndroidView(
                     factory = { imageView },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
+                        .fillMaxSize()
+                        .padding(12.dp)
+                        .border(
+                            border = BorderStroke(width = 1.dp, Color.Black),
+                            shape = RectangleShape
+                        )
                 )
             }
 
+            // Spaziatore
             Spacer(modifier = Modifier.height(10.dp))
 
             //  Sezione per aggiungere (rimuovere) il fumetto ai (dai) preferiti/letti
@@ -266,52 +274,57 @@ fun ComicCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    checked = isComicFavourite.value,
+
+                // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dai preferiti
+                FavouriteCheckbox(
+                    isComicFavourite.value,
                     onCheckedChange = {
                         isComicFavourite.value = it
                         onFavoriteClicked(it)
-                    },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black,
-                        //checkmarkColor = Color.Black
-                    )
+                    }
                 )
 
+                // Testo che accompagna la checkbox
                 Text(
-                    "Favorite".uppercase(),
+                    text = stringResource(R.string.favorite).uppercase(),
                     fontSize = 20.sp,
                     fontFamily = fontFamily,
                     color = Color.White
                 )
 
-                Checkbox(
-                    checked = isComicRead.value,
+                // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
+                FavouriteCheckbox(
+                    isComicRead.value,
                     onCheckedChange = {
                         isComicRead.value = it
                         onReadClicked(it)
-                    },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black,
-                        //checkmarkColor = Color.Black
-                    )
+                    }
                 )
 
+                // Testo che accompagna la checkbox
                 Text(
-                    "Read".uppercase(),
+                    text = stringResource(R.string.read).uppercase(),
                     fontSize = 20.sp,
                     fontFamily = fontFamily,
                     color = Color.White
                 )
             }
 
-            //  Visualizza codice ISBN, numero di pagine e serie di appartenza del fumetto
-            TextChip(comicDescription.uppercase(), 20.sp, fontFamily)
-            TextChip("ISBN: $comicIsbn", 20.sp, fontFamily)
-            TextChip("Page count: $comicPageCount", 20.sp, fontFamily)
-            TextChip("Series: $comicSeries", 20.sp, fontFamily)
+            //  Visualizza tutte le informazioni relative al fumetto selezionato
+            if (comicDescription == "NOT AVAILABLE") {
+                TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
+            } else {
+                TextChip("$comicDescription".uppercase(), 15.sp, fontFamily)
+            }
+
+            if (comicIsbn == "NOT AVAILABLE") {
+                TextChip(stringResource(R.string.isbn_not_found).uppercase(), 15.sp, fontFamily)
+            } else {
+                TextChip(stringResource(R.string.isbn) + " $comicIsbn".uppercase(), 20.sp, fontFamily)
+            }
+
+            TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 20.sp, fontFamily)
+            TextChip(stringResource(R.string.series)+ " $comicSeries".uppercase(), 20.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }

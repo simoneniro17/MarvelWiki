@@ -12,9 +12,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -124,7 +127,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(50.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         //  Icona per tornare alla HomeScreen
         Column(
@@ -158,34 +161,6 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
         )
-
-        /*
-        //  "Checkbox" per il filtro dei preferiti
-        FavouriteCheckbox(
-            isChecked = favState.value,
-            onCheckedChange = {
-                favState.value = it
-                if (!it) {
-                    comicsViewModel.unloadFavouriteComics()
-                } else {
-                    comicsViewModel.loadFavouriteComics()
-                }
-            }
-        )
-
-        //  "Checkbox" per il filtro dei letti
-        ReadCheckbox(
-            isChecked = readState.value,
-            onCheckedChange = {
-                readState.value = it
-                if (!it) {
-                    comicsViewModel.unloadReadComics()
-                } else {
-                    comicsViewModel.loadReadComics()
-                }
-            }
-        )
-         */
     }
 }
 
@@ -197,34 +172,37 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .background(color = Color.Red)
+            .background(color = Color.Transparent)
             .border(border = BorderStroke((0.5).dp, Color.Black)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(
-            checked = favState.value,
-            onCheckedChange = { favState.value = it },
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color.Black,
-                uncheckedColor = Color.Black
-            )
+
+        //  "Checkbox" per il filtro dei preferiti
+        FavouriteCheckbox(
+            isChecked = favState.value,
+            onCheckedChange = {
+                favState.value = it
+            }
         )
 
+        // Testo che segue la checkbox dei fumetti preferiti
         Text(
             stringResource(R.string.favorites).uppercase(),
             fontSize = 15.sp,
             fontFamily = fontFamily,
             color = Color.White
         )
-        Checkbox(
-            checked = readState.value,
-            onCheckedChange = { readState.value = it },
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color.Black,
-                uncheckedColor = Color.Black
-            )
+
+        // "Checkbox per il filtro dei fumetti letti
+        FavouriteCheckbox(
+            isChecked = readState.value,
+            onCheckedChange = {
+                readState.value = it
+            }
         )
+
+        // Testo che segue la checkbox dei fumetti letti
         Text(
             stringResource(R.string.read_comics).uppercase(),
             fontSize = 15.sp,
@@ -487,15 +465,15 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                     val selectedComicSeries = selectedComic.series?.name
 
                     if (selectedComicDescription.isNullOrEmpty()) {
-                        selectedComicDescription = "Not available"
+                        selectedComicDescription = "NOT AVAILABLE"
                     }
 
                     if (selectedComicIsbn.isNullOrEmpty()) {
-                        selectedComicIsbn = "Not available"
+                        selectedComicIsbn = "NOT AVAILABLE"
                     }
 
                     if (selectedComicSeries.isNullOrEmpty()) {
-                        selectedComicIsbn = "Not available"
+                        selectedComicIsbn = "NOT AVAILABLE"
                     }
 
                     selectedComicThumbnail = selectedComicThumbnail?.replace("/", "_")
@@ -583,4 +561,5 @@ fun FilterComicList(navController: NavController, fontFamily: FontFamily,
             )
         }
     }
+
 }

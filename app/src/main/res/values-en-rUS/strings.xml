@@ -19,4 +19,9 @@
     <string name="select_only_one_option">please, select only one option: favorites or read</string>
     <string name="stories">stories:</string>
     <string name="comics_explanation">comics:</string>
+    <string name="isbn">ISBN:</string>
+    <string name="page_count">Page count:</string>
+    <string name="series">"Series: "</string>
+    <string name="read">Read</string>
+    <string name="isbn_not_found">ISBN not available</string>
 </resources>
