@@ -180,7 +180,9 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
              context: Context, isFavorite: MutableState<Boolean>, onFavoriteClicked: (Boolean) -> Unit) {
 
     Row {
+
         val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -203,10 +205,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
 
                 //  Caricamento immagine dell'eroe
                 Picasso.get()
-                    .load(
-                        selectedHeroThumbnail.replace("_", "/")
-                            .replace("http://", "https://") + ".jpg"
-                    )
+                    .load(selectedHeroThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.hero_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
@@ -267,11 +266,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             //  Visualizza numero di eventi, storie e fumetti dell'eroe
             TextChip(stringResource(R.string.events) + " $selectedHeroEvents", 15.sp, fontFamily)
             TextChip(stringResource(R.string.stories) + " $selectedHeroStories", 15.sp, fontFamily)
-            TextChip(
-                stringResource(R.string.comics_explanation) + " $selectedHeroComics",
-                15.sp,
-                fontFamily
-            )
+            TextChip(stringResource(R.string.comics_explanation) + " $selectedHeroComics", 15.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }

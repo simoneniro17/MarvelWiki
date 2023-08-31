@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -56,10 +57,11 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
-//NOTA: non ho commentato le parti relative esclusivamente al layout e altri fattori grafici puramente estetici che non implementano alcuna funzionalità.
+//  Schermata al dettaglio di un fumetto
 @Composable
-fun ComicScreen(navController: NavController, arguments: List<String>, context : Context) {
+fun ComicScreen(navController: NavController, arguments: List<String>, context: Context) {
 
+    //  Estrazione degli argomenti passati alla schermata
     val comicTitle = arguments[0]
     val comicThumbnail = arguments[1]
     val comicDescription = arguments[2]
@@ -69,57 +71,57 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
     val comicPageCount = arguments[6]
     val comicSeries = arguments[7]
 
-    val fontSize : TextUnit = if (comicTitle.length <= 28) {
+    val fontSize: TextUnit = if (comicTitle.length <= 28) {
         20.sp
     } else {
         15.sp
     }
 
+    //  Inizializzazione DB e ViewModel per i fumetti preferiti e letti
     val appDatabase = AppDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
     val favouriteComicViewModel = FavouriteComicViewModel(databaseAccess)
     val readComicViewModel = ReadComicViewModel(databaseAccess)
 
+    //  Stato per verificare se il fumetto è letto e/o nei preferiti
     val isComicFavourite = remember { mutableStateOf(false) }
     val isComicRead = remember { mutableStateOf(false) }
 
+    //  Controlla se il fumetto è nei letti e/o nei preferiti
     LaunchedEffect(comicId) {
-        val isFavourite = favouriteComicViewModel.isComicFavourite(comicId)
-        val isRead = readComicViewModel.isComicRead(comicId)
-        isComicFavourite.value = isFavourite
-        isComicRead.value = isRead
+        isComicFavourite.value = favouriteComicViewModel.isComicFavourite(comicId)
+        isComicRead.value = readComicViewModel.isComicRead(comicId)
     }
 
-    //Setup del font
+    //  Setup del font
     val currentFont = FontFamily(Font(R.font.ethnocentric_font, FontWeight.Thin))
 
-    //Setup dello sfondo
+    //  Creazione del layout della schermata
     Box(
         modifier = Modifier
-            .background(Color.Transparent)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.LightGray, Color.Black)
+                )
+            )
             .fillMaxSize()
     ) {
-        Image(
-            painter = painterResource(R.drawable.sfondo_muro),
-            contentDescription = "none",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
-
         Column(
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-
+            //  Barra superiore della schermata del fumetto
             ComicScreenUpperBar(
                 navController,
                 currentFont,
                 comicTitle,
                 isLatest,
                 fontSize
-            )       //Costruzione della barra superiore (il navController è stato passato perchè la barra in questione contiene un tasto per tornare alla schermata di navigazione)
+            )
+
+            //  Composable che mostra i dettagli del fumetto
             ComicCard(
                 currentFont,
                 comicThumbnail,
@@ -130,31 +132,30 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context :
                 context,
                 isComicFavourite,
                 isComicRead,
-                onFavoriteClicked = {isFavorite ->
-                    if(isFavorite){
+                onFavoriteClicked = { isFavorite ->
+                    if (isFavorite)
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
-                        Log.i("TEST PREFERITO", comicId)
-                    } else {
+                    else
                         favouriteComicViewModel.deleteData(FavouriteComic(comicId))
-                    }
+
                 },
-                onReadClicked = {isRead ->
-                    if(isRead){
+                onReadClicked = { isRead ->
+                    if (isRead)
                         readComicViewModel.insertData(ReadComic(comicId))
-                        Log.i("TEST LETTO", comicId)
-                    } else {
+                    else
                         readComicViewModel.deleteData(ReadComic(comicId))
-                    }
                 }
-
-            )                          //Metodo riusabile che, se fornito di un model fumetto (che dovrà essere modificato in base alle info fornite dall' API), costruisce automaticamente la sua pagina)
+            )
         }
-
     }
 }
 
+//  Barra superiore dei fumetti
 @Composable
-fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, comicTitle : String, isLatest: String, fontSize : TextUnit) {
+fun ComicScreenUpperBar(
+    navController: NavController, fontFamily: FontFamily, comicTitle: String,
+    isLatest: String, fontSize: TextUnit
+) {
 
     Row(
         modifier = Modifier
@@ -166,7 +167,7 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
+        //  Tasto di ritorno alla schermata di navigazione
         Column(
             modifier = Modifier
                 .height(40.dp)
@@ -175,27 +176,25 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
                 .clip(shape = CircleShape)
                 .background(Color.Green)
         ) {
-            Image(                                          //bottone per tornare indietro
+            //  Icona per tornare indietro
+            Image(
                 painterResource(R.drawable.back_arrow),
                 contentDescription = "HOME",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(
-                        border = BorderStroke(width = 1.dp, Color.Black),
-                        shape = CircleShape
-                    )
+                    .border(border = BorderStroke(width = 1.dp, Color.Black), shape = CircleShape)
                     .clip(shape = CircleShape)
                     .clickable(onClick = {
-                        if (isLatest == "YES") {
+                        if (isLatest == "YES")
                             navController.navigate(Screens.HomeScreen.route)
-                        } else {
+                        else
                             navController.navigate(Screens.ComicNavigationScreen.route)
-                        }
                     })
             )
         }
 
+        //  Nome del fumetto visualizzato nella barra superiore
         Text(
             text = comicTitle.uppercase(),
             fontSize = fontSize,
@@ -203,25 +202,22 @@ fun ComicScreenUpperBar(navController: NavController, fontFamily: FontFamily, co
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
         )
-
     }
 }
 
+//  Scheda per i dettagli del fumetto
 @Composable
 fun ComicCard(
-    fontFamily: FontFamily,
-    comicThumbnail : String,
-    comicDescription : String,
-    comicIsbn: String,
-    comicPageCount: String,
-    comicSeries: String,
-    context : Context,
-    isComicFavourite: MutableState<Boolean>,
-    isComicRead: MutableState<Boolean>,
-    onFavoriteClicked: (Boolean) -> Unit,
-    onReadClicked: (Boolean) -> Unit) {  //Crea la lista contenente l'immagine del fumetto e i checkmark per segnare se il fumetto è stato letto o se è preferito
+    fontFamily: FontFamily, comicThumbnail: String, comicDescription: String,
+    comicIsbn: String, comicPageCount: String, comicSeries: String, context: Context,
+    isComicFavourite: MutableState<Boolean>, isComicRead: MutableState<Boolean>,
+    onFavoriteClicked: (Boolean) -> Unit, onReadClicked: (Boolean) -> Unit
+) {
+
     Row {
+
         val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -230,8 +226,10 @@ fun ComicCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+            //  Separatore verticale dalla barra superiore
             Spacer(modifier = Modifier.height(10.dp))
 
+            //  Immagine del fumetto
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
@@ -241,8 +239,8 @@ fun ComicCard(
                 val imageView = remember { ImageView(context) }
 
                 Picasso.get()
-                    .load(comicThumbnail.replace("_","/").replace("http://", "https://") + ".jpg")
-                    .placeholder(R.drawable.comic_placeholder)                                                                            //attesa del carimento, da cmabiare
+                    .load(comicThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
+                    .placeholder(R.drawable.comic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(800, 800)
@@ -259,6 +257,7 @@ fun ComicCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            //  Sezione per aggiungere (rimuovere) il fumetto ai (dai) preferiti/letti
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -268,19 +267,6 @@ fun ComicCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                /*val checkedState1 = remember { mutableStateOf(false) }  //checkedState 1 e 2 tengono conto se il fumetto è, rispettivamente, uno dei preferiti e se è stato letto o meno.
-                Checkbox(                                                      //Il resto del codice serve solo per la rappresentazione grafica dei checbox su cui clickare per mettere la spunta.
-                    checked = checkedState1.value,
-                    onCheckedChange = { checkedState1.value = it
-                                      onFavoriteClicked(it)
-                                      },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black,
-                    )
-                )
-                */
-                
                 Checkbox(
                     checked = isComicFavourite.value,
                     onCheckedChange = {
@@ -291,7 +277,8 @@ fun ComicCard(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
                         //checkmarkColor = Color.Black
-                    ))
+                    )
+                )
 
                 Text(
                     "Favorite".uppercase(),
@@ -299,20 +286,6 @@ fun ComicCard(
                     fontFamily = fontFamily,
                     color = Color.White
                 )
-
-                /*
-                val checkedState2 = remember { mutableStateOf(false) }
-                Checkbox(
-                    checked = checkedState2.value,
-                    onCheckedChange = { checkedState2.value = it
-                                      onReadClicked(it)},
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Black,
-                        uncheckedColor = Color.Black,
-                    )
-                )
-
-                 */
 
                 Checkbox(
                     checked = isComicRead.value,
@@ -324,7 +297,8 @@ fun ComicCard(
                         checkedColor = Color.Black,
                         uncheckedColor = Color.Black,
                         //checkmarkColor = Color.Black
-                    ))
+                    )
+                )
 
                 Text(
                     "Read".uppercase(),
@@ -334,6 +308,7 @@ fun ComicCard(
                 )
             }
 
+            //  Visualizza codice ISBN, numero di pagine e serie di appartenza del fumetto
             TextChip(comicDescription.uppercase(), 20.sp, fontFamily)
             TextChip("ISBN: $comicIsbn", 20.sp, fontFamily)
             TextChip("Page count: $comicPageCount", 20.sp, fontFamily)
