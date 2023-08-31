@@ -1,7 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
-import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

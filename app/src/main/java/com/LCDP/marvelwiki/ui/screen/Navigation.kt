@@ -11,35 +11,37 @@ import androidx.navigation.navArgument
 @Composable
 fun Navigation(context: Context) {
 
-    // Inizializzazione del controller del navigatore
+    //  Inizializzazione del controller del navigatore
     val navController = rememberNavController()
 
-    // Vengono costruite le varie schermate, gli viene associato il controller e viene mostrata di default quella della Home
+    //  Configurazione delle diverse schermate all'interno del NavHost
     NavHost(navController = navController, startDestination = Screens.StartingScreen.route) {
 
-        // Controller associato alla schermata Home
+        //  Controller associato alla schermata HomeScreen
         composable(route = Screens.HomeScreen.route) {
             HomeScreen(navController = navController, context)
         }
 
-        // Controller associato alla schermata HeroNavigation
+        //  Controller associato alla schermata HeroNavigationScreen
         composable(route = Screens.HeroNavigationScreen.route) {
             NavigationScreen(navController = navController, context = context)
         }
 
-        // Controller associato alla schermata del singolo Eroe
+        //  Controller associato alla schermata HeroScreen con argomenti
         composable(
             "heroScreen/{heroName}/{heroThumbnail}/{heroDescription}/{heroId}/{heroEvents}/{heroStories}/{heroComics}",
             arguments = listOf(
                 navArgument("heroName") { type = NavType.StringType },
                 navArgument("heroThumbnail") { type = NavType.StringType },
                 navArgument("heroDescription") { type = NavType.StringType },
-                navArgument("heroId") {type = NavType.StringType},
-                navArgument("heroEvents") {type = NavType.StringType},
-                navArgument("heroStories") {type = NavType.StringType},
-                navArgument("heroComics") {type = NavType.StringType},
+                navArgument("heroId") { type = NavType.StringType },
+                navArgument("heroEvents") { type = NavType.StringType },
+                navArgument("heroStories") { type = NavType.StringType },
+                navArgument("heroComics") { type = NavType.StringType },
             )
         ) { entry ->
+
+            //  Estrazione dei parametri dagli argomenti
             val heroName = entry.arguments?.getString("heroName") ?: ""
             val heroThumbnail = entry.arguments?.getString("heroThumbnail") ?: ""
             val heroDescription = entry.arguments?.getString("heroDescription") ?: ""
@@ -47,33 +49,49 @@ fun Navigation(context: Context) {
             val heroEvents = entry.arguments?.getString("heroEvents") ?: ""
             val heroStories = entry.arguments?.getString("heroStories") ?: ""
             val heroComics = entry.arguments?.getString("heroComics") ?: ""
-            HeroScreen(navController, listOf(heroName, heroThumbnail, heroDescription,heroId, heroEvents, heroStories, heroComics),context)
+
+            //  Chiamata a HeroScreen con i parametri estratti
+            HeroScreen(
+                navController,
+                listOf(
+                    heroName,
+                    heroThumbnail,
+                    heroDescription,
+                    heroId,
+                    heroEvents,
+                    heroStories,
+                    heroComics
+                ),
+                context
+            )
         }
 
-        // Controller associato alla schermata iniziale
+        //  Controller associato alla schermata StartingScreen
         composable(route = Screens.StartingScreen.route) {
             StartingScreen(navController = navController)
         }
 
-        // Controller associato alla schermata di navigazione dei fumetti
+        //  Controller associato alla schermata ComicNavigationScreen
         composable(route = Screens.ComicNavigationScreen.route) {
             ComicNavigationScreen(navController = navController, context = context)
         }
 
-        //Controller associato alla schermata del singolo fumetto
+        //  Controller associato alla schermata ComicScreen con argomenti
         composable(
             "comicScreen/{comicTitle}/{comicThumbnail}/{comicDescription}/{comicId}/{isLatest}/{comicIsbn}/{comicPageCount}/{comicSeries}",
             arguments = listOf(
                 navArgument("comicTitle") { type = NavType.StringType },
                 navArgument("comicThumbnail") { type = NavType.StringType },
                 navArgument("comicDescription") { type = NavType.StringType },
-                navArgument("comicId") {type = NavType.StringType},
-                navArgument("isLatest") {type = NavType.StringType},
-                navArgument("comicIsbn") {type = NavType.StringType},
-                navArgument("comicPageCount") {type = NavType.StringType},
-                navArgument("comicSeries") {type = NavType.StringType}
+                navArgument("comicId") { type = NavType.StringType },
+                navArgument("isLatest") { type = NavType.StringType },
+                navArgument("comicIsbn") { type = NavType.StringType },
+                navArgument("comicPageCount") { type = NavType.StringType },
+                navArgument("comicSeries") { type = NavType.StringType }
             )
         ) { entry ->
+
+            //  Estrazione dei parametri dagli argomenti
             val comicTitle = entry.arguments?.getString("comicTitle") ?: ""
             val comicThumbnail = entry.arguments?.getString("comicThumbnail") ?: ""
             val comicDescription = entry.arguments?.getString("comicDescription") ?: ""
@@ -83,8 +101,21 @@ fun Navigation(context: Context) {
             val comicPageCount = entry.arguments?.getString("comicPageCount") ?: ""
             val comicSeries = entry.arguments?.getString("comicSeries") ?: ""
 
-            ComicScreen(navController, listOf(comicTitle, comicThumbnail, comicDescription, comicId, isLatest, comicIsbn, comicPageCount, comicSeries), context)
+            //  Chiamata a ComicScreen con i parametri estratti
+            ComicScreen(
+                navController,
+                listOf(
+                    comicTitle,
+                    comicThumbnail,
+                    comicDescription,
+                    comicId,
+                    isLatest,
+                    comicIsbn,
+                    comicPageCount,
+                    comicSeries
+                ),
+                context
+            )
         }
-
     }
 }
