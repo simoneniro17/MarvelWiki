@@ -203,7 +203,7 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
             value = textFieldState,
             onValueChange = {
                 textFieldState = it
-                //  Utilizzo del debouncer èer ritardare la ricerca
+                //  Utilizzo del debouncer per ritardare la ricerca
                 debouncer.debounce { onSearchQueryChange(it) }
             },
             label = {
