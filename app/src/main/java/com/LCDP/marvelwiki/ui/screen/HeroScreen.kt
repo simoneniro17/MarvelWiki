@@ -2,6 +2,7 @@ package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -117,8 +118,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                 onFavoriteClicked = { isFavorite ->
                     if (isFavorite) {
                         favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(context, "$selectedHeroName added to favourite characters", Toast.LENGTH_SHORT).show()
                     } else {
                         favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(context, "$selectedHeroName removed from favourite characters", Toast.LENGTH_SHORT).show()
                     }
                 }
             )
@@ -260,7 +263,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             if (selectedHeroDescription == "NOT AVAILABLE") {
                 TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
-                TextChip("$selectedHeroDescription".uppercase(), 15.sp, fontFamily)
+                TextChip(selectedHeroDescription.uppercase(), 15.sp, fontFamily)
             }
 
             //  Visualizza numero di eventi, storie e fumetti dell'eroe

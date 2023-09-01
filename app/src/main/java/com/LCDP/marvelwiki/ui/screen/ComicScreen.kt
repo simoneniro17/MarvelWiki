@@ -2,6 +2,7 @@ package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -135,17 +133,23 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
                 isComicFavourite,
                 isComicRead,
                 onFavoriteClicked = { isFavorite ->
-                    if (isFavorite)
+                    if (isFavorite) {
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
-                    else
+                        Toast.makeText(context, "$comicTitle added to favourite comics", Toast.LENGTH_SHORT).show()
+                    } else {
                         favouriteComicViewModel.deleteData(FavouriteComic(comicId))
+                        Toast.makeText(context, "$comicTitle removed from favourite comics", Toast.LENGTH_SHORT).show()
+                    }
 
                 },
                 onReadClicked = { isRead ->
-                    if (isRead)
+                    if (isRead) {
                         readComicViewModel.insertData(ReadComic(comicId))
-                    else
+                        Toast.makeText(context, "$comicTitle added to comics read", Toast.LENGTH_SHORT).show()
+                    } else {
                         readComicViewModel.deleteData(ReadComic(comicId))
+                        Toast.makeText(context, "$comicTitle removed from comics read", Toast.LENGTH_SHORT).show()
+                    }
                 }
             )
         }
@@ -314,7 +318,7 @@ fun ComicCard(
             if (comicDescription == "NOT AVAILABLE") {
                 TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
-                TextChip("$comicDescription".uppercase(), 15.sp, fontFamily)
+                TextChip(comicDescription.uppercase(), 15.sp, fontFamily)
             }
 
             if (comicIsbn == "NOT AVAILABLE") {
