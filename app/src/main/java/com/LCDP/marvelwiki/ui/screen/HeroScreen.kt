@@ -66,6 +66,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroStories = arguments[5]
     val selectedHeroComics = arguments[6]
 
+    //Setup stringhe
+    val addedToFav = stringResource(R.string.added_to_fav)
+    val removedFromFav = stringResource(R.string.removed_from_fav)
+
     //  Inizializzazione DB e ViewModel per i personaggi preferiti
     val appDatabase = AppDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
@@ -118,10 +122,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                 onFavoriteClicked = { isFavorite ->
                     if (isFavorite) {
                         favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
-                        Toast.makeText(context, "$selectedHeroName added to favourite characters", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$selectedHeroName $addedToFav", Toast.LENGTH_SHORT).show()
                     } else {
                         favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
-                        Toast.makeText(context, "$selectedHeroName removed from favourite characters", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$selectedHeroName $removedFromFav", Toast.LENGTH_SHORT).show()
                     }
                 }
             )
@@ -221,11 +225,6 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                     factory = { imageView },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(12.dp)
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = RectangleShape
-                        )
                 )
             }
 
@@ -235,7 +234,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp)
+                    .height(50.dp)
                     .background(color = Color.Red)
                     .border(border = BorderStroke(1.dp, Color.Black)),
                 horizontalArrangement = Arrangement.Center,

@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -69,6 +71,12 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
     val comicIsbn = arguments[5]
     val comicPageCount = arguments[6]
     val comicSeries = arguments[7]
+
+    // Setup stringhe
+    val addedToFav = stringResource(R.string.added_to_fav)
+    val removedFromFav = stringResource(R.string.removed_from_fav)
+    val addedToRead = stringResource(R.string.added_to_read)
+    val removedFromRead = stringResource(R.string.removed_from_read)
 
     //Selezione della grandezza del font in modo tale da mostrare correttamente anche titoli particolarmente lunghi
     val fontSize: TextUnit = if (comicTitle.length <= 28) {
@@ -135,20 +143,20 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
                 onFavoriteClicked = { isFavorite ->
                     if (isFavorite) {
                         favouriteComicViewModel.insertData(FavouriteComic(comicId))
-                        Toast.makeText(context, "$comicTitle added to favourite comics", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$comicTitle $addedToFav", Toast.LENGTH_SHORT).show()
                     } else {
                         favouriteComicViewModel.deleteData(FavouriteComic(comicId))
-                        Toast.makeText(context, "$comicTitle removed from favourite comics", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$comicTitle $removedFromFav", Toast.LENGTH_SHORT).show()
                     }
 
                 },
                 onReadClicked = { isRead ->
                     if (isRead) {
                         readComicViewModel.insertData(ReadComic(comicId))
-                        Toast.makeText(context, "$comicTitle added to comics read", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$comicTitle $addedToRead", Toast.LENGTH_SHORT).show()
                     } else {
                         readComicViewModel.deleteData(ReadComic(comicId))
-                        Toast.makeText(context, "$comicTitle removed from comics read", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$comicTitle $removedFromRead", Toast.LENGTH_SHORT).show()
                     }
                 }
             )
@@ -249,7 +257,7 @@ fun ComicCard(
                     .placeholder(R.drawable.comic_placeholder)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .resize(900, 600)
+                    .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
 
@@ -257,11 +265,6 @@ fun ComicCard(
                     factory = { imageView },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(12.dp)
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = RectangleShape
-                        )
                 )
             }
 
@@ -272,7 +275,7 @@ fun ComicCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp)
+                    .height(50.dp)
                     .background(color = Color.Red)
                     .border(border = BorderStroke(1.dp, Color.Black)),
                 horizontalArrangement = Arrangement.Center,
@@ -295,6 +298,12 @@ fun ComicCard(
                     fontFamily = fontFamily,
                     color = Color.White
                 )
+
+                //Spacer
+                Column (modifier = Modifier
+                    .width(20.dp)
+                    .fillMaxHeight()
+                ) {}
 
                 // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
                 ReadComicCheckbox(

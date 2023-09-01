@@ -166,7 +166,7 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(40.dp)
+            .height(50.dp)
             .background(color = Color.Transparent)
             .border(border = BorderStroke((0.5).dp, Color.Black)),
         horizontalArrangement = Arrangement.Center,
@@ -188,6 +188,14 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
             fontFamily = fontFamily,
             color = Color.White
         )
+
+        //Spacer per distinguere bene i pulsanti
+        Column(
+            modifier = Modifier
+                .width(20.dp)
+                .fillMaxHeight()
+                .background(color = Color.Transparent)
+        ) {}
 
         // "Checkbox per il filtro dei fumetti letti
         ReadComicCheckbox(
@@ -235,6 +243,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
         )
 
         //  Barra di ricerca di un fumetto per codice ISBN
+        /*
         ComicByIsbnSearchBar(
             fontFamily = fontFamily,
             onSearchQueryChange = {
@@ -247,6 +256,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
 
             }
         )
+        */
 
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
