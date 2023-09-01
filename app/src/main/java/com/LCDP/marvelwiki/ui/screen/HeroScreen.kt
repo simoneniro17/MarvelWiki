@@ -204,7 +204,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                val imageView = remember { ImageView(context) }
+                val imageView = ImageView(context)
 
                 //  Caricamento immagine dell'eroe
                 Picasso.get()

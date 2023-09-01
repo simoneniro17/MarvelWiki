@@ -242,7 +242,7 @@ fun ComicCard(
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                val imageView = remember { ImageView(context) }
+                val imageView =ImageView(context)
 
                 Picasso.get()
                     .load(comicThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
