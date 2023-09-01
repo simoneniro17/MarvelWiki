@@ -9,15 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -195,9 +190,9 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
         )
 
         // "Checkbox per il filtro dei fumetti letti
-        FavouriteCheckbox(
-            isChecked = readState.value,
-            onCheckedChange = {
+        ReadComicCheckbox(
+            isRead = readState.value,
+            onReadChange = {
                 readState.value = it
             }
         )

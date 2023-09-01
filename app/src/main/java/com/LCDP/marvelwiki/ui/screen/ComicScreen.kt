@@ -297,9 +297,9 @@ fun ComicCard(
                 )
 
                 // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
-                FavouriteCheckbox(
-                    isComicRead.value,
-                    onCheckedChange = {
+                ReadComicCheckbox(
+                    isRead = isComicRead.value,
+                    onReadChange = {
                         isComicRead.value = it
                         onReadClicked(it)
                     }

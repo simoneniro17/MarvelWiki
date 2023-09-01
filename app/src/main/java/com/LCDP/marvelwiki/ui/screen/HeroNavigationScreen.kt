@@ -3,6 +3,7 @@ package com.LCDP.marvelwiki.ui.screen
 import android.app.Application
 import android.content.Context
 import android.widget.ImageView
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -432,6 +434,26 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
                 contentDescription = if (isChecked) "Favourite" else "Not Favourite",
                 tint = if (isChecked) Color.Yellow else Color.White,
                 modifier = Modifier.size(32.dp),
+            )
+        }
+    }
+}
+
+//  "Cerchio" per i lett
+@Composable
+fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
+    Row {
+        IconButton(
+            onClick = { onReadChange(!isRead) }
+        ) {
+            // Icona per i fumetti letti
+            Icon(
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = if (isRead) "Read" else "Not Read",
+                tint = if (isRead) Color.Green else Color.White,
+                modifier = Modifier
+                    .size(32.dp)
+                    .animateContentSize()
             )
         }
     }
