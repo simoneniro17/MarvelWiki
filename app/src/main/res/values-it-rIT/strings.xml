@@ -13,8 +13,8 @@
     <string name="comics">fumetti</string>
     <string name="favorites">preferiti</string>
     <string name="read_comics">fumetti letti</string>
-    <string name="search_comic_by_name">cerca fumetto per nome</string>
-    <string name="search_comic_by_isbn">cerca fumetto per isbn</string>
+    <string name="search_comic_by_name">cerca fumetto</string>
+    <string name="search_comic_by_isbn">cerca fumetto</string>
     <string name="search_for_a_comic">cerca un fumetto usando il suo nome o il suo ISBN</string>
     <string name="select_only_one_option">per favore, seleziona soltanto una delle due opzioni: preferiti o letti</string>
     <string name="stories">storie:</string>
@@ -24,4 +24,8 @@
     <string name="series">"Serie: "</string>
     <string name="read">Letto</string>
     <string name="isbn_not_found">ISBN non disponibile</string>
+    <string name="added_to_fav">aggiunto ai preferiti</string>
+    <string name="removed_from_fav">rimosso dai preferiti</string>
+    <string name="added_to_read">aggiunto ai fumetti letti</string>
+    <string name="removed_from_read">rimosso dai fumetti letti</string>
 </resources>

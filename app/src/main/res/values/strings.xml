@@ -12,6 +12,8 @@
     <string name="favorite">Favorite</string>
     <string name="read">read</string>
 
+    <string name="added_to_fav">Added to favourite characters</string>
+    <string name="removed_from_fav">Removed from favourite characters</string>
     <string name="description_not_found">Description Not Found</string>
     <string name="events">Events</string>
     <string name="stories">Stories</string>
@@ -25,6 +27,8 @@
     <string name="search_for_a_comic">search for a comic by using its name or isbn</string>
     <string name="select_only_one_option">please, select only one option: favorite or read</string>
 
+    <string name="added_to_read">added to read comics</string>
+    <string name="removed_from_read">removed from read comics</string>
     <string name="isbn">isbn</string>
     <string name="isbn_not_found">isbn not available</string>
     <string name="page_count">page count</string>

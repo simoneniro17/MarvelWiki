@@ -2,6 +2,7 @@ package com.LCDP.marvelwiki.ui.screen
 
 import android.content.Context
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,6 +66,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroStories = arguments[5]
     val selectedHeroComics = arguments[6]
 
+    //Setup stringhe
+    val addedToFav = stringResource(R.string.added_to_fav)
+    val removedFromFav = stringResource(R.string.removed_from_fav)
+
     //  Inizializzazione DB e ViewModel per i personaggi preferiti
     val appDatabase = AppDatabase.getDatabase(context)
     val databaseAccess = DatabaseAccess(appDatabase)
@@ -117,8 +122,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                 onFavoriteClicked = { isFavorite ->
                     if (isFavorite) {
                         favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(context, "$selectedHeroName $addedToFav", Toast.LENGTH_SHORT).show()
                     } else {
                         favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(context, "$selectedHeroName $removedFromFav", Toast.LENGTH_SHORT).show()
                     }
                 }
             )
@@ -201,7 +208,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                     .background(Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
-                val imageView = remember { ImageView(context) }
+                val imageView = ImageView(context)
 
                 //  Caricamento immagine dell'eroe
                 Picasso.get()
@@ -218,11 +225,6 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                     factory = { imageView },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(12.dp)
-                        .border(
-                            border = BorderStroke(width = 1.dp, Color.Black),
-                            shape = RectangleShape
-                        )
                 )
             }
 
@@ -232,7 +234,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp)
+                    .height(50.dp)
                     .background(color = Color.Red)
                     .border(border = BorderStroke(1.dp, Color.Black)),
                 horizontalArrangement = Arrangement.Center,
@@ -260,7 +262,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
             if (selectedHeroDescription == "NOT AVAILABLE") {
                 TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
-                TextChip("$selectedHeroDescription".uppercase(), 15.sp, fontFamily)
+                TextChip(selectedHeroDescription.uppercase(), 15.sp, fontFamily)
             }
 
             //  Visualizza numero di eventi, storie e fumetti dell'eroe

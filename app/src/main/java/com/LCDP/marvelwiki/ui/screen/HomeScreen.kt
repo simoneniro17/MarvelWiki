@@ -378,7 +378,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                 navController.navigate("comicScreen/${args.joinToString("/")}")
             })
             .border(
-                border = BorderStroke(width = 2.dp, Color.Black),
+                border = BorderStroke(width = 0.5.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(shape = RoundedCornerShape(10.dp))
@@ -403,7 +403,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                         .placeholder(R.drawable.loading_placeholder)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
-                        .resize(200, 300)
+                        .resize(600, 900)
                         .centerCrop()
                         .into(imageView)
                 } catch (e: Exception) {
@@ -413,7 +413,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                 // Caricamento di un'immagine placeholder quando la lista dei fumetti è vuota
                 Picasso.get()
                     .load(R.drawable.loading_placeholder)
-                    .resize(200, 300)
+                    .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
             }

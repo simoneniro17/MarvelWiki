@@ -9,15 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -171,7 +166,7 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(40.dp)
+            .height(50.dp)
             .background(color = Color.Transparent)
             .border(border = BorderStroke((0.5).dp, Color.Black)),
         horizontalArrangement = Arrangement.Center,
@@ -194,10 +189,18 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
             color = Color.White
         )
 
+        //Spacer per distinguere bene i pulsanti
+        Column(
+            modifier = Modifier
+                .width(20.dp)
+                .fillMaxHeight()
+                .background(color = Color.Transparent)
+        ) {}
+
         // "Checkbox per il filtro dei fumetti letti
-        FavouriteCheckbox(
-            isChecked = readState.value,
-            onCheckedChange = {
+        ReadComicCheckbox(
+            isRead = readState.value,
+            onReadChange = {
                 readState.value = it
             }
         )
@@ -240,6 +243,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
         )
 
         //  Barra di ricerca di un fumetto per codice ISBN
+        /*
         ComicByIsbnSearchBar(
             fontFamily = fontFamily,
             onSearchQueryChange = {
@@ -252,6 +256,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
 
             }
         )
+        */
 
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
