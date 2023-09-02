@@ -1,5 +1,18 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.imageResource
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
@@ -15,6 +28,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.*
@@ -22,6 +36,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
 
 import androidx.compose.ui.graphics.Brush
@@ -67,18 +82,20 @@ fun HomeScreen(navController: NavController, context: Context) {
     comicsViewModel.getLatestComic()
 
     //  Creazione della schermata
+    val gradientColors = listOf(Color.Black, Color.Gray, Color.Black)
+    val gradientBrush = Brush.verticalGradient(gradientColors)
     Box(
         modifier = Modifier
-            .background(Color.Transparent)
+            .background(brush = gradientBrush)
             .fillMaxSize()
     ) {
         //  Immagine di sfondo che riempie l'intero Box
-        Image(
+        /*Image(
             painter = painterResource(R.drawable.background_tamarro),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
-        )
+        )*/
 
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         //  Creazione delle varie parti della schermata all'interno di una Column
@@ -112,30 +129,47 @@ fun HomeScreen(navController: NavController, context: Context) {
 //  La barra superiore dell'homepage
 @Composable
 fun HomeScreenUpperBar(fontFamily: FontFamily) {
-
+//    Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black
     //  La riga che costituirà la barra superiore
-    val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red,  Color.Red, Color.Red, Color.Black)
+    val gradientColors = listOf(Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black)
     val gradientBrush = Brush.verticalGradient(gradientColors)
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(brush = gradientBrush)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-            .padding(horizontal = 30.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+            .background(Color.Transparent)
     ) {
-        //  Testo centrato e in maiuscolo all'interno della barra
-        Text(
-            text = stringResource(R.string.home).uppercase(),
-            fontSize = 30.sp,
-            color = Color.White,
-            fontFamily = fontFamily,
-            textAlign = TextAlign.Center,
+        Image(
+            painter = painterResource(R.drawable.comic_bar),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
         )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(brush = gradientBrush)
+                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+                .padding(horizontal = 30.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            //  Testo centrato e in maiuscolo all'interno della barra
+            Text(
+                text = stringResource(R.string.home).uppercase(),
+                fontSize = 30.sp,
+                color = Color.White,
+                fontFamily = fontFamily,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
+
 }
+
 
 //  I pulsanti di navigazione
 @Composable
