@@ -20,6 +20,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
@@ -69,12 +70,14 @@ fun HomeScreen(navController: NavController, context: Context) {
             .fillMaxSize()
     ) {
         //  Immagine di sfondo che riempie l'intero Box
-        /*Image(
-            painter = painterResource(R.drawable.background_tamarro),
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )*/
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
 
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         //  Creazione delle varie parti della schermata all'interno di una Column
@@ -146,7 +149,6 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             )
         }
     }
-
 }
 
 
@@ -283,6 +285,13 @@ fun LatestComicBanner(fontFamily: FontFamily) {
                 .border(BorderStroke(1.dp, color = Color.Black)),
             contentAlignment = Alignment.Center
         ) {
+            Image(
+                painter = painterResource(R.drawable.comic_bar),
+                contentDescription = "none",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize()
+            )
+
             //  Testo del banner
             Text(
                 text = stringResource(R.string.latest_comic).uppercase(),
@@ -333,17 +342,18 @@ fun LatestComicCard(navController: NavController, context: Context, comicsViewMo
             Spacer(modifier = Modifier.height(30.dp))
 
             //  Riga di separazione visuale
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(10.dp)
-                    .background(Color.Red)
-                    .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                    .padding(horizontal = 30.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("")
+                // Immagine di sfondo
+                Image(
+                    painter = painterResource(R.drawable.comic_bar),
+                    contentDescription = "none",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

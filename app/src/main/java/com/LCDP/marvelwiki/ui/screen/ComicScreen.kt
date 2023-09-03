@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -114,6 +115,15 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
             )
             .fillMaxSize()
     ) {
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
+
         Column(
             modifier = Modifier
                 .background(Color.Transparent)

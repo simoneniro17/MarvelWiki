@@ -101,6 +101,14 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 )
             )
     ) {
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
         //  Colonna per contenere tutti gli elementi della schermata
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         Column(
