@@ -87,6 +87,7 @@ fun NavigationScreen(navController: NavController, context: Context) {
             )
         )
 
+
     //  Caricamento iniziale della lista dei primi 100 personaggi
     charactersViewModel.loadCharacterList()
 

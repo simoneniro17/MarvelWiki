@@ -58,8 +58,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //TODO rendere stringhe "scalabili"
-    //  Per mostrare un alert all'utente nel caso di mancata connessione ad Internet
     private fun showNetworkAlert() {
         val builder = AlertDialog.Builder(this)
 
