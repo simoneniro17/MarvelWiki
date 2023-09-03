@@ -279,7 +279,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
             },
         ) {
             Icon(
-                imageVector = Icons.Default.ThumbUp,
+                painter = if (!isNameSearchVisible) painterResource(id = R.drawable.title) else painterResource(id = R.drawable.barcode),
                 contentDescription = if (isNameSearchVisible) "Title" else "ISBN",
                 tint = Color.White,
                 modifier = Modifier
