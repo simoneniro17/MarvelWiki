@@ -10,9 +10,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -21,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -221,6 +226,12 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
                       fontFamily: FontFamily, favState: MutableState<Boolean>,
                       readState: MutableState<Boolean>) {
 
+    //  Stato di visualizzazione della barra di ricerca per nome
+    var isNameSearchVisible by remember { mutableStateOf(true) }
+
+    //  Stato di visualizzazione della barra di ricerca per ISBN
+    var isIsbnSearchVisible by remember { mutableStateOf(false) }
+
     //  Stati delle searchbar
     var searchQueryByName by remember { mutableStateOf("") }
     var searchQueryByISBN by remember { mutableStateOf("") }
@@ -232,31 +243,49 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
         modifier = Modifier.fillMaxSize()
     ) {
         //  Barra di ricerca dei fumetti per nome
-        ComicByNameSearchBar(
-            fontFamily = fontFamily,
-            onSearchQueryChange = {
-                searchQueryByName = it
-                favState.value = false
-                readState.value = false
-                comicsViewModel.getComicByName(it)
-            }
-        )
+        if (isNameSearchVisible) {
+            ComicByNameSearchBar(
+                fontFamily = fontFamily,
+                onSearchQueryChange = {
+                    searchQueryByName = it
+                    favState.value = false
+                    readState.value = false
+                    comicsViewModel.getComicByName(it)
+                }
+            )
+        }
 
         //  Barra di ricerca di un fumetto per codice ISBN
-        /*
-        ComicByIsbnSearchBar(
-            fontFamily = fontFamily,
-            onSearchQueryChange = {
-                searchQueryByISBN = it // Update the search query
-                favState.value = false
-                readState.value = false
-                if (searchQueryByISBN.length == 13) {
-                    comicsViewModel.getComicsByIsbn(it)
-                }
+        if (isIsbnSearchVisible) {
+            ComicByIsbnSearchBar(
+                fontFamily = fontFamily,
+                onSearchQueryChange = {
+                    searchQueryByISBN = it // Update the search query
+                    favState.value = false
+                    readState.value = false
+                    if (searchQueryByISBN.length == 13) {
+                        comicsViewModel.getComicsByIsbn(it)
+                    }
 
-            }
-        )
-        */
+                }
+            )
+        }
+
+        //  Pulsante per passare dalla barra di ricerca per nome a quella per ISBN e viceversa
+        IconButton(
+            onClick = {
+                isNameSearchVisible = !isNameSearchVisible
+                isIsbnSearchVisible = !isIsbnSearchVisible
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Default.ThumbUp,
+                contentDescription = if (isNameSearchVisible) "Title" else "ISBN",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(32.dp)
+            )
+        }
 
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
