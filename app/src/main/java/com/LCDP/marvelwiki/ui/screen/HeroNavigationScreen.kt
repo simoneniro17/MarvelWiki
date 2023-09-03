@@ -1,5 +1,6 @@
 package com.LCDP.marvelwiki.ui.screen
 
+import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.widget.ImageView
@@ -58,6 +59,7 @@ import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
+import com.LCDP.marvelwiki.usefulStuff.Constant
 import com.LCDP.marvelwiki.usefulStuff.Debouncer
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy

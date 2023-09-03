@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MarvelWiki</string>
 
+    <string name="error_connection">No Internet connection</string>
+    <string name="device_not_connected">Device is not connected to Internet</string>
+    <string name="understand">I understand</string>
+
     <string name="home">Home</string>
     <string name="heroes">Heroes</string>
     <string name="library">Library</string>

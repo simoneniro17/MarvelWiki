@@ -10,19 +10,19 @@ import com.LCDP.marvelwiki.usefulStuff.Constant.Companion.isNetworkConnected
 
 class MainActivity : ComponentActivity() {
 
-    //Inizializzazione del media player per riprodurre musica
+    //  Inizializzazione del media player per riprodurre musica
     private var mediaPlayer : MediaPlayer?= null
 
-    //APP LAUNCH
+    //  APP LAUNCH
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Setup del media player
+        //  Setup del media player
         mediaPlayer = MediaPlayer.create(this, R.raw.superhero_theme)
         mediaPlayer?.isLooping = true
         mediaPlayer?.start()
 
-        // Controllo della connessione a Internet
+        //  Controllo della connessione a Internet
         checkNetworkConnection()
 
         setContent {
@@ -63,9 +63,9 @@ class MainActivity : ComponentActivity() {
     private fun showNetworkAlert() {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Connessione a Internet assente")  // Titolo dell'alert
-        builder.setMessage("Il dispositivo non è connesso a Internet. Controlla la connessione e riprova.") // Messaggio informativo
-        builder.setPositiveButton("Ok") { dialog, _ ->
+        builder.setTitle(R.string.error_connection)  // Titolo dell'alert
+        builder.setMessage(R.string.device_not_connected) // Messaggio informativo
+        builder.setPositiveButton(R.string.understand) { dialog, _ ->
             dialog.dismiss()    // Chiusura dell'alert
             finish()    // Chiusura dell'applicazione
         }

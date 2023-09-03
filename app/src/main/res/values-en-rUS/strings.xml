@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MarvelWiki</string>
+    <string name="error_connection">No Internet connection</string>
     <string name="home">home</string>
     <string name="heroes">heroes</string>
     <string name="library">library</string>
@@ -28,4 +29,6 @@
     <string name="removed_from_fav">removed from favourite characters</string>
     <string name="added_to_read">added to read comics</string>
     <string name="removed_from_read">removed from read comics</string>
+    <string name="device_not_connected">The device is not connected to the Internet. Check the connection and try again.</string>
+    <string name="understand">I understand</string>
 </resources>
