@@ -419,7 +419,7 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
     //  Creazione riquadro contenente il testo
     Box(
         modifier = Modifier
-            .padding(25.dp)
+            .padding(30.dp)
             .border(
                 border = BorderStroke(width = 1.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)

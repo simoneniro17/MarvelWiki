@@ -218,7 +218,7 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
