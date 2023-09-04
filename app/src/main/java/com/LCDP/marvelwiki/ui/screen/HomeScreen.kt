@@ -333,7 +333,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.8).dp, color = Color.Black))
             .clickable(onClick = {
 
                 if (comicsViewModel.comicList.isNotEmpty()) {

@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -65,6 +66,13 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroEvents = arguments[4]
     val selectedHeroStories = arguments[5]
     val selectedHeroComics = arguments[6]
+
+    //Adattamento dimensioni testo per nomi di eroi troppo lunghi
+    val fontSize: TextUnit = if (selectedHeroName.length <= 15) {
+        20.sp
+    } else {
+        12.sp
+    }
 
     //Setup stringhe
     val addedToFav = stringResource(R.string.added_to_fav)
@@ -115,7 +123,8 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
             HeroScreenUpperBar(
                 navController,
                 currentFont,
-                selectedHeroName
+                selectedHeroName,
+                fontSize
             )
 
             //  Composable che mostra i dettagli dell'eroe
@@ -144,7 +153,7 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
 
 //  Barra superiore con tasto di ritorno e nome dell'eroe
 @Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String) {
+fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String, fontSize : TextUnit) {
 
     Row(
         modifier = Modifier
@@ -153,7 +162,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
             .background(Color.Transparent)
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(80.dp),
+        //horizontalArrangement = Arrangement.spacedBy(80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Tasto di ritorno alla schermata di navigazione
@@ -184,11 +193,14 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
         //  Nome dell'eroe visualizzato nella barra superiore
         Text(
             text = selectedHeroName.uppercase(),
-            fontSize = 20.sp,
+            fontSize = fontSize,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 70.dp, end = 90.dp)
         )
+
     }
 }
 

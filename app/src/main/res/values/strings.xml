@@ -30,6 +30,8 @@
     <string name="search_comic_by_isbn">search comic by isbn</string>
     <string name="search_for_a_comic">search for a comic by using its name or isbn</string>
     <string name="select_only_one_option">please, select only one option: favorite or read</string>
+    <string name="name_filter_active">search filter: by name</string>
+    <string name="isbn_filter_active">search filter: by ISBN</string>
 
     <string name="added_to_read">added to read comics</string>
     <string name="removed_from_read">removed from read comics</string>

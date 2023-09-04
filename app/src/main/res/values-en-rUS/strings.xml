@@ -27,8 +27,10 @@
     <string name="isbn_not_found">ISBN not available</string>
     <string name="added_to_fav">added to favourite characters</string>
     <string name="removed_from_fav">removed from favourite characters</string>
+    <string name="isbn_filter_active">Search filter: by ISBN</string>
     <string name="added_to_read">added to read comics</string>
     <string name="removed_from_read">removed from read comics</string>
     <string name="device_not_connected">The device is not connected to the Internet. Check the connection and try again.</string>
     <string name="understand">I understand</string>
+    <string name="name_filter_active">Search filter: by name</string>
 </resources>

@@ -3,6 +3,7 @@ package com.LCDP.marvelwiki.ui.screen
 import android.app.Application
 import android.content.Context
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,6 +64,10 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
     val favState = remember { mutableStateOf(false) }
     val readState = remember { mutableStateOf(false) }
 
+    // Setup delle stringhe
+    val filterByNameMsg = stringResource(R.string.name_filter_active)
+    val filterByISBNMsg = stringResource(R.string.isbn_filter_active)
+
     //  Inizializzazione del repository e del ViewModel per i Comic
     val comicsRepository = ComicsRepository()
     val comicsViewModel: ComicsViewModel =
@@ -121,7 +126,10 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
                 comicsViewModel = comicsViewModel,
                 fontFamily = currentFont,
                 favState,
-                readState
+                readState,
+                context,
+                filterByNameMsg,
+                filterByISBNMsg
             )
         }
     }
@@ -139,8 +147,8 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .background(Color.Transparent)
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(40.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         //  Icona per tornare alla HomeScreen
         Column(
@@ -149,7 +157,8 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
                 .width(40.dp)
                 .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
                 .clip(shape = CircleShape)
-                .background(Color.Green)
+                .background(Color.Green),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painterResource(R.drawable.back_arrow),
@@ -166,6 +175,12 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             )
         }
 
+        Spacer(
+            modifier = Modifier
+                .width(50.dp)
+                .fillMaxHeight()
+        )
+
         //  Testo nella barra superiore
         Text(
             text = stringResource(R.string.comics).uppercase(),
@@ -175,12 +190,24 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             textAlign = TextAlign.Center,
         )
 
+        Spacer(
+            modifier = Modifier
+                .width(20.dp)
+                .fillMaxHeight()
+        )
+
         //  "Checkbox" per il filtro dei preferiti
         FavouriteCheckbox(
             isChecked = favState.value,
             onCheckedChange = {
                 favState.value = it
             }
+        )
+
+        Spacer(
+            modifier = Modifier
+                .width(5.dp)
+                .fillMaxHeight()
         )
 
         // "Checkbox per il filtro dei fumetti letti
@@ -231,7 +258,7 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
                 .background(color = Color.Transparent)
         ) {}
 
-        // "Checkbox per il filtro dei fumetti letti
+        // Checkbox per il filtro dei fumetti letti
         ReadComicCheckbox(
             isRead = readState.value,
             onReadChange = {
@@ -253,7 +280,9 @@ fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
 @Composable
 fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewModel,
                       fontFamily: FontFamily, favState: MutableState<Boolean>,
-                      readState: MutableState<Boolean>) {
+                      readState: MutableState<Boolean>, context : Context,
+                      filterByNameMsg : String,
+                      filterByISBNMsg : String) {
 
     //  Stato di visualizzazione della barra di ricerca per nome
     var isNameSearchVisible by remember { mutableStateOf(true) }
@@ -305,6 +334,14 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
             onClick = {
                 isNameSearchVisible = !isNameSearchVisible
                 isIsbnSearchVisible = !isIsbnSearchVisible
+
+                // Toast che mostra all' utente qual' è il filtro che ha impostato (per nome o per ISB) nella ricerca dei fumetti
+                if (isNameSearchVisible) {
+                    Toast.makeText(context, filterByNameMsg, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, filterByISBNMsg, Toast.LENGTH_SHORT).show()
+                }
+
             },
         ) {
             Icon(
@@ -594,7 +631,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
 //  Messaggio di default quando si apre la ComicNavigationScreen
 @Composable
 fun DefaultComicList(fontFamily: FontFamily, text: String) {
-    TextChip(text, 20.sp, fontFamily)
+    TextChip(text, 15.sp, fontFamily)
 }
 
 //  Per filtrare i fumetti tra letti e preferiti

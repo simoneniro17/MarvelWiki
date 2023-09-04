@@ -540,7 +540,7 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
                 contentDescription = if (isRead) "Read" else "Not Read",
                 tint = colorState,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(30.dp)
                     //.then(rotationModifier)
                     .then(scaleModifier)
                     .alpha(alphaState)
