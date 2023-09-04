@@ -101,16 +101,19 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
             //  Barra superiore con opzioni di navigazione
             ComicNavigationScreenUpperBar(
                 navController,
-                currentFont
+                currentFont,
+                favState,
+                readState,
+                comicsViewModel
             )
 
             //  Separatore per filtrare i fumetti letti e preferiti
-            ComicSeparator(
+            /*ComicSeparator(
                 fontFamily = currentFont,
                 comicsViewModel = comicsViewModel,
                 favState,
                 readState
-            )
+            )*/
 
             //  Area per la ricerca dei fumetti
             ComicSearchScreen(
@@ -126,7 +129,9 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
 
 //  Barra superiore
 @Composable
-fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily) {
+fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily,
+                                  favState: MutableState<Boolean>, readState: MutableState<Boolean>,
+                                  comicsViewModel: ComicsViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,7 +139,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .background(Color.Transparent)
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(50.dp),
+        horizontalArrangement = Arrangement.spacedBy(40.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         //  Icona per tornare alla HomeScreen
@@ -164,10 +169,26 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
         //  Testo nella barra superiore
         Text(
             text = stringResource(R.string.comics).uppercase(),
-            fontSize = 30.sp,
+            fontSize = 25.sp,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
+        )
+
+        //  "Checkbox" per il filtro dei preferiti
+        FavouriteCheckbox(
+            isChecked = favState.value,
+            onCheckedChange = {
+                favState.value = it
+            }
+        )
+
+        // "Checkbox per il filtro dei fumetti letti
+        ReadComicCheckbox(
+            isRead = readState.value,
+            onReadChange = {
+                readState.value = it
+            }
         )
     }
 }
