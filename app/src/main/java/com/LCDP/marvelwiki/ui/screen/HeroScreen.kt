@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -90,12 +89,12 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     //  Creazione del layout della schermata
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.LightGray, Color.Black)
+                    colors = listOf(Color.Red, Color.Black)
                 )
             )
-            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.bg_prova),
@@ -151,10 +150,10 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .background(Color.Transparent)
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(70.dp),
+        horizontalArrangement = Arrangement.spacedBy(80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Tasto di ritorno alla schermata di navigazione
@@ -173,7 +172,10 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(border = BorderStroke(width = 1.dp, Color.Black), shape = CircleShape)
+                    .border(
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = CircleShape
+                    )
                     .clip(shape = CircleShape)
                     .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
             )
@@ -245,8 +247,8 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(color = Color.Red)
-                    .border(border = BorderStroke(1.dp, Color.Black)),
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {

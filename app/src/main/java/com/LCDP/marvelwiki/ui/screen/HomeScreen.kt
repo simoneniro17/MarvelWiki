@@ -61,13 +61,14 @@ fun HomeScreen(navController: NavController, context: Context) {
         )
     comicsViewModel.getLatestComic()
 
-    //  Creazione della schermata
-    val gradientColors = listOf(Color.Black, Color.Gray, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
     Box(
         modifier = Modifier
-            .background(brush = gradientBrush)
             .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.Red, Color.Black)
+                )
+            )
     ) {
         //  Immagine di sfondo che riempie l'intero Box
         Image(
@@ -111,43 +112,27 @@ fun HomeScreen(navController: NavController, context: Context) {
 //  La barra superiore dell'homepage
 @Composable
 fun HomeScreenUpperBar(fontFamily: FontFamily) {
-//    Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black
+
     //  La riga che costituirà la barra superiore
-    val gradientColors = listOf(Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Transparent)
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .padding(horizontal = 30.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(R.drawable.comic_bar),
-            contentDescription = "none",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
+
+        //  Testo centrato e in maiuscolo all'interno della barra
+        Text(
+            text = stringResource(R.string.home).uppercase(),
+            fontSize = 30.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(brush = gradientBrush)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                .padding(horizontal = 30.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            //  Testo centrato e in maiuscolo all'interno della barra
-            Text(
-                text = stringResource(R.string.home).uppercase(),
-                fontSize = 30.sp,
-                color = Color.White,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center,
-            )
-        }
     }
 }
 
@@ -268,39 +253,23 @@ fun LatestComicBanner(fontFamily: FontFamily) {
     Spacer(modifier = Modifier.height(5.dp))
 
     //  La riga che costituisce il banner
-    val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(brush = gradientBrush)
-            .height(50.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .height(50.dp)
+            .background(Color.Red.copy(alpha = 0.55f))
+            .border(border = BorderStroke(width = (1).dp, color = Color.Black)),
         horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        //  Box per contenere il testo
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(BorderStroke(1.dp, color = Color.Black)),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(R.drawable.comic_bar),
-                contentDescription = "none",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            //  Testo del banner
-            Text(
-                text = stringResource(R.string.latest_comic).uppercase(),
-                color = Color.White,
-                fontSize = 30.sp,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center
-            )
-        }
+        //  Testo del banner
+        Text(
+            text = stringResource(R.string.latest_comic).uppercase(),
+            color = Color.White,
+            fontSize = 30.sp,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center
+        )
     }
 
     //  Spaziatura verticale dopo il banner
@@ -342,18 +311,14 @@ fun LatestComicCard(navController: NavController, context: Context, comicsViewMo
             Spacer(modifier = Modifier.height(30.dp))
 
             //  Riga di separazione visuale
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(10.dp)
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             ) {
-                // Immagine di sfondo
-                Image(
-                    painter = painterResource(R.drawable.comic_bar),
-                    contentDescription = "none",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.fillMaxSize()
-                )
+                Text(text = "")
             }
         }
     }
@@ -368,6 +333,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .clickable(onClick = {
 
                 if (comicsViewModel.comicList.isNotEmpty()) {

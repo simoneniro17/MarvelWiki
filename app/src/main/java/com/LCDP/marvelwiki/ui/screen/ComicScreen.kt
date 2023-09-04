@@ -108,12 +108,12 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
     //  Creazione del layout della schermata
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.LightGray, Color.Black)
+                    colors = listOf(Color.Red, Color.Black)
                 )
             )
-            .fillMaxSize()
     ) {
         Image(
             painter = painterResource(R.drawable.bg_prova),
@@ -180,13 +180,12 @@ fun ComicScreenUpperBar(
     navController: NavController, fontFamily: FontFamily, comicTitle: String,
     isLatest: String, fontSize: TextUnit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .background(Color.Transparent)
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -286,8 +285,8 @@ fun ComicCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(color = Color.Red)
-                    .border(border = BorderStroke(1.dp, Color.Black)),
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
