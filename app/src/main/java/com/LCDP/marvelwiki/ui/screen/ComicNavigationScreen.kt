@@ -297,8 +297,9 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
     //  Se entrambi i filtri sono attivi, deve essere mostrato un messaggio
     val showMessage = favState.value && readState.value
 
-    Column(
-        modifier = Modifier.fillMaxSize()
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
     ) {
         //  Barra di ricerca dei fumetti per nome
         if (isNameSearchVisible) {
@@ -345,14 +346,17 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
             },
         ) {
             Icon(
-                painter = if (!isNameSearchVisible) painterResource(id = R.drawable.title) else painterResource(id = R.drawable.barcode),
+                painter = if (!isNameSearchVisible) painterResource(id = R.drawable.title) else painterResource(
+                    id = R.drawable.numeric
+                ),
                 contentDescription = if (isNameSearchVisible) "Title" else "ISBN",
                 tint = Color.White,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(40.dp)
+                    .padding(end = 10.dp)
             )
         }
-
+    }
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
             DefaultComicList(
@@ -395,8 +399,9 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
                 )
             }
         }
+    Spacer(modifier = Modifier.fillMaxHeight()
+        .width(20.dp))
     }
-}
 
 //  Ricerca fumetti per titolo
 @Composable
@@ -413,8 +418,8 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
+            .fillMaxWidth(0.9f)
+            .padding( horizontal = (0.5).dp,vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
@@ -447,7 +452,7 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
                 backgroundColor = Color.Transparent
             ),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(0.95f),
+            modifier = Modifier.fillMaxWidth(0.9f),
         )
     }
 }
@@ -467,8 +472,8 @@ fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
+            .fillMaxWidth(0.9f)
+            .padding( horizontal = (0.5).dp,vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
@@ -501,7 +506,8 @@ fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
                 backgroundColor = Color.Transparent
             ),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(0.95f)
+            modifier = Modifier.fillMaxWidth(0.9f)
+
         )
     }
 }
