@@ -144,7 +144,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.Start,
@@ -603,8 +603,8 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.comic_placeholder)
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
+                //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                //.networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)
                 .centerCrop()
                 .into(imageView)

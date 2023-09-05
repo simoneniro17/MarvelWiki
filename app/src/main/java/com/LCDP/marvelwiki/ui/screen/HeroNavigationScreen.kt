@@ -147,7 +147,7 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(80.dp),
@@ -407,8 +407,8 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
             Picasso.get()
                 .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.hero_placeholder)
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
+                //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                //.networkPolicy(NetworkPolicy.NO_CACHE)
                 .resize(510, 310)
                 .centerCrop()
                 .into(imageView)

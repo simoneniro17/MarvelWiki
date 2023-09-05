@@ -184,7 +184,7 @@ fun ComicScreenUpperBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -264,8 +264,8 @@ fun ComicCard(
                 Picasso.get()
                     .load(comicThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.comic_placeholder)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(600, 900)
                     .centerCrop()
                     .into(imageView)

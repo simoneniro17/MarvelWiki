@@ -159,7 +159,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         //horizontalArrangement = Arrangement.spacedBy(80.dp),
@@ -238,8 +238,8 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 Picasso.get()
                     .load(selectedHeroThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.hero_placeholder)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(900, 600)
                     .centerCrop()
                     .into(imageView)

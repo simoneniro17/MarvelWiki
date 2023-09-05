@@ -118,7 +118,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
@@ -140,8 +140,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
 //  I pulsanti di navigazione
 @Composable
 fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
-
-    // Riga contenente la colonna rappresentante il bottone di navigazione dei personaggi
+    // Riga contenente il primo pulsante
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -150,50 +149,16 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        //  Colonna per il primo bottone
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(300.dp)
-                .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) }),
-            verticalArrangement = Arrangement.Top
-        ) {
-            //  Immagine del primo bottone
-            Image(
-                painterResource(R.drawable.avengers),
-                contentDescription = "HEROES",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxHeight(0.8f)
-                    .width(3000.dp)
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black)
-                    )
-            )
-
-            //  Testo del primo bottone
-            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
-            val gradientBrush = Brush.verticalGradient(gradientColors)
-            Text(
-                text = stringResource(R.string.heroes).uppercase(),
-                fontSize = 18.sp,
-                fontFamily = fontFamily,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(brush = gradientBrush)
-                    .fillMaxSize()
-                    .padding(vertical = 2.dp)
-            )
-        }
+        NavigationButton(
+            navController = navController,
+            text = stringResource(R.string.heroes),
+            imageResId = R.drawable.heroes2,
+            route = Screens.HeroNavigationScreen.route,
+            fontFamily = fontFamily
+        )
     }
 
-    // Riga contenente la colonna rappresentante il bottone di navigazione dei fumetti
+    // Riga contenente il primo pulsante
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -202,48 +167,61 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        //  Colonna per il secondo bottone
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(300.dp)
-                .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) }),
-            verticalArrangement = Arrangement.Top
-        ) {
-            //  Immagine del secondo bottone
-            Image(
-                painterResource(R.drawable.library),
-                contentDescription = "LIBRARY",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxHeight(0.8f)
-                    .width(300.dp)
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black),
-                    )
-            )
-            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
-            val gradientBrush = Brush.verticalGradient(gradientColors)
-            //  Testo del secondo bottone
-            Text(
-                text = stringResource(R.string.library).uppercase(),
-                fontSize = 18.sp,
-                fontFamily = fontFamily,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(brush = gradientBrush)
-                    .fillMaxSize()
-                    .padding(vertical = 2.dp)
-            )
-        }
+        NavigationButton(
+            navController = navController,
+            text = stringResource(R.string.library),
+            imageResId = R.drawable.library2,
+            route = Screens.ComicNavigationScreen.route,
+            fontFamily = fontFamily
+        )
     }
 }
+
+// Il singolo pulsante di navigazione
+@Composable
+fun NavigationButton(navController: NavController, text: String, imageResId: Int,
+                     route: String, fontFamily: FontFamily) {
+    //  Colonna che conterrà il pulsante
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(300.dp)
+            .border(
+                border = BorderStroke(width = 1.dp, color = Color.Black),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(shape = RoundedCornerShape(10.dp))
+            .clickable(onClick = { navController.navigate(route) }),
+        verticalArrangement = Arrangement.Top
+    ) {
+        // Immagine del pulsante
+        Image(
+            painter = painterResource(imageResId),
+            contentDescription = text,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxHeight(0.8f)
+                .width(300.dp)
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                )
+        )
+
+        // Testo del pulsante
+        Text(
+            text = text.uppercase(),
+            fontSize = 18.sp,
+            fontFamily = fontFamily,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .background(Color.Red.copy(alpha = 0.55f))
+                .fillMaxSize()
+                .padding(vertical = 2.dp)
+        )
+    }
+}
+
 
 //  Banner del LatestComic
 @Composable
@@ -387,8 +365,8 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                                 "https://"
                             )) + ".jpg")
                         .placeholder(R.drawable.loading_placeholder)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                        //.networkPolicy(NetworkPolicy.NO_CACHE)
                         .resize(600, 900)
                         .centerCrop()
                         .into(imageView)
