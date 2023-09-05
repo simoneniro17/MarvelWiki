@@ -15,9 +15,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -111,14 +108,6 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
                 readState,
                 comicsViewModel
             )
-
-            //  Separatore per filtrare i fumetti letti e preferiti
-            /*ComicSeparator(
-                fontFamily = currentFont,
-                comicsViewModel = comicsViewModel,
-                favState,
-                readState
-            )*/
 
             //  Area per la ricerca dei fumetti
             ComicSearchScreen(
@@ -220,62 +209,6 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
     }
 }
 
-//  Barra sottostante alla SearchBar contenente filtri per la ricerca dei fumetti
-@Composable
-fun ComicSeparator(fontFamily: FontFamily, comicsViewModel: ComicsViewModel,
-                   favState: MutableState<Boolean>, readState: MutableState<Boolean>) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .background(color = Color.Transparent)
-            .border(border = BorderStroke((0.5).dp, Color.Black)),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        //  "Checkbox" per il filtro dei preferiti
-        FavouriteCheckbox(
-            isChecked = favState.value,
-            onCheckedChange = {
-                favState.value = it
-            }
-        )
-
-        // Testo che segue la checkbox dei fumetti preferiti
-        Text(
-            stringResource(R.string.favorites).uppercase(),
-            fontSize = 15.sp,
-            fontFamily = fontFamily,
-            color = Color.White
-        )
-
-        //Spacer per distinguere bene i pulsanti
-        Column(
-            modifier = Modifier
-                .width(20.dp)
-                .fillMaxHeight()
-                .background(color = Color.Transparent)
-        ) {}
-
-        // Checkbox per il filtro dei fumetti letti
-        ReadComicCheckbox(
-            isRead = readState.value,
-            onReadChange = {
-                readState.value = it
-            }
-        )
-
-        // Testo che segue la checkbox dei fumetti letti
-        Text(
-            stringResource(R.string.read_comics).uppercase(),
-            fontSize = 15.sp,
-            fontFamily = fontFamily,
-            color = Color.White
-        )
-    }
-}
-
 //  Schermata per la ricerca dei fumetti
 @Composable
 fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewModel,
@@ -359,9 +292,10 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
     }
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
-            DefaultComicList(
-                fontFamily = fontFamily,
+            TextChip(
                 text = stringResource(R.string.select_only_one_option).uppercase(),
+                fontSize = 15.sp,
+                fontFamily = fontFamily
             )
         } else {
             //  Mostra l'elenco dei fumetti in base alle query di ricerca o ai filtri
@@ -393,13 +327,15 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
                 )
             } else {
                 //  Messaggio di base per aiutare l'utente
-                DefaultComicList(
-                    fontFamily = fontFamily,
+                TextChip(
                     text = stringResource(R.string.search_for_a_comic).uppercase(),
+                    fontSize = 15.sp,
+                    fontFamily = fontFamily
                 )
             }
         }
-    Spacer(modifier = Modifier.fillMaxHeight()
+    Spacer(modifier = Modifier
+        .fillMaxHeight()
         .width(20.dp))
     }
 
@@ -419,7 +355,7 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .padding( horizontal = (0.5).dp,vertical = 10.dp)
+            .padding(horizontal = (0.5).dp, vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
@@ -473,7 +409,7 @@ fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .padding( horizontal = (0.5).dp,vertical = 10.dp)
+            .padding(horizontal = (0.5).dp, vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
@@ -541,6 +477,8 @@ fun AllComicList(navController: NavController, fontFamily: FontFamily,
 fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                    selectedComic: Comic, context: Context) {
 
+    val not_av = stringResource(R.string.not_available).uppercase()
+
     //  Riga che contiene il composable dell'immagine e il nome del fumetto
     Row(
         modifier = Modifier
@@ -571,15 +509,15 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                     val selectedComicSeries = selectedComic.series?.name
 
                     if (selectedComicDescription.isNullOrEmpty()) {
-                        selectedComicDescription = "NOT AVAILABLE"
+                        selectedComicDescription = not_av
                     }
 
                     if (selectedComicIsbn.isNullOrEmpty()) {
-                        selectedComicIsbn = "NOT AVAILABLE"
+                        selectedComicIsbn = not_av
                     }
 
                     if (selectedComicSeries.isNullOrEmpty()) {
-                        selectedComicIsbn = "NOT AVAILABLE"
+                        selectedComicIsbn = not_av
                     }
 
                     selectedComicThumbnail = selectedComicThumbnail?.replace("/", "_")
@@ -634,12 +572,6 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
     }
 }
 
-//  Messaggio di default quando si apre la ComicNavigationScreen
-@Composable
-fun DefaultComicList(fontFamily: FontFamily, text: String) {
-    TextChip(text, 15.sp, fontFamily)
-}
-
 //  Per filtrare i fumetti tra letti e preferiti
 @Composable
 fun FilterComicList(navController: NavController, fontFamily: FontFamily,
@@ -667,5 +599,4 @@ fun FilterComicList(navController: NavController, fontFamily: FontFamily,
             )
         }
     }
-
 }

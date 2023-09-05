@@ -32,9 +32,11 @@
     <string name="select_only_one_option">please, select only one option: favorite or read</string>
     <string name="name_filter_active">search filter: by name</string>
     <string name="isbn_filter_active">search filter: by ISBN</string>
+    <string name="not_available">not available</string>
 
     <string name="added_to_read">added to read comics</string>
     <string name="removed_from_read">removed from read comics</string>
+    <string name="description">description</string>
     <string name="isbn">isbn</string>
     <string name="isbn_not_found">isbn not available</string>
     <string name="page_count">page count</string>

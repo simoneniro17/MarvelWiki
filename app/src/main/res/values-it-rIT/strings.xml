@@ -9,7 +9,7 @@
     <string name="visualize_only_favorite_heroes">visualizza solo eroi preferiti</string>
     <string name="search_a_character">cerca un personaggio</string>
     <string name="favorite">preferito</string>
-    <string name="description_not_found">descrizione non disponibile</string>
+    <string name="description_not_found">descrizione: non disponibile</string>
     <string name="events">eventi:</string>
     <string name="comics">fumetti</string>
     <string name="favorites">preferiti</string>
@@ -33,4 +33,6 @@
     <string name="device_not_connected">Il dispositivo non è connesso ad internet. Controlla la connessione e riprova.</string>
     <string name="understand">Ho capito</string>
     <string name="name_filter_active">Filtro di ricerca: per nome</string>
+    <string name="not_available">non disponibile</string>
+    <string name="description">"Descrizione: "</string>
 </resources>

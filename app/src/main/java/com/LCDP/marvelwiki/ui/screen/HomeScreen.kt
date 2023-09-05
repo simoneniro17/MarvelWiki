@@ -397,14 +397,14 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
     //  Creazione riquadro contenente il testo
     Box(
         modifier = Modifier
-            .padding(30.dp)
-            .border(
+            .padding(20.dp)
+            /*.border(
                 border = BorderStroke(width = 1.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
-            )
+            )*/
             .clip(shape = RoundedCornerShape(10.dp))
             .background(Color.Transparent),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.CenterStart
     ) {
         //  Testo all'interno del riquadro
         Text(
@@ -412,9 +412,9 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
             color = Color.White,
             fontSize = fontSize,
             fontFamily = fontFamily,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Center,
             modifier = Modifier
-                .background(Color.Transparent)
+                .background(Color.Gray.copy(alpha = 0.4f))
                 .padding(10.dp)
         )
     }

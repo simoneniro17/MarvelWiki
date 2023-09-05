@@ -308,13 +308,13 @@ fun ComicCard(
                     color = Color.White
                 )
 
-                //Spacer
+                //  Spacer
                 Column (modifier = Modifier
                     .width(20.dp)
                     .fillMaxHeight()
                 ) {}
 
-                // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
+                //  Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
                 ReadComicCheckbox(
                     isRead = isComicRead.value,
                     onReadChange = {
@@ -332,21 +332,25 @@ fun ComicCard(
                 )
             }
 
+            val not_av = stringResource(R.string.not_available).uppercase()
+            val descr = stringResource(R.string.description).uppercase()
+            val code = stringResource(R.string.isbn).uppercase()
+
             //  Visualizza tutte le informazioni relative al fumetto selezionato
-            if (comicDescription == "NOT AVAILABLE") {
-                TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
+            if (comicDescription == not_av) {
+                TextChip(descr + not_av, 15.sp, fontFamily)
             } else {
-                TextChip(comicDescription.uppercase(), 15.sp, fontFamily)
+                TextChip(descr + "$comicDescription".uppercase(), 15.sp, fontFamily)
             }
 
-            if (comicIsbn == "NOT AVAILABLE") {
-                TextChip(stringResource(R.string.isbn_not_found).uppercase(), 15.sp, fontFamily)
+            if (comicIsbn == not_av) {
+                TextChip(code + not_av, 15.sp, fontFamily)
             } else {
-                TextChip(stringResource(R.string.isbn) + " $comicIsbn".uppercase(), 20.sp, fontFamily)
+                TextChip(code + "$comicIsbn".uppercase(), 15.sp, fontFamily)
             }
 
-            TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 20.sp, fontFamily)
-            TextChip(stringResource(R.string.series)+ " $comicSeries".uppercase(), 20.sp, fontFamily)
+            TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 15.sp, fontFamily)
+            TextChip(stringResource(R.string.series)+ " $comicSeries".uppercase(), 15.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }

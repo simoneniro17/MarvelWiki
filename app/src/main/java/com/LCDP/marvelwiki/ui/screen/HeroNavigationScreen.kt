@@ -1,16 +1,12 @@
 package com.LCDP.marvelwiki.ui.screen
 
-import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.widget.ImageView
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -252,7 +248,7 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
                 backgroundColor = Color.Transparent
             ),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(0.95f),
+            modifier = Modifier.fillMaxWidth(0.9f),
         )
     }
 
@@ -358,7 +354,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
     //  Riga che contiene il composable dell'immagine e il nome dell'eroe
     Row(
         modifier = Modifier
-            .width(400.dp)
+            .width(450.dp)
             .height(300.dp)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -441,18 +437,11 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
 //  "Stellina" per i preferiti
 @Composable
 fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    val rotationState by animateFloatAsState(
-        targetValue = if (isChecked) 360f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000, // Tempo per un giro completo (in millisecondi)
-            easing = LinearEasing
-        )
-    )
 
     val colorState by animateColorAsState(
         targetValue = if (isChecked) Color.Yellow else Color.Gray,
         animationSpec = tween(
-            durationMillis = 500, // Tempo per cambiare il colore (in millisecondi)
+            durationMillis = 100, // Tempo per cambiare il colore (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -460,7 +449,7 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     val scaleState by animateFloatAsState(
         targetValue = if (isChecked) 1.2f else 1f, // Cambia la scala all'istante del clic
         animationSpec = tween(
-            durationMillis = 200, // Tempo per l'animazione di scala (in millisecondi)
+            durationMillis = 100, // Tempo per l'animazione di scala (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -468,14 +457,10 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     val alphaState by animateFloatAsState(
         targetValue = if (isChecked) 1f else 0.5f, // Cambia l'opacità all'istante del clic
         animationSpec = tween(
-            durationMillis = 200, // Tempo per l'animazione di opacità (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacità (in millisecondi)
             easing = LinearEasing
         )
     )
-
-    val rotationModifier = Modifier.graphicsLayer {
-        rotationZ = rotationState
-    }
 
     val scaleModifier = Modifier.scale(scaleState)
 
@@ -492,7 +477,6 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
                 tint = colorState,
                 modifier = Modifier
                     .size(32.dp)
-                    //.then(rotationModifier)
                     .then(scaleModifier)
                     .alpha(alphaState)
             )
@@ -500,13 +484,13 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-//  "Cerchio" per i lett
+//  "Cerchio" per i letti
 @Composable
 fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     val colorState by animateColorAsState(
         targetValue = if (isRead) Color.Green else Color.Gray,
         animationSpec = tween(
-            durationMillis = 500, // Tempo per cambiare il colore (in millisecondi)
+            durationMillis = 100, // Tempo per cambiare il colore (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -514,7 +498,7 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     val scaleState by animateFloatAsState(
         targetValue = if (isRead) 1.2f else 1f, // Cambia la scala all'istante del clic
         animationSpec = tween(
-            durationMillis = 200, // Tempo per l'animazione di scala (in millisecondi)
+            durationMillis = 100, // Tempo per l'animazione di scala (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -522,7 +506,7 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     val alphaState by animateFloatAsState(
         targetValue = if (isRead) 1f else 0.5f, // Cambia l'opacità all'istante del clic
         animationSpec = tween(
-            durationMillis = 200, // Tempo per l'animazione di opacità (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacità (in millisecondi)
             easing = LinearEasing
         )
     )

@@ -9,7 +9,7 @@
     <string name="visualize_only_favorite_heroes">visualize only favorite heroes</string>
     <string name="search_a_character">search a character</string>
     <string name="favorite">favorite</string>
-    <string name="description_not_found">description not found</string>
+    <string name="description_not_found">description: not found</string>
     <string name="events">events:</string>
     <string name="comics">comics</string>
     <string name="favorites">favorites</string>
@@ -20,7 +20,7 @@
     <string name="select_only_one_option">please, select only one option: favorites or read</string>
     <string name="stories">stories:</string>
     <string name="comics_explanation">comics:</string>
-    <string name="isbn">ISBN:</string>
+    <string name="isbn">"ISBN: "</string>
     <string name="page_count">Page count:</string>
     <string name="series">"Series: "</string>
     <string name="read">Read</string>
@@ -33,4 +33,6 @@
     <string name="device_not_connected">The device is not connected to the Internet. Check the connection and try again.</string>
     <string name="understand">I understand</string>
     <string name="name_filter_active">Search filter: by name</string>
+    <string name="not_available">not available</string>
+    <string name="description">"Description: "</string>
 </resources>
