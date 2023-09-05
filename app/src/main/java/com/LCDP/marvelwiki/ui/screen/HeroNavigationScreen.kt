@@ -425,7 +425,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .background(color = Color.Red)
+                    .background(Color.Red.copy(alpha = 0.55f))
                     .height(50.dp)
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
