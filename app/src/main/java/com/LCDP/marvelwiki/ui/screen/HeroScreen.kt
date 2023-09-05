@@ -29,10 +29,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -66,6 +67,13 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroStories = arguments[5]
     val selectedHeroComics = arguments[6]
 
+    //Adattamento dimensioni testo per nomi di eroi troppo lunghi
+    val fontSize: TextUnit = if (selectedHeroName.length <= 15) {
+        20.sp
+    } else {
+        12.sp
+    }
+
     //Setup stringhe
     val addedToFav = stringResource(R.string.added_to_fav)
     val removedFromFav = stringResource(R.string.removed_from_fav)
@@ -89,13 +97,22 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     //  Creazione del layout della schermata
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.LightGray, Color.Black)
+                    colors = listOf(Color.Red, Color.Black)
                 )
             )
-            .fillMaxSize()
     ) {
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
+
         Column(
             modifier = Modifier
                 .background(Color.Transparent)
@@ -106,7 +123,8 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
             HeroScreenUpperBar(
                 navController,
                 currentFont,
-                selectedHeroName
+                selectedHeroName,
+                fontSize
             )
 
             //  Composable che mostra i dettagli dell'eroe
@@ -135,16 +153,16 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
 
 //  Barra superiore con tasto di ritorno e nome dell'eroe
 @Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String) {
+fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String, fontSize : TextUnit) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .background(Color.Red.copy(alpha = 0.55f))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(70.dp),
+        //horizontalArrangement = Arrangement.spacedBy(80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Tasto di ritorno alla schermata di navigazione
@@ -163,7 +181,10 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxSize()
-                    .border(border = BorderStroke(width = 1.dp, Color.Black), shape = CircleShape)
+                    .border(
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = CircleShape
+                    )
                     .clip(shape = CircleShape)
                     .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
             )
@@ -172,11 +193,14 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
         //  Nome dell'eroe visualizzato nella barra superiore
         Text(
             text = selectedHeroName.uppercase(),
-            fontSize = 20.sp,
+            fontSize = fontSize,
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(start = 70.dp, end = 90.dp)
         )
+
     }
 }
 
@@ -214,8 +238,8 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 Picasso.get()
                     .load(selectedHeroThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.hero_placeholder)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(900, 600)
                     .centerCrop()
                     .into(imageView)
@@ -235,8 +259,8 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(color = Color.Red)
-                    .border(border = BorderStroke(1.dp, Color.Black)),
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {

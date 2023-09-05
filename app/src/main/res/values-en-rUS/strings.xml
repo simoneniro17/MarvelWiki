@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MarvelWiki</string>
+    <string name="error_connection">No Internet connection</string>
     <string name="home">home</string>
     <string name="heroes">heroes</string>
     <string name="library">library</string>
@@ -8,7 +9,7 @@
     <string name="visualize_only_favorite_heroes">visualize only favorite heroes</string>
     <string name="search_a_character">search a character</string>
     <string name="favorite">favorite</string>
-    <string name="description_not_found">description not found</string>
+    <string name="description_not_found">description: not found</string>
     <string name="events">events:</string>
     <string name="comics">comics</string>
     <string name="favorites">favorites</string>
@@ -19,13 +20,19 @@
     <string name="select_only_one_option">please, select only one option: favorites or read</string>
     <string name="stories">stories:</string>
     <string name="comics_explanation">comics:</string>
-    <string name="isbn">ISBN:</string>
+    <string name="isbn">"ISBN: "</string>
     <string name="page_count">Page count:</string>
     <string name="series">"Series: "</string>
     <string name="read">Read</string>
     <string name="isbn_not_found">ISBN not available</string>
     <string name="added_to_fav">added to favourite characters</string>
     <string name="removed_from_fav">removed from favourite characters</string>
+    <string name="isbn_filter_active">Search filter: by ISBN</string>
     <string name="added_to_read">added to read comics</string>
     <string name="removed_from_read">removed from read comics</string>
+    <string name="device_not_connected">The device is not connected to the Internet. Check the connection and try again.</string>
+    <string name="understand">I understand</string>
+    <string name="name_filter_active">Search filter: by name</string>
+    <string name="not_available">not available</string>
+    <string name="description">"Description: "</string>
 </resources>

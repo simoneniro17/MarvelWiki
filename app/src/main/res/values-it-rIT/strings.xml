@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MarvelWiki</string>
+    <string name="error_connection">Connessione a Internet assente</string>
     <string name="home">home</string>
     <string name="heroes">eroi</string>
     <string name="library">libreria</string>
@@ -8,7 +9,7 @@
     <string name="visualize_only_favorite_heroes">visualizza solo eroi preferiti</string>
     <string name="search_a_character">cerca un personaggio</string>
     <string name="favorite">preferito</string>
-    <string name="description_not_found">descrizione non disponibile</string>
+    <string name="description_not_found">descrizione: non disponibile</string>
     <string name="events">eventi:</string>
     <string name="comics">fumetti</string>
     <string name="favorites">preferiti</string>
@@ -26,6 +27,12 @@
     <string name="isbn_not_found">ISBN non disponibile</string>
     <string name="added_to_fav">aggiunto ai preferiti</string>
     <string name="removed_from_fav">rimosso dai preferiti</string>
+    <string name="isbn_filter_active">Filtro di ricerca: per ISBN</string>
     <string name="added_to_read">aggiunto ai fumetti letti</string>
     <string name="removed_from_read">rimosso dai fumetti letti</string>
+    <string name="device_not_connected">Il dispositivo non è connesso ad internet. Controlla la connessione e riprova.</string>
+    <string name="understand">Ho capito</string>
+    <string name="name_filter_active">Filtro di ricerca: per nome</string>
+    <string name="not_available">non disponibile</string>
+    <string name="description">"Descrizione: "</string>
 </resources>

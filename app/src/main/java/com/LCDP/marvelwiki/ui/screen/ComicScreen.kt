@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -107,13 +108,22 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
     //  Creazione del layout della schermata
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.LightGray, Color.Black)
+                    colors = listOf(Color.Red, Color.Black)
                 )
             )
-            .fillMaxSize()
     ) {
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
+            contentDescription = "none",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
+
         Column(
             modifier = Modifier
                 .background(Color.Transparent)
@@ -170,13 +180,12 @@ fun ComicScreenUpperBar(
     navController: NavController, fontFamily: FontFamily, comicTitle: String,
     isLatest: String, fontSize: TextUnit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Red)
-            .border(border = BorderStroke(width = 1.dp, color = Color.Black))
+            .background(Color.Red.copy(alpha = 0.55f))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -255,8 +264,8 @@ fun ComicCard(
                 Picasso.get()
                     .load(comicThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.comic_placeholder)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
@@ -276,8 +285,8 @@ fun ComicCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(color = Color.Red)
-                    .border(border = BorderStroke(1.dp, Color.Black)),
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -299,13 +308,13 @@ fun ComicCard(
                     color = Color.White
                 )
 
-                //Spacer
+                //  Spacer
                 Column (modifier = Modifier
                     .width(20.dp)
                     .fillMaxHeight()
                 ) {}
 
-                // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
+                //  Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
                 ReadComicCheckbox(
                     isRead = isComicRead.value,
                     onReadChange = {
@@ -323,21 +332,25 @@ fun ComicCard(
                 )
             }
 
+            val not_av = stringResource(R.string.not_available).uppercase()
+            val descr = stringResource(R.string.description).uppercase()
+            val code = stringResource(R.string.isbn).uppercase()
+
             //  Visualizza tutte le informazioni relative al fumetto selezionato
-            if (comicDescription == "NOT AVAILABLE") {
-                TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
+            if (comicDescription == not_av) {
+                TextChip(descr + not_av, 15.sp, fontFamily)
             } else {
-                TextChip(comicDescription.uppercase(), 15.sp, fontFamily)
+                TextChip(descr + "$comicDescription".uppercase(), 15.sp, fontFamily)
             }
 
-            if (comicIsbn == "NOT AVAILABLE") {
-                TextChip(stringResource(R.string.isbn_not_found).uppercase(), 15.sp, fontFamily)
+            if (comicIsbn == not_av) {
+                TextChip(code + not_av, 15.sp, fontFamily)
             } else {
-                TextChip(stringResource(R.string.isbn) + " $comicIsbn".uppercase(), 20.sp, fontFamily)
+                TextChip(code + "$comicIsbn".uppercase(), 15.sp, fontFamily)
             }
 
-            TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 20.sp, fontFamily)
-            TextChip(stringResource(R.string.series)+ " $comicSeries".uppercase(), 20.sp, fontFamily)
+            TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 15.sp, fontFamily)
+            TextChip(stringResource(R.string.series)+ " $comicSeries".uppercase(), 15.sp, fontFamily)
 
             Spacer(modifier = Modifier.height(10.dp))
         }

@@ -1,55 +1,35 @@
 package com.LCDP.marvelwiki.ui.screen
 
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.imageResource
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import android.app.Application
 import android.content.Context
 import android.util.Log
-//import android.util.Size
 import android.widget.ImageView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.dp
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Size
-
 import androidx.compose.ui.graphics.Brush
-
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -81,21 +61,24 @@ fun HomeScreen(navController: NavController, context: Context) {
         )
     comicsViewModel.getLatestComic()
 
-    //  Creazione della schermata
-    val gradientColors = listOf(Color.Black, Color.Gray, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
     Box(
         modifier = Modifier
-            .background(brush = gradientBrush)
             .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.Red, Color.Black)
+                )
+            )
     ) {
         //  Immagine di sfondo che riempie l'intero Box
-        /*Image(
-            painter = painterResource(R.drawable.background_tamarro),
+        Image(
+            painter = painterResource(R.drawable.bg_prova),
             contentDescription = "none",
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )*/
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+        )
 
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         //  Creazione delle varie parti della schermata all'interno di una Column
@@ -129,53 +112,35 @@ fun HomeScreen(navController: NavController, context: Context) {
 //  La barra superiore dell'homepage
 @Composable
 fun HomeScreenUpperBar(fontFamily: FontFamily) {
-//    Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black
+
     //  La riga che costituirà la barra superiore
-    val gradientColors = listOf(Color.Black, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background(Color.Transparent)
+            .background(Color.Red.copy(alpha = 0.55f))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .padding(horizontal = 30.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(R.drawable.comic_bar),
-            contentDescription = "none",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
+
+        //  Testo centrato e in maiuscolo all'interno della barra
+        Text(
+            text = stringResource(R.string.home).uppercase(),
+            fontSize = 30.sp,
+            color = Color.White,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center,
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(brush = gradientBrush)
-                .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                .padding(horizontal = 30.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            //  Testo centrato e in maiuscolo all'interno della barra
-            Text(
-                text = stringResource(R.string.home).uppercase(),
-                fontSize = 30.sp,
-                color = Color.White,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center,
-            )
-        }
     }
-
 }
 
 
 //  I pulsanti di navigazione
 @Composable
 fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
-
-    // Riga contenente la colonna rappresentante il bottone di navigazione dei personaggi
+    // Riga contenente il primo pulsante
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -184,50 +149,16 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        //  Colonna per il primo bottone
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(300.dp)
-                .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) }),
-            verticalArrangement = Arrangement.Top
-        ) {
-            //  Immagine del primo bottone
-            Image(
-                painterResource(R.drawable.avengers),
-                contentDescription = "HEROES",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxHeight(0.8f)
-                    .width(3000.dp)
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black)
-                    )
-            )
-
-            //  Testo del primo bottone
-            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
-            val gradientBrush = Brush.verticalGradient(gradientColors)
-            Text(
-                text = stringResource(R.string.heroes).uppercase(),
-                fontSize = 18.sp,
-                fontFamily = fontFamily,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(brush = gradientBrush)
-                    .fillMaxSize()
-                    .padding(vertical = 2.dp)
-            )
-        }
+        NavigationButton(
+            navController = navController,
+            text = stringResource(R.string.heroes),
+            imageResId = R.drawable.heroes2,
+            route = Screens.HeroNavigationScreen.route,
+            fontFamily = fontFamily
+        )
     }
 
-    // Riga contenente la colonna rappresentante il bottone di navigazione dei fumetti
+    // Riga contenente il primo pulsante
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -236,48 +167,61 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        //  Colonna per il secondo bottone
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(300.dp)
-                .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
-                .clickable(onClick = { navController.navigate(Screens.ComicNavigationScreen.route) }),
-            verticalArrangement = Arrangement.Top
-        ) {
-            //  Immagine del secondo bottone
-            Image(
-                painterResource(R.drawable.library),
-                contentDescription = "LIBRARY",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxHeight(0.8f)
-                    .width(300.dp)
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = Color.Black),
-                    )
-            )
-            val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Red, Color.Black)
-            val gradientBrush = Brush.verticalGradient(gradientColors)
-            //  Testo del secondo bottone
-            Text(
-                text = stringResource(R.string.library).uppercase(),
-                fontSize = 18.sp,
-                fontFamily = fontFamily,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(brush = gradientBrush)
-                    .fillMaxSize()
-                    .padding(vertical = 2.dp)
-            )
-        }
+        NavigationButton(
+            navController = navController,
+            text = stringResource(R.string.library),
+            imageResId = R.drawable.library2,
+            route = Screens.ComicNavigationScreen.route,
+            fontFamily = fontFamily
+        )
     }
 }
+
+// Il singolo pulsante di navigazione
+@Composable
+fun NavigationButton(navController: NavController, text: String, imageResId: Int,
+                     route: String, fontFamily: FontFamily) {
+    //  Colonna che conterrà il pulsante
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(300.dp)
+            .border(
+                border = BorderStroke(width = 1.dp, color = Color.Black),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clip(shape = RoundedCornerShape(10.dp))
+            .clickable(onClick = { navController.navigate(route) }),
+        verticalArrangement = Arrangement.Top
+    ) {
+        // Immagine del pulsante
+        Image(
+            painter = painterResource(imageResId),
+            contentDescription = text,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxHeight(0.8f)
+                .width(300.dp)
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                )
+        )
+
+        // Testo del pulsante
+        Text(
+            text = text.uppercase(),
+            fontSize = 18.sp,
+            fontFamily = fontFamily,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .background(Color.Red.copy(alpha = 0.55f))
+                .fillMaxSize()
+                .padding(vertical = 2.dp)
+        )
+    }
+}
+
 
 //  Banner del LatestComic
 @Composable
@@ -287,32 +231,23 @@ fun LatestComicBanner(fontFamily: FontFamily) {
     Spacer(modifier = Modifier.height(5.dp))
 
     //  La riga che costituisce il banner
-    val gradientColors = listOf(Color.Red, Color.White, Color.Red, Color.Red, Color.Red, Color.Black)
-    val gradientBrush = Brush.verticalGradient(gradientColors)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(brush = gradientBrush)
-            .height(50.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .height(50.dp)
+            .background(Color.Red.copy(alpha = 0.55f))
+            .border(border = BorderStroke(width = (1).dp, color = Color.Black)),
         horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        //  Box per contenere il testo
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(BorderStroke(1.dp, color = Color.Black)),
-            contentAlignment = Alignment.Center
-        ) {
-            //  Testo del banner
-            Text(
-                text = stringResource(R.string.latest_comic).uppercase(),
-                color = Color.White,
-                fontSize = 30.sp,
-                fontFamily = fontFamily,
-                textAlign = TextAlign.Center
-            )
-        }
+        //  Testo del banner
+        Text(
+            text = stringResource(R.string.latest_comic).uppercase(),
+            color = Color.White,
+            fontSize = 30.sp,
+            fontFamily = fontFamily,
+            textAlign = TextAlign.Center
+        )
     }
 
     //  Spaziatura verticale dopo il banner
@@ -358,13 +293,10 @@ fun LatestComicCard(navController: NavController, context: Context, comicsViewMo
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(10.dp)
-                    .background(Color.Red)
-                    .border(border = BorderStroke(width = 1.dp, color = Color.Black))
-                    .padding(horizontal = 30.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .background(Color.Red.copy(alpha = 0.55f))
+                    .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             ) {
-                Text("")
+                Text(text = "")
             }
         }
     }
@@ -379,43 +311,41 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
+            .border(border = BorderStroke(width = (0.8).dp, color = Color.Black))
             .clickable(onClick = {
 
-                val title = comicsViewModel.comicList[0].title
-                var thumbnail = comicsViewModel.comicList[0].thumbnail?.path
-                var description = comicsViewModel.comicList[0].description
-                val id = comicsViewModel.comicList[0].comicId
-                var isbn = comicsViewModel.comicList[0].isbn
-                val pageCount = comicsViewModel.comicList[0].pageCount
-                var series = comicsViewModel.comicList[0].series?.name
+                if (comicsViewModel.comicList.isNotEmpty()) {
+                    val title = comicsViewModel.comicList[0].title
+                    var thumbnail = comicsViewModel.comicList[0].thumbnail?.path
+                    var description = comicsViewModel.comicList[0].description
+                    val id = comicsViewModel.comicList[0].comicId
+                    var isbn = comicsViewModel.comicList[0].isbn
+                    val pageCount = comicsViewModel.comicList[0].pageCount
+                    var series = comicsViewModel.comicList[0].series?.name
 
-                if (description.isNullOrEmpty()) {
-                    description = "Not available"
+                    if (description.isNullOrEmpty()) {
+                        description = "Not available"
+                    }
+
+                    if (isbn.isNullOrEmpty()) {
+                        isbn = "Not available"
+                    }
+
+                    if (series.isNullOrEmpty()) {
+                        series = "Not available"
+                    }
+
+                    thumbnail = thumbnail?.replace("/", "_")
+
+                    //  Creazione di un argomento per la navigazione contenente i dettagli del fumetto
+                    val args = listOf(
+                        title, thumbnail, description, id, "YES", isbn, pageCount, series
+                    )
+
+                    //  Navigazione alla schermata dei dettagli del fumetto con gli argomenti
+                    navController.navigate("comicScreen/${args.joinToString("/")}")
                 }
-
-                if (isbn.isNullOrEmpty()) {
-                    isbn = "Not available"
-                }
-
-                if (series.isNullOrEmpty()) {
-                    series = "Not available"
-                }
-
-                thumbnail = thumbnail?.replace("/", "_")
-
-                //  Creazione di un argomento per la navigazione contenente i dettagli del fumetto
-                val args = listOf(
-                    title, thumbnail, description, id, "YES", isbn, pageCount, series
-                )
-
-                //  Navigazione alla schermata dei dettagli del fumetto con gli argomenti
-                navController.navigate("comicScreen/${args.joinToString("/")}")
             })
-            .border(
-                border = BorderStroke(width = 0.5.dp, Color.Black),
-                shape = RoundedCornerShape(10.dp)
-            )
-            .clip(shape = RoundedCornerShape(10.dp))
     ) {
         //  Box contenente l'immagine della copertina del fumetto
         Box(
@@ -434,9 +364,9 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                                 "http://",
                                 "https://"
                             )) + ".jpg")
-                        .placeholder(R.drawable.loading_placeholder)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .placeholder(R.drawable.loading_placeholder2)
+                        //.memoryPolicy(MemoryPolicy.NO_CACHE)
+                        //.networkPolicy(NetworkPolicy.NO_CACHE)
                         .resize(600, 900)
                         .centerCrop()
                         .into(imageView)
@@ -446,7 +376,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
             } else {
                 // Caricamento di un'immagine placeholder quando la lista dei fumetti è vuota
                 Picasso.get()
-                    .load(R.drawable.loading_placeholder)
+                    .load(R.drawable.loading_placeholder2)
                     .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
@@ -467,14 +397,14 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
     //  Creazione riquadro contenente il testo
     Box(
         modifier = Modifier
-            .padding(25.dp)
-            .border(
+            .padding(20.dp)
+            /*.border(
                 border = BorderStroke(width = 1.dp, Color.Black),
                 shape = RoundedCornerShape(10.dp)
-            )
+            )*/
             .clip(shape = RoundedCornerShape(10.dp))
             .background(Color.Transparent),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.CenterStart
     ) {
         //  Testo all'interno del riquadro
         Text(
@@ -482,9 +412,9 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
             color = Color.White,
             fontSize = fontSize,
             fontFamily = fontFamily,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Center,
             modifier = Modifier
-                .background(Color.Transparent)
+                .background(Color.Gray.copy(alpha = 0.4f))
                 .padding(10.dp)
         )
     }

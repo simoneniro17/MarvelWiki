@@ -108,27 +108,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "dev.chrisbanes.accompanist:accompanist-picasso:0.6.2"
 
-    /*  GLIDE
-        La prima dipendenza importa la libreria Glide, che semplifica il caricamento, la memorizzazione
-        nella cache e la visualizzazione delle immagini da varie fonti come URL, file, risorse o bitmap.
-
-        La seconda dipendenza specifica il compilatore di Glide, utilizzato per elaborare le annotazioni
-        di Glide durante la compilazione del progetto e generare il codice necessario per il caricamento
-        e la visualizzazione delle immagini con Glide.
-     */
-    implementation 'com.github.bumptech.glide:glide:4.12.0' //TODO aggiornare versione?
-    kapt 'com.github.bumptech.glide:compiler:4.12.0' //TODO aggiornare versione?
-
-
-    /*  GIF
-        Questa dipendenza importa la libreria GifDrawable, che consente di visualizzare immagini GIF in modo
-        nativo nelle applicazioni Android.
-     */
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17' //TODO aggiornare versione?
-
-    //TODO Forse occorre scambiare l'ordine delle dipendenze
-
-
     implementation 'io.github.raamcosta.compose-destinations:core:1.1.2-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.1.2-beta'
 
