@@ -364,7 +364,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
                                 "http://",
                                 "https://"
                             )) + ".jpg")
-                        .placeholder(R.drawable.loading_placeholder)
+                        .placeholder(R.drawable.loading_placeholder2)
                         //.memoryPolicy(MemoryPolicy.NO_CACHE)
                         //.networkPolicy(NetworkPolicy.NO_CACHE)
                         .resize(600, 900)
@@ -376,7 +376,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
             } else {
                 // Caricamento di un'immagine placeholder quando la lista dei fumetti è vuota
                 Picasso.get()
-                    .load(R.drawable.loading_placeholder)
+                    .load(R.drawable.loading_placeholder2)
                     .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
