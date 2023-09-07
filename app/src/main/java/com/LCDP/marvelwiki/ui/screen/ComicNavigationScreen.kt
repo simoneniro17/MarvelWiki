@@ -284,6 +284,9 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
             )
         }
     }
+
+        MiddleBar()
+
         //  Mostra messaggio se entrambi i filtri sono attivi
         if (showMessage) {
             TextChip(

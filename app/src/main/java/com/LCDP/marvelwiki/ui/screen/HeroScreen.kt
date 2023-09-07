@@ -284,7 +284,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            //  Sezione per aggiungere (rimuovere) l'eroe ai (dai) preferiti
+            //  Separatore
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

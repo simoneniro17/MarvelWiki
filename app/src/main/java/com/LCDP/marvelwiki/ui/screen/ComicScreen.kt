@@ -336,9 +336,9 @@ fun ComicCard(
 
             //  Visualizza tutte le informazioni relative al fumetto selezionato
             if (comicDescription == not_av) {
-                TextChip(descr + not_av, 15.sp, fontFamily)
+                TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
-                TextChip(descr + "$comicDescription".uppercase(), 15.sp, fontFamily)
+                TextChip(comicDescription.uppercase(), 15.sp, fontFamily)
             }
 
             if (comicIsbn == not_av) {

@@ -130,6 +130,9 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 checkedState
             )
 
+            //Sepraratore
+            MiddleBar()
+
             //  Lista di tutti gli eroi
             AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
@@ -256,6 +259,7 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
     if (textFieldState.isNotEmpty()) {
         checkedState.value = false
     }
+
 }
 
 @Composable
@@ -270,6 +274,8 @@ fun SearchScreen(navController: NavController, charactersViewModel: CharactersVi
             onSearchQueryChange = charactersViewModel::loadCharacterByNameList,
             checkedState
         )
+
+        MiddleBar()
 
         //  Lista di tutti gli eroi preferiti
         AllHeroesList(
@@ -345,6 +351,16 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
             )
         }
     }
+}
+
+@Composable
+fun MiddleBar() {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(20.dp)
+        .background(Color.Red.copy(alpha = 0.55f))
+        .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+    ) {}
 }
 
 //  Thumbnail relativa ad un eroe
