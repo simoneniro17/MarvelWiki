@@ -145,8 +145,8 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(90.dp),
+            .padding(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Pulsante per tornare alla HomeScreen

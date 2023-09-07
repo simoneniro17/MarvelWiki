@@ -135,8 +135,8 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.Start,
+            .padding(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Icona per tornare alla HomeScreen
@@ -166,7 +166,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 
         Spacer(
             modifier = Modifier
-                .width(50.dp)
+                .width(64.dp)
                 .fillMaxHeight()
         )
 
@@ -181,7 +181,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
 
         Spacer(
             modifier = Modifier
-                .width(20.dp)
+                .width(45.dp)
                 .fillMaxHeight()
         )
 
@@ -191,12 +191,6 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             onCheckedChange = {
                 favState.value = it
             }
-        )
-
-        Spacer(
-            modifier = Modifier
-                .width(5.dp)
-                .fillMaxHeight()
         )
 
         // "Checkbox per il filtro dei fumetti letti
@@ -334,6 +328,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
                 )
             }
         }
+
     Spacer(modifier = Modifier
         .fillMaxHeight()
         .width(20.dp))
@@ -354,7 +349,7 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth(0.85f)
             .padding(horizontal = (0.5).dp, vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca
@@ -408,7 +403,7 @@ fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth(0.85f)
             .padding(horizontal = (0.5).dp, vertical = 10.dp)
     ) {
         //  Campo di testo con icona di ricerca

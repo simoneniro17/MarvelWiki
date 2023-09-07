@@ -161,8 +161,8 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-            .padding(horizontal = 20.dp),
-        //horizontalArrangement = Arrangement.spacedBy(80.dp),
+            .padding(horizontal = 0.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Tasto di ritorno alla schermata di navigazione
