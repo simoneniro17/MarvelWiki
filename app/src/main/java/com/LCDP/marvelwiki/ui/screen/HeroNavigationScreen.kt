@@ -146,7 +146,7 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(80.dp),
+        horizontalArrangement = Arrangement.spacedBy(90.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Pulsante per tornare alla HomeScreen
@@ -425,7 +425,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .background(color = Color.Red)
+                    .background(Color.Red.copy(alpha = 0.55f))
                     .height(50.dp)
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
