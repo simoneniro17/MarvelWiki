@@ -152,7 +152,7 @@ fun NavigationButtons(navController: NavController, fontFamily: FontFamily) {
         NavigationButton(
             navController = navController,
             text = stringResource(R.string.heroes),
-            imageResId = R.drawable.heroes2,
+            imageResId = R.drawable.heroes,
             route = Screens.HeroNavigationScreen.route,
             fontFamily = fontFamily
         )
@@ -260,7 +260,7 @@ fun LatestComicCard(navController: NavController, context: Context, comicsViewMo
 
     Row {
         //  Spaziatura verticale prima del contenuto della card
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         // Colonna contenente il contenuto della card
         Column(
@@ -286,13 +286,13 @@ fun LatestComicCard(navController: NavController, context: Context, comicsViewMo
             }
 
             //  Spaziatura verticale tra la card e una riga di separazione
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             //  Riga di separazione visuale
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(10.dp)
+                    .fillMaxHeight()
                     .background(Color.Red.copy(alpha = 0.55f))
                     .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             ) {
@@ -414,7 +414,7 @@ fun TextChip(text: String, fontSize: TextUnit, fontFamily: FontFamily) {
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .background(Color.Gray.copy(alpha = 0.4f))
+                .background(Color.DarkGray.copy(alpha = 0.5f))
                 .padding(10.dp)
         )
     }
