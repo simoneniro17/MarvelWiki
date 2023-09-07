@@ -403,9 +403,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
             Picasso.get()
                 .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.hero_placeholder)
-                //.memoryPolicy(MemoryPolicy.NO_CACHE)
-                //.networkPolicy(NetworkPolicy.NO_CACHE)
-                .resize(510, 310)
+                .resize(550, 310)
                 .centerCrop()
                 .into(imageView)
 

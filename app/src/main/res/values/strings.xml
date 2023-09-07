@@ -41,5 +41,6 @@
     <string name="isbn_not_found">isbn not available</string>
     <string name="page_count">page count</string>
     <string name="series">series</string>
+    <string name="info">info</string>
 
 </resources>

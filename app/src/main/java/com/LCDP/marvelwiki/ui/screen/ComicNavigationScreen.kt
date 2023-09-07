@@ -536,9 +536,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.comic_placeholder)
-                //.memoryPolicy(MemoryPolicy.NO_CACHE)
-                //.networkPolicy(NetworkPolicy.NO_CACHE)
-                .resize(510, 310)
+                .resize(550, 310)
                 .centerCrop()
                 .into(imageView)
 

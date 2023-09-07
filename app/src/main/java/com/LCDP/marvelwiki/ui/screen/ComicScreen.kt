@@ -136,7 +136,18 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
                 currentFont,
                 comicTitle,
                 isLatest,
-                fontSize
+                fontSize,
+                isComicFavourite,
+                onFavoriteClicked = { isFavorite ->
+                    if (isFavorite) {
+                        favouriteComicViewModel.insertData(FavouriteComic(comicId))
+                        Toast.makeText(context, "$comicTitle $addedToFav", Toast.LENGTH_SHORT).show()
+                    } else {
+                        favouriteComicViewModel.deleteData(FavouriteComic(comicId))
+                        Toast.makeText(context, "$comicTitle $removedFromFav", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
             )
 
             //  Composable che mostra i dettagli del fumetto
@@ -148,18 +159,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
                 comicPageCount,
                 comicSeries,
                 context,
-                isComicFavourite,
                 isComicRead,
-                onFavoriteClicked = { isFavorite ->
-                    if (isFavorite) {
-                        favouriteComicViewModel.insertData(FavouriteComic(comicId))
-                        Toast.makeText(context, "$comicTitle $addedToFav", Toast.LENGTH_SHORT).show()
-                    } else {
-                        favouriteComicViewModel.deleteData(FavouriteComic(comicId))
-                        Toast.makeText(context, "$comicTitle $removedFromFav", Toast.LENGTH_SHORT).show()
-                    }
-
-                },
                 onReadClicked = { isRead ->
                     if (isRead) {
                         readComicViewModel.insertData(ReadComic(comicId))
@@ -178,7 +178,9 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
 @Composable
 fun ComicScreenUpperBar(
     navController: NavController, fontFamily: FontFamily, comicTitle: String,
-    isLatest: String, fontSize: TextUnit
+    isLatest: String, fontSize: TextUnit,isComicFavourite: MutableState<Boolean>,
+    onFavoriteClicked: (Boolean) -> Unit
+
 ) {
     Row(
         modifier = Modifier
@@ -186,8 +188,8 @@ fun ComicScreenUpperBar(
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
+            .padding(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         //  Tasto di ritorno alla schermata di navigazione
@@ -224,7 +226,28 @@ fun ComicScreenUpperBar(
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
+            modifier = Modifier
+                .weight(1f)
         )
+        Column(
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+        ) {
+            //  Icona per selezionare la preferenza
+            FavouriteCheckbox(
+                isComicFavourite.value,
+                onCheckedChange = {
+                    isComicFavourite.value = it
+                    onFavoriteClicked(it)
+                }
+            )
+
+
+        }
+
+
+
     }
 }
 
@@ -233,8 +256,7 @@ fun ComicScreenUpperBar(
 fun ComicCard(
     fontFamily: FontFamily, comicThumbnail: String, comicDescription: String,
     comicIsbn: String, comicPageCount: String, comicSeries: String, context: Context,
-    isComicFavourite: MutableState<Boolean>, isComicRead: MutableState<Boolean>,
-    onFavoriteClicked: (Boolean) -> Unit, onReadClicked: (Boolean) -> Unit
+    isComicRead: MutableState<Boolean>, onReadClicked: (Boolean) -> Unit
 ) {
 
     Row {
@@ -290,30 +312,6 @@ fun ComicCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                // Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dai preferiti
-                FavouriteCheckbox(
-                    isComicFavourite.value,
-                    onCheckedChange = {
-                        isComicFavourite.value = it
-                        onFavoriteClicked(it)
-                    }
-                )
-
-                // Testo che accompagna la checkbox
-                Text(
-                    text = stringResource(R.string.favorite).uppercase(),
-                    fontSize = 20.sp,
-                    fontFamily = fontFamily,
-                    color = Color.White
-                )
-
-                //  Spacer
-                Column (modifier = Modifier
-                    .width(20.dp)
-                    .fillMaxHeight()
-                ) {}
-
                 //  Checkbox che permette di aggiungere/rimuovere il fumetto selezionato dalla lista dei fumetti letti
                 ReadComicCheckbox(
                     isRead = isComicRead.value,

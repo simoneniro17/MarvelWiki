@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -124,7 +125,23 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                 navController,
                 currentFont,
                 selectedHeroName,
-                fontSize
+                fontSize,
+                isFavorite,
+                onFavoriteClicked = { isFavorite ->
+                    if (isFavorite) {
+                        favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(context, "$selectedHeroName $addedToFav", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
+                        Toast.makeText(
+                            context,
+                            "$selectedHeroName $removedFromFav",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
             )
 
             //  Composable che mostra i dettagli dell'eroe
@@ -136,16 +153,6 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                 selectedHeroStories,
                 selectedHeroComics,
                 context,
-                isFavorite,
-                onFavoriteClicked = { isFavorite ->
-                    if (isFavorite) {
-                        favouriteCharacterViewModel.insertData(FavouriteCharacter(selectedHeroId))
-                        Toast.makeText(context, "$selectedHeroName $addedToFav", Toast.LENGTH_SHORT).show()
-                    } else {
-                        favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
-                        Toast.makeText(context, "$selectedHeroName $removedFromFav", Toast.LENGTH_SHORT).show()
-                    }
-                }
             )
         }
     }
@@ -153,7 +160,8 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
 
 //  Barra superiore con tasto di ritorno e nome dell'eroe
 @Composable
-fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String, fontSize : TextUnit) {
+fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, selectedHeroName: String, fontSize : TextUnit,
+                       isFavorite: MutableState<Boolean>, onFavoriteClicked: (Boolean) -> Unit) {
 
     Row(
         modifier = Modifier
@@ -161,10 +169,11 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
             .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-            .padding(horizontal = 0.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .padding(start = 20.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         //  Tasto di ritorno alla schermata di navigazione
         Column(
             modifier = Modifier
@@ -173,6 +182,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
                 .border(border = BorderStroke(2.dp, color = Color.Black), shape = CircleShape)
                 .clip(shape = CircleShape)
                 .background(Color.Green)
+
         ) {
             //  Icona per tornare indietro
             Image(
@@ -187,6 +197,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
                     )
                     .clip(shape = CircleShape)
                     .clickable(onClick = { navController.navigate(Screens.HeroNavigationScreen.route) })
+
             )
         }
 
@@ -198,8 +209,27 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(start = 70.dp, end = 90.dp)
+                .weight(1f)
         )
+
+
+        Column(
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+        ) {
+            //  Icona per tornare indietro
+            FavouriteCheckbox(
+                isFavorite.value,
+                onCheckedChange = {
+                    isFavorite.value = it
+                    onFavoriteClicked(it)
+                }
+            )
+
+
+        }
+
 
     }
 }
@@ -208,7 +238,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
 @Composable
 fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHeroDescription: String,
              selectedHeroEvents: String, selectedHeroStories: String, selectedHeroComics: String,
-             context: Context, isFavorite: MutableState<Boolean>, onFavoriteClicked: (Boolean) -> Unit) {
+             context: Context) {
 
     Row {
 
@@ -264,18 +294,9 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //  Icona per i preferiti
-                FavouriteCheckbox(
-                    isFavorite.value,
-                    onCheckedChange = {
-                        isFavorite.value = it
-                        onFavoriteClicked(it)
-                    }
-                )
 
-                //  Testo "preferiti" vicino l'icona
                 Text(
-                    text = stringResource(R.string.favorite).uppercase(),
+                    text = stringResource(R.string.info).uppercase(),
                     fontSize = 20.sp,
                     fontFamily = fontFamily,
                     color = Color.White

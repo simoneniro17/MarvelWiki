@@ -35,4 +35,5 @@
     <string name="name_filter_active">Search filter: by name</string>
     <string name="not_available">not available</string>
     <string name="description">"Description: "</string>
+    <string name="info">Info:</string>
 </resources>
