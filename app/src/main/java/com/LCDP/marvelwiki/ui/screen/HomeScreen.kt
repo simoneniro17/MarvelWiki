@@ -119,7 +119,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
-            .border(border = BorderStroke(width = (0.8).dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -187,7 +187,7 @@ fun NavigationButton(navController: NavController, text: String, imageResId: Int
             .fillMaxHeight()
             .width(300.dp)
             .border(
-                border = BorderStroke(width = 1.dp, color = Color.Black),
+                border = BorderStroke(width = (0.5).dp, color = Color.Black),
                 shape = RoundedCornerShape(10.dp)
             )
             .clip(shape = RoundedCornerShape(10.dp))
@@ -203,7 +203,7 @@ fun NavigationButton(navController: NavController, text: String, imageResId: Int
                 .fillMaxHeight(0.8f)
                 .width(300.dp)
                 .border(
-                    border = BorderStroke(width = (0.8).dp, color = Color.Black),
+                    border = BorderStroke(width = (0.5).dp, color = Color.Black),
                 )
         )
 
