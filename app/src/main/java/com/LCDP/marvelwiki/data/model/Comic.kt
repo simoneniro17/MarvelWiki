@@ -3,7 +3,6 @@ package com.LCDP.marvelwiki.data.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.math.BigDecimal
 
 /*  '@SerializedName' specifica il nome del campo JSON corrispondente alla proprietà
     della classe 'Comic' durante il funzionamento di Gson.

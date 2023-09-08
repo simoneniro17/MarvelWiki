@@ -44,7 +44,7 @@ class ComicsViewModel(
 
                 //  Chiamata all'API per ottenere gli ultimi fumetti
                 val comicResponse =
-                    comicsRepository.getLatestComic_api()
+                    comicsRepository.getLatestComicAPI()
 
                 //  Viene preso il corpo della risposta che contiene i dati
                 val comics =
@@ -80,7 +80,7 @@ class ComicsViewModel(
 
                     //  Chiamata all'API per ottenere i fumetti corrispondenti
                     val comicsResponse =
-                        comicsRepository.getComicsByName_api(offset = 0, name = newQuery)
+                        comicsRepository.getComicsByNameAPI(offset = 0, name = newQuery)
 
                     //  Viene preso il corpo della risposta che contiene i dati
                     val comics =
@@ -113,7 +113,7 @@ class ComicsViewModel(
 
                 //  Chiamata all'API per ottenere il fumetto con ISBN inserito
                 val comicResponse =
-                    comicsRepository.getComicsByIsbn_api(isbn)
+                    comicsRepository.getComicsByIsbnAPI(isbn)
 
                 //  Viene preso il corpo della risposta che contiene i dati
                 val comics =
@@ -150,7 +150,7 @@ class ComicsViewModel(
 
                 //  Per ciascun fumetto, chiamate alle API per ottenerne i dettagli
                 idList.forEach { id ->
-                    val comicResponse = comicsRepository.getComicsById_api(id = id)
+                    val comicResponse = comicsRepository.getComicsByIdAPI(id = id)
                     val comics = comicResponse.body()?.comicData?.results
 
                     //  Aggiunta dei fumetti ottenuti alla lista visualizzata
@@ -190,7 +190,7 @@ class ComicsViewModel(
 
                 //  Per ciascun fumetto, chiamate alle API per ottenerne i dettagli
                 idList.forEach { id ->
-                    val comicResponse = comicsRepository.getComicsById_api(id = id)
+                    val comicResponse = comicsRepository.getComicsByIdAPI(id = id)
                     val comics = comicResponse.body()?.comicData?.results
 
                     //  Aggiunta dei fumetti ottenuti alla lista visualizzata

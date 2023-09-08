@@ -45,9 +45,7 @@ import com.LCDP.marvelwiki.data.model.Comic
 import com.LCDP.marvelwiki.data.repository.ComicsRepository
 import com.LCDP.marvelwiki.ui.viewmodel.ComicViewModelFactory
 import com.LCDP.marvelwiki.ui.viewmodel.ComicsViewModel
-import com.LCDP.marvelwiki.usefulStuff.Debouncer
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
+import com.LCDP.marvelwiki.util.Debouncer
 import com.squareup.picasso.Picasso
 
 //  Schermata di navigazione dei fumetti

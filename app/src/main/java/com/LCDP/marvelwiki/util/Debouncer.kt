@@ -1,4 +1,4 @@
-package com.LCDP.marvelwiki.usefulStuff
+package com.LCDP.marvelwiki.util
 
 import android.os.Handler
 import android.os.Looper

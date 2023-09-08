@@ -58,6 +58,7 @@ import com.LCDP.marvelwiki.database.viewmodel.ReadComicViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import java.net.URLDecoder
 
 //  Schermata al dettaglio di un fumetto
 @Composable

@@ -1,6 +1,6 @@
 package com.LCDP.marvelwiki.data.API.ComicsAPICall
 
-import com.LCDP.marvelwiki.usefulStuff.Constant
+import com.LCDP.marvelwiki.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,23 +29,23 @@ object ComicInstance {
     }
 
     // Istanze delle diverse interfacce API per le chiamate ai diversi endpoint
-    val comicsById_api by lazy {
+    val comicsById_api: ComicAPIById by lazy {
         retrofit.create(ComicAPIById::class.java)   // Fumetto per ID
     }
 
-    val comicsByIsbn_api by lazy {
+    val comicsByIsbn_api: ComicAPIByIsbn by lazy {
         retrofit.create(ComicAPIByIsbn::class.java)   // Fumetto per ISBN
     }
 
-    val comicsByName_api by lazy {
+    val comicsByName_api: ComicAPIByName by lazy {
         retrofit.create(ComicAPIByName::class.java)   // Fumetti per titolo
     }
 
-    val latestComic_api by lazy {
+    val latestComic_api: LatestComicAPI by lazy {
         retrofit.create(LatestComicAPI::class.java)   // Ultimo fumetto uscito
     }
 
-    val latestComicByCharId_api by lazy {
+    val latestComicByCharId_api: LatestComicAPIByCharId by lazy {
         retrofit.create(LatestComicAPIByCharId::class.java)   // Ultimi fumetti di un personaggio
     }
 }

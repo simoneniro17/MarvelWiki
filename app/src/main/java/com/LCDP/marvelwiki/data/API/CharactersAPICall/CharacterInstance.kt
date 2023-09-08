@@ -1,6 +1,6 @@
 package com.LCDP.marvelwiki.data.API.CharactersAPICall
 
-import com.LCDP.marvelwiki.usefulStuff.Constant
+import com.LCDP.marvelwiki.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,15 +29,15 @@ object CharacterInstance {
     }
 
     // Istanze delle diverse interfacce API per le chiamate ai diversi endpoint
-    val char_api by lazy {
+    val char_api: CharacterAPI by lazy {
         retrofit.create(CharacterAPI::class.java) // Elenco dei personaggi
     }
 
-    val charByName_api by lazy {
+    val charByName_api: CharacterByNameAPI by lazy {
         retrofit.create(CharacterByNameAPI::class.java) // Elenco personaggi per nome
     }
 
-    val charById_api by lazy {
+    val charById_api: CharacterAPIById by lazy {
         retrofit.create(CharacterAPIById::class.java) // Personaggio per ID
     }
 }

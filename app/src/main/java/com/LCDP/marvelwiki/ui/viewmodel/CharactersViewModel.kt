@@ -40,7 +40,7 @@ class CharactersViewModel(
             try {
 
                 //  Chiamata all'API specificando l'offset
-                val charactersResponse = charactersRepository.getChar_api(offset)
+                val charactersResponse = charactersRepository.getCharAPI(offset)
 
                 //  Viene preso il corpo della risposta che contiene i dati
                 val characters = charactersResponse.body()?.characterData?.results
@@ -87,7 +87,7 @@ class CharactersViewModel(
 
                     //  Chiamata all'API per ottenere i personaggi corrispondenti
                     val charactersResponse =
-                        charactersRepository.getChar_api(offset = 0, name = newQuery)
+                        charactersRepository.getCharByNameAPI(offset = 0, name = newQuery)
 
                     //  Viene preso il corpo della risposta che contiene i dati
                     val characters = charactersResponse.body()?.characterData?.results
@@ -126,7 +126,7 @@ class CharactersViewModel(
 
                 //  Per ciascun personaggio, chiamate alle API per ottenerne i dettagli
                 idList.forEach { id ->
-                    val characterResponse = charactersRepository.getChar_api(id = id)
+                    val characterResponse = charactersRepository.getCharByIdAPI(id = id)
                     val characters = characterResponse.body()?.characterData?.results
 
                     //  Aggiunta dei personaggi ottenuti alla lista visualizzata

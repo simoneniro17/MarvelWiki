@@ -1,7 +1,7 @@
 package com.LCDP.marvelwiki.data.API.ComicsAPICall
 
 import com.LCDP.marvelwiki.data.model.ComicResponse
-import com.LCDP.marvelwiki.usefulStuff.Constant
+import com.LCDP.marvelwiki.util.Constant
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

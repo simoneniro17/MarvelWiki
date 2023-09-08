@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,10 +54,7 @@ import com.LCDP.marvelwiki.data.model.Character
 import com.LCDP.marvelwiki.data.repository.CharactersRepository
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModel
 import com.LCDP.marvelwiki.ui.viewmodel.CharactersViewModelFactory
-import com.LCDP.marvelwiki.usefulStuff.Constant
-import com.LCDP.marvelwiki.usefulStuff.Debouncer
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
+import com.LCDP.marvelwiki.util.Debouncer
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
