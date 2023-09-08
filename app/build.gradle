@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.LCDP.marvelwiki'
+    namespace 'com.lcdp.marvelwiki'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.LCDP.marvelwiki"
+        applicationId "com.lcdp.marvelwiki"
         minSdk 24
         targetSdk 33
         versionCode 1
