@@ -164,6 +164,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             )
         }
 
+        // Spaziatore per mantenere pulita la schermata
         Spacer(
             modifier = Modifier
                 .width(64.dp)
@@ -179,6 +180,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             textAlign = TextAlign.Center,
         )
 
+        // Spaziatore per mantenere piulita la schermata
         Spacer(
             modifier = Modifier
                 .width(45.dp)
@@ -489,7 +491,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    border = BorderStroke(width = (0.5).dp, color = Color.Black),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))

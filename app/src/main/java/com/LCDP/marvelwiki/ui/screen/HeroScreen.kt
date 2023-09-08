@@ -226,11 +226,7 @@ fun HeroScreenUpperBar(navController: NavController, fontFamily: FontFamily, sel
                     onFavoriteClicked(it)
                 }
             )
-
-
         }
-
-
     }
 }
 
@@ -268,8 +264,6 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 Picasso.get()
                     .load(selectedHeroThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.hero_placeholder)
-                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
-                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(900, 600)
                     .centerCrop()
                     .into(imageView)

@@ -144,7 +144,7 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
-            //.border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(start = 20.dp, end = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -367,7 +367,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    border = BorderStroke(width = (0.5).dp, color = Color.Black),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .clip(shape = RoundedCornerShape(10.dp))

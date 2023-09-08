@@ -119,7 +119,7 @@ fun HomeScreenUpperBar(fontFamily: FontFamily) {
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
-            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.8).dp, color = Color.Black))
             .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -203,7 +203,7 @@ fun NavigationButton(navController: NavController, text: String, imageResId: Int
                 .fillMaxHeight(0.8f)
                 .width(300.dp)
                 .border(
-                    border = BorderStroke(width = 1.dp, color = Color.Black),
+                    border = BorderStroke(width = (0.8).dp, color = Color.Black),
                 )
         )
 
@@ -236,7 +236,7 @@ fun LatestComicBanner(fontFamily: FontFamily) {
             .fillMaxWidth()
             .height(50.dp)
             .background(Color.Red.copy(alpha = 0.55f))
-            .border(border = BorderStroke(width = (1).dp, color = Color.Black)),
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -311,7 +311,7 @@ fun ClickableImageCard(navController: NavController, modifier: Modifier, context
         modifier = Modifier
             .height(300.dp)
             .width(200.dp)
-            .border(border = BorderStroke(width = (0.8).dp, color = Color.Black))
+            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .clickable(onClick = {
 
                 if (comicsViewModel.comicList.isNotEmpty()) {
