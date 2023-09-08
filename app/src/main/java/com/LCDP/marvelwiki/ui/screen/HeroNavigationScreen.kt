@@ -130,9 +130,6 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 checkedState
             )
 
-            //Sepraratore
-            MiddleBar()
-
             //  Lista di tutti gli eroi
             AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
@@ -147,7 +144,7 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
             .fillMaxWidth()
             .height(60.dp)
             .background(Color.Red.copy(alpha = 0.55f))
-            .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
+            //.border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
             .padding(start = 20.dp, end = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -217,7 +214,8 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp)
+            .height(80.dp)
+            .padding(vertical = 0.dp)
     ) {
         //  Campo di testo con icona di ricerca
         OutlinedTextField(
@@ -274,8 +272,6 @@ fun SearchScreen(navController: NavController, charactersViewModel: CharactersVi
             onSearchQueryChange = charactersViewModel::loadCharacterByNameList,
             checkedState
         )
-
-        MiddleBar()
 
         //  Lista di tutti gli eroi preferiti
         AllHeroesList(
@@ -351,16 +347,6 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
             )
         }
     }
-}
-
-@Composable
-fun MiddleBar() {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(20.dp)
-        .background(Color.Red.copy(alpha = 0.55f))
-        .border(border = BorderStroke(width = (0.5).dp, color = Color.Black))
-    ) {}
 }
 
 //  Thumbnail relativa ad un eroe
