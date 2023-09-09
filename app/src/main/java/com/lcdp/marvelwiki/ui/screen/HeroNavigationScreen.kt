@@ -255,7 +255,7 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
         )
     }
 
-    //  Se il campo di ricerca non è vuoto, il filtro dei preferiti viene disabilitato
+    //  Se il campo di ricerca non Ã¨ vuoto, il filtro dei preferiti viene disabilitato
     if (textFieldState.isNotEmpty()) {
         checkedState.value = false
     }
@@ -266,7 +266,9 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
 fun SearchScreen(navController: NavController, charactersViewModel: CharactersViewModel, fontFamily: FontFamily, checkedState: MutableState<Boolean>) {
     //  Colonna che contiene il layout della schermata di ricerca
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         //  Barra di ricerca
         SearchBar(
@@ -304,10 +306,10 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
             che le informazioni sugli elementi visibili cambiano    */
         snapshotFlow { listState.layoutInfo.visibleItemsInfo }
 
-            //  .map trasforma ogni valore del flusso nel booleano isAtEnd, che indica se lo scorrimento è alla fine della lista
+            //  .map trasforma ogni valore del flusso nel booleano isAtEnd, che indica se lo scorrimento Ã¨ alla fine della lista
             .map { visibleItemsInfo ->
 
-                //controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
+                //controlliamo se l'utlimo indice visibile Ã¨ diverso da null, se il conteggio totale degli elementi totalCount Ã¨ maggiore di 0
                 //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
                 //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
 
@@ -317,8 +319,8 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
                 //  Elementi totali
                 val totalCount = listState.layoutInfo.totalItemsCount
 
-                /*  Controlliamo se l'ultimo indice visibile è diverso da null e corrisponde all'ultimo
-                elemento della lista ed il conteggio degli elementi totali è maggiore di 0  */
+                /*  Controlliamo se l'ultimo indice visibile Ã¨ diverso da null e corrisponde all'ultimo
+                elemento della lista ed il conteggio degli elementi totali Ã¨ maggiore di 0  */
                 val isAtEnd =
                     lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
                 isAtEnd
@@ -358,9 +360,9 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
     //  Riga che contiene il composable dell'immagine e il nome dell'eroe
     Row(
         modifier = Modifier
-            .width(450.dp)
+            .width(300.dp)
             .height(300.dp)
-            .padding(20.dp),
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -368,11 +370,6 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                /*.border(
-                    border = BorderStroke(width = (0.5).dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                 */
                 .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
 
@@ -408,7 +405,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
             Picasso.get()
                 .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.hero_placeholder)
-                .resize(550, 310)
+                .resize(700, 550)
                 .centerCrop()
                 .into(imageView)
 
@@ -418,7 +415,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                 factory = { imageView },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
+                    .fillMaxHeight(0.785f)
             )
 
             //  Testo con il nome dell'eroe sopra l'immagine
@@ -460,9 +457,9 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     )
 
     val alphaState by animateFloatAsState(
-        targetValue = if (isChecked) 1f else 0.5f, // Cambia l'opacità all'istante del clic
+        targetValue = if (isChecked) 1f else 0.5f, // Cambia l'opacitÃ  all'istante del clic
         animationSpec = tween(
-            durationMillis = 50, // Tempo per l'animazione di opacità (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacitÃ  (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -509,9 +506,9 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     )
 
     val alphaState by animateFloatAsState(
-        targetValue = if (isRead) 1f else 0.5f, // Cambia l'opacità all'istante del clic
+        targetValue = if (isRead) 1f else 0.5f, // Cambia l'opacitÃ  all'istante del clic
         animationSpec = tween(
-            durationMillis = 50, // Tempo per l'animazione di opacità (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacitÃ  (in millisecondi)
             easing = LinearEasing
         )
     )
