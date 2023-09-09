@@ -266,7 +266,9 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
 fun SearchScreen(navController: NavController, charactersViewModel: CharactersViewModel, fontFamily: FontFamily, checkedState: MutableState<Boolean>) {
     //  Colonna che contiene il layout della schermata di ricerca
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         //  Barra di ricerca
         SearchBar(
@@ -358,7 +360,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
     //  Riga che contiene il composable dell'immagine e il nome dell'eroe
     Row(
         modifier = Modifier
-            .width(450.dp)
+            .width(300.dp)
             .height(300.dp)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -408,7 +410,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
             Picasso.get()
                 .load((selectedHero.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.hero_placeholder)
-                .resize(550, 310)
+                .resize(700, 550)
                 .centerCrop()
                 .into(imageView)
 
@@ -418,7 +420,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                 factory = { imageView },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
+                    .fillMaxHeight(0.785f)
             )
 
             //  Testo con il nome dell'eroe sopra l'immagine
