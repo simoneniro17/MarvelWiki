@@ -127,6 +127,7 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
 fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily,
                                   favState: MutableState<Boolean>, readState: MutableState<Boolean>,
                                   comicsViewModel: ComicsViewModel) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,13 +163,6 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             )
         }
 
-        // Spaziatore per mantenere pulita la schermata
-        Spacer(
-            modifier = Modifier
-                .width(64.dp)
-                .fillMaxHeight()
-        )
-
         //  Testo nella barra superiore
         Text(
             text = stringResource(R.string.comics).uppercase(),
@@ -176,31 +170,28 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             color = Color.White,
             fontFamily = fontFamily,
             textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1.0f)
         )
 
-        // Spaziatore per mantenere piulita la schermata
-        Spacer(
-            modifier = Modifier
-                .width(45.dp)
-                .fillMaxHeight()
-        )
+        Row() {
+            //  "Checkbox" per il filtro dei preferiti
+            FavouriteCheckbox(
+                isChecked = favState.value,
+                onCheckedChange = {
+                    favState.value = it
+                }
+            )
 
-        //  "Checkbox" per il filtro dei preferiti
-        FavouriteCheckbox(
-            isChecked = favState.value,
-            onCheckedChange = {
-                favState.value = it
-            }
-        )
-
-        // "Checkbox per il filtro dei fumetti letti
-        ReadComicCheckbox(
-            isRead = readState.value,
-            onReadChange = {
-                readState.value = it
-            }
-        )
+            // "Checkbox per il filtro dei fumetti letti
+            ReadComicCheckbox(
+                isRead = readState.value,
+                onReadChange = {
+                    readState.value = it
+                }
+            )
+        }
     }
+
 }
 
 //  Schermata per la ricerca dei fumetti
