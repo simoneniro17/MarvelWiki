@@ -57,7 +57,11 @@ fun HomeScreen(navController: NavController, context: Context) {
                 context.applicationContext as Application
             )
         )
-    comicsViewModel.getLatestComic()
+    LaunchedEffect(key1 = Unit) {
+        if (comicsViewModel.comicList.isEmpty()) {
+            comicsViewModel.getLatestComic()
+        }
+    }
 
     Box(
         modifier = Modifier

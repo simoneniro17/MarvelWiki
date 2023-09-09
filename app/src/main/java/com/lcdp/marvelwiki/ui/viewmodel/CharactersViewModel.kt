@@ -38,7 +38,6 @@ class CharactersViewModel(
     fun loadCharacterList() {
         viewModelScope.launch {
             try {
-
                 //  Chiamata all'API specificando l'offset
                 val charactersResponse = charactersRepository.getCharAPI(offset)
 
@@ -70,7 +69,6 @@ class CharactersViewModel(
 
     //  Per caricare 100 personaggi alla volta in base ad una ricerca per nome
     fun loadCharacterByNameList(newQuery: String) {
-
         //  Prima di caricare nuovi dati, vengono rimossi quelli presenti nella lista corrente
         _characterList.clear()
 

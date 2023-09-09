@@ -81,7 +81,12 @@ fun NavigationScreen(navController: NavController, context: Context) {
 
 
     //  Caricamento iniziale della lista dei primi 100 personaggi
-    charactersViewModel.loadCharacterList()
+
+    LaunchedEffect(key1 = Unit) {
+        if (charactersViewModel.characterList.isEmpty()) {
+            charactersViewModel.loadCharacterList()
+        }
+    }
 
     //  Schermata principale con sfondo gradiente
     Box(
@@ -127,7 +132,7 @@ fun NavigationScreen(navController: NavController, context: Context) {
             )
 
             //  Lista di tutti gli eroi
-            AllHeroesList(navController, currentFont, context, charactersViewModel)
+            //AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
     }
 }
@@ -188,6 +193,7 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
                 } else {
                     charactersViewModel.loadFavouriteCharacters()
                 }
+
             }
         )
 
@@ -268,7 +274,6 @@ fun SearchScreen(navController: NavController, charactersViewModel: CharactersVi
             onSearchQueryChange = charactersViewModel::loadCharacterByNameList,
             checkedState
         )
-
         //  Lista di tutti gli eroi preferiti
         AllHeroesList(
             navController = navController,
@@ -316,7 +321,6 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
                 elemento della lista ed il conteggio degli elementi totali è maggiore di 0  */
                 val isAtEnd =
                     lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
-
                 isAtEnd
             }
 
@@ -362,10 +366,11 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .border(
+                /*.border(
                     border = BorderStroke(width = (0.5).dp, color = Color.Black),
                     shape = RoundedCornerShape(10.dp)
                 )
+                 */
                 .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
 
@@ -405,6 +410,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                 .centerCrop()
                 .into(imageView)
 
+
             //  Rappresentazione dell'immagine come Composable AndroidView
             AndroidView(
                 factory = { imageView },
@@ -424,6 +430,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                     .background(Color.Red.copy(alpha = 0.55f))
                     .height(50.dp)
                     .fillMaxWidth()
+                    .fillMaxHeight(0.2f)
                     .padding(vertical = 12.dp)
             )
         }
