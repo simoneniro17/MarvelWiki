@@ -370,7 +370,6 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
 
                     //  Estrazione dei dettagli dell'eroe selezionato

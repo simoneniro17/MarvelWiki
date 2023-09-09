@@ -26,7 +26,7 @@
     <string name="series">"Series: "</string>
     <string name="read">Read</string>
     <string name="isbn_not_found">ISBN not available</string>
-    <string name="added_to_fav">added to favourite characters</string>
+    <string name="added_to_fav">added to favourite</string>
     <string name="removed_from_fav">removed from favourite characters</string>
     <string name="isbn_filter_active">Search filter: by ISBN</string>
     <string name="added_to_read">added to read comics</string>

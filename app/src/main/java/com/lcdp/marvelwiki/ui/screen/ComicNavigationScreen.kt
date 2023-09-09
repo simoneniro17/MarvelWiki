@@ -456,7 +456,8 @@ fun AllComicList(navController: NavController, fontFamily: FontFamily,
     val comicList = comicsViewModel.comicList
 
     //  Caricamento degli elementi della lista appena presa
-    LazyColumn(state = listState) {
+    LazyColumn(state = listState, modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+    ) {
         items(comicList.size) { index ->
             ComicThumbnail(
                 navController,
@@ -478,7 +479,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
     //  Riga che contiene il composable dell'immagine e il nome del fumetto
     Row(
         modifier = Modifier
-            .width(400.dp)
+            .width(300.dp)
             .height(300.dp)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -488,11 +489,6 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .border(
-                    border = BorderStroke(width = (0.5).dp, color = Color.Black),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
                 .clickable(onClick = {
 
                     //  Estrazione dei dettagli del fumetto selezionato
@@ -527,7 +523,8 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
 
                     navController.navigate("comicScreen/${args.joinToString("/")}")
                 }),
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             //  ImageView per mostrare l'immagine del fumetto
@@ -537,7 +534,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
             Picasso.get()
                 .load((selectedComic.thumbnail?.path?.replace("http://", "https://")) + ".jpg")
                 .placeholder(R.drawable.comic_placeholder)
-                .resize(550, 310)
+                .resize(700, 550)
                 .centerCrop()
                 .into(imageView)
 
@@ -546,7 +543,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                 factory = { imageView },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
+                    .fillMaxHeight(0.785f)
             )
 
             //  Testo con il nome del fumetto sopra l'immagine
@@ -560,6 +557,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                     .background(Color.Red.copy(alpha = 0.55f))
                     .height(50.dp)
                     .fillMaxWidth()
+                    .fillMaxHeight(0.2f)
                     .padding(vertical = 12.dp)
             )
         }
