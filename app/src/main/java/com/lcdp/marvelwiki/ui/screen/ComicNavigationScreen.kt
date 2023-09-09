@@ -382,6 +382,7 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
 
 //  Ricerca fumetti per codice ISBN
 @Composable
+//provare 9781302948801
 fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit) {
 
     //  Stato del testo nella barra di ricerca
