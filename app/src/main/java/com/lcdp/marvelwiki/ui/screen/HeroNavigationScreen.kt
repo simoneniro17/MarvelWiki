@@ -353,6 +353,8 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
 @Composable
 fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selectedHero: Character, context: Context) {
 
+    val not_av = stringResource(R.string.not_available).uppercase()
+
     //  Riga che contiene il composable dell'immagine e il nome dell'eroe
     Row(
         modifier = Modifier
@@ -383,8 +385,8 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                     val storiesAvailable = selectedHero.stories?.available
                     val comicsAvailable = selectedHero.comics?.available
 
-                    if (description.isNullOrEmpty()) {
-                        description = "NOT AVAILABLE"
+                    if (description?.trim().isNullOrEmpty() || description == "#N/A") {
+                        description = not_av
                     }
 
                     thumbnail = thumbnail?.replace("/", "_")
