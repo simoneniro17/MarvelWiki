@@ -504,7 +504,7 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                     val selectedComicPageCount = selectedComic.pageCount
                     val selectedComicSeries = selectedComic.series?.name
 
-                    if (selectedComicDescription.isNullOrEmpty()) {
+                    if (selectedComicDescription.isNullOrEmpty() || selectedComicDescription == "#N/A") {
                         selectedComicDescription = not_av
                     }
 
