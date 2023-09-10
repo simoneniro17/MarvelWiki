@@ -166,11 +166,6 @@ class ComicsViewModel(
         }
     }
 
-    fun unloadFavouriteComics() {
-        offset = 0
-        _comicList.clear()
-    }
-
     fun loadReadComics() {
 
         //  Prima di caricare nuovi dati, vengono rimossi quelli presenti nella lista corrente
@@ -204,10 +199,5 @@ class ComicsViewModel(
                 println("Errore durante il caricamento dei fumetti letti: ${e.message}")
             }
         }
-    }
-
-    fun unloadReadComics() {
-        offset = 0
-        _comicList.clear()
     }
 }

@@ -31,19 +31,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //  Gestione del media player nel caso in cui l' applicazione venga mandata in background
+    //  Gestione del media player nel caso in cui l'applicazione venga mandata in background
     override fun onPause() {
         super.onPause()
         mediaPlayer?.pause()
     }
 
-    //  Gestione del media player nel caso in cui l' applicazione venga ripresa dal background
+    //  Gestione del media player nel caso in cui l'applicazione venga ripresa dal background
     override fun onResume() {
         super.onResume()
         mediaPlayer?.start()
     }
 
-    //  Gestione del media player nel caso in cui l' applicazione venga chiusa
+    //  Gestione del media player nel caso in cui l'applicazione venga chiusa
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.stop()

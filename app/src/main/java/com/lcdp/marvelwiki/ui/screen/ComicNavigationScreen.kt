@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -59,7 +58,7 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
     val favState = remember { mutableStateOf(false) }
     val readState = remember { mutableStateOf(false) }
 
-    // Setup delle stringhe
+    //  Setup delle stringhe
     val filterByNameMsg = stringResource(R.string.name_filter_active)
     val filterByISBNMsg = stringResource(R.string.isbn_filter_active)
 
@@ -91,6 +90,7 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
                 .fillMaxSize()
                 .alpha(0.5f)
         )
+
         //  Colonna per contenere tutti gli elementi della schermata
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         Column(
@@ -127,7 +127,6 @@ fun ComicNavigationScreen(navController: NavController, context: Context) {
 fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily,
                                   favState: MutableState<Boolean>, readState: MutableState<Boolean>,
                                   comicsViewModel: ComicsViewModel) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +172,7 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             modifier = Modifier.weight(1.0f)
         )
 
-        Row() {
+        Row {
             //  "Checkbox" per il filtro dei preferiti
             FavouriteCheckbox(
                 isChecked = favState.value,
@@ -191,7 +190,6 @@ fun ComicNavigationScreenUpperBar(navController: NavController, fontFamily: Font
             )
         }
     }
-
 }
 
 //  Schermata per la ricerca dei fumetti
@@ -324,7 +322,7 @@ fun ComicSearchScreen(navController: NavController, comicsViewModel: ComicsViewM
     Spacer(modifier = Modifier
         .fillMaxHeight()
         .width(20.dp))
-    }
+}
 
 //  Ricerca fumetti per titolo
 @Composable
@@ -380,9 +378,8 @@ fun ComicByNameSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -
     }
 }
 
-//  Ricerca fumetti per codice ISBN
+//  Ricerca fumetti per codice ISBN (9781302948801)
 @Composable
-//provare 9781302948801
 fun ComicByIsbnSearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit) {
 
     //  Stato del testo nella barra di ricerca
@@ -448,7 +445,9 @@ fun AllComicList(navController: NavController, fontFamily: FontFamily,
     val comicList = comicsViewModel.comicList
 
     //  Caricamento degli elementi della lista appena presa
-    LazyColumn(state = listState, modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+    LazyColumn(state = listState, modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center)
     ) {
         items(comicList.size) { index ->
             ComicThumbnail(
@@ -466,7 +465,7 @@ fun AllComicList(navController: NavController, fontFamily: FontFamily,
 fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                    selectedComic: Comic, context: Context) {
 
-    val not_av = stringResource(R.string.not_available).uppercase()
+    val notAv = stringResource(R.string.not_available).uppercase()
 
     //  Riga che contiene il composable dell'immagine e il nome del fumetto
     Row(
@@ -493,15 +492,15 @@ fun ComicThumbnail(navController: NavController, fontFamily: FontFamily,
                     val selectedComicSeries = selectedComic.series?.name
 
                     if (selectedComicDescription.isNullOrEmpty() || selectedComicDescription == "#N/A") {
-                        selectedComicDescription = not_av
+                        selectedComicDescription = notAv
                     }
 
                     if (selectedComicIsbn.isNullOrEmpty()) {
-                        selectedComicIsbn = not_av
+                        selectedComicIsbn = notAv
                     }
 
                     if (selectedComicSeries.isNullOrEmpty()) {
-                        selectedComicIsbn = not_av
+                        selectedComicIsbn = notAv
                     }
 
                     selectedComicThumbnail = selectedComicThumbnail?.replace("/", "_")

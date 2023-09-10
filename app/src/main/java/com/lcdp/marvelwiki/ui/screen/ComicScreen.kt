@@ -78,7 +78,7 @@ fun ComicScreen(navController: NavController, arguments: List<String>, context: 
     val fontSize: TextUnit = if (comicTitle.length <= 28) {
         20.sp
     } else {
-        15.sp
+        14.sp
     }
 
     //  Inizializzazione DB e ViewModel per i fumetti preferiti e letti
@@ -237,12 +237,7 @@ fun ComicScreenUpperBar(
                     onFavoriteClicked(it)
                 }
             )
-
-
         }
-
-
-
     }
 }
 
@@ -255,9 +250,7 @@ fun ComicCard(
 ) {
 
     Row {
-
         val scrollState = rememberScrollState()
-
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -281,8 +274,6 @@ fun ComicCard(
                 Picasso.get()
                     .load(comicThumbnail.replace("_", "/").replace("http://", "https://") + ".jpg")
                     .placeholder(R.drawable.comic_placeholder)
-                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
-                    //.networkPolicy(NetworkPolicy.NO_CACHE)
                     .resize(600, 900)
                     .centerCrop()
                     .into(imageView)
@@ -325,21 +316,20 @@ fun ComicCard(
                 )
             }
 
-            val not_av = stringResource(R.string.not_available).uppercase()
-            val descr = stringResource(R.string.description).uppercase()
+            val notAv = stringResource(R.string.not_available).uppercase()
             val code = stringResource(R.string.isbn).uppercase()
 
             //  Visualizza tutte le informazioni relative al fumetto selezionato
-            if (comicDescription == not_av) {
+            if (comicDescription == notAv) {
                 TextChip(stringResource(R.string.description_not_found).uppercase(), 15.sp, fontFamily)
             } else {
                 TextChip(comicDescription.uppercase(), 15.sp, fontFamily)
             }
 
-            if (comicIsbn == not_av) {
-                TextChip(code + not_av, 15.sp, fontFamily)
+            if (comicIsbn == notAv) {
+                TextChip(code + notAv, 15.sp, fontFamily)
             } else {
-                TextChip(code + "$comicIsbn".uppercase(), 15.sp, fontFamily)
+                TextChip(code + comicIsbn.uppercase(), 15.sp, fontFamily)
             }
 
             TextChip(stringResource(R.string.page_count) + " $comicPageCount".uppercase(), 15.sp, fontFamily)

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -81,14 +80,13 @@ fun NavigationScreen(navController: NavController, context: Context) {
 
 
     //  Caricamento iniziale della lista dei primi 100 personaggi
-
     LaunchedEffect(key1 = Unit) {
         if (charactersViewModel.characterList.isEmpty()) {
             charactersViewModel.loadCharacterList()
         }
     }
 
-    //  Schermata principale con sfondo gradiente
+    //  Schermata principale con sfondo
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -106,6 +104,7 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 .fillMaxSize()
                 .alpha(0.5f)
         )
+
         //  Colonna per contenere tutti gli elementi della schermata
         //  NOTA: ai NavigationButtons passare il navController per switchare schermata al click
         Column(
@@ -121,18 +120,13 @@ fun NavigationScreen(navController: NavController, context: Context) {
                 charactersViewModel
             )
 
-            //Separator(fontFamily = currentFont,charactersViewModel, checkedState)
-
-            //  Area per la ricerca
+            //  Area per la ricerca e per la visualizzazione della lista degli eori
             SearchScreen(
                 navController = navController,
                 charactersViewModel = charactersViewModel,
                 fontFamily = currentFont,
                 checkedState
             )
-
-            //  Lista di tutti gli eroi
-            //AllHeroesList(navController, currentFont, context, charactersViewModel)
         }
     }
 }
@@ -140,6 +134,7 @@ fun NavigationScreen(navController: NavController, context: Context) {
 //  Barra superiore
 @Composable
 fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamily, checkedState: MutableState<Boolean>, charactersViewModel: CharactersViewModel) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -193,10 +188,8 @@ fun NavigationScreenUpperBar(navController: NavController, fontFamily: FontFamil
                 } else {
                     charactersViewModel.loadFavouriteCharacters()
                 }
-
             }
         )
-
     }
 }
 
@@ -255,11 +248,10 @@ fun SearchBar(fontFamily: FontFamily, onSearchQueryChange: (String) -> Unit, che
         )
     }
 
-    //  Se il campo di ricerca non Ã¨ vuoto, il filtro dei preferiti viene disabilitato
+    //  Se il campo di ricerca non è vuoto, il filtro dei preferiti viene disabilitato
     if (textFieldState.isNotEmpty()) {
         checkedState.value = false
     }
-
 }
 
 @Composable
@@ -286,7 +278,6 @@ fun SearchScreen(navController: NavController, charactersViewModel: CharactersVi
     }
 }
 
-
 @Composable
 fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context: Context, charactersViewModel: CharactersViewModel) {
 
@@ -302,16 +293,16 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
     LaunchedEffect(Unit) {
 
         /*  snapshotFlow crea un flusso di snapshot basato sugli elementi visibili ottenuti da
-            listState.layoutInfo.visibleItemsInfo. Il flusso emette un nuovo valroe ogni volta
+            listState.layoutInfo.visibleItemsInfo. Il flusso emette un nuovo valore ogni volta
             che le informazioni sugli elementi visibili cambiano    */
         snapshotFlow { listState.layoutInfo.visibleItemsInfo }
 
-            //  .map trasforma ogni valore del flusso nel booleano isAtEnd, che indica se lo scorrimento Ã¨ alla fine della lista
+            //  .map trasforma ogni valore del flusso nel booleano isAtEnd, che indica se lo scorrimento è alla fine della lista
             .map { visibleItemsInfo ->
 
-                //controlliamo se l'utlimo indice visibile Ã¨ diverso da null, se il conteggio totale degli elementi totalCount Ã¨ maggiore di 0
-                //e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
-                //NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
+                //  Controlliamo se l'utlimo indice visibile è diverso da null, se il conteggio totale degli elementi totalCount è maggiore di 0
+                //  e se l'ultimo indice visibile corrisponde all'ultimo elemento della lista (totalCount - 2)
+                //  NOTA: ABBIAMO USATO -2 E NON -1 AFFINCHE' NON OTTENESSIMO L'ENTRATA NELL CICLO if PRIMA DEL CARICAMENTO DELLA LISTA, RISULTANDO QUINDI 0
 
                 //  Ultimo indice visbile
                 val lastVisibleIndex = visibleItemsInfo.lastOrNull()?.index
@@ -319,8 +310,8 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
                 //  Elementi totali
                 val totalCount = listState.layoutInfo.totalItemsCount
 
-                /*  Controlliamo se l'ultimo indice visibile Ã¨ diverso da null e corrisponde all'ultimo
-                elemento della lista ed il conteggio degli elementi totali Ã¨ maggiore di 0  */
+                /*  Controlliamo se l'ultimo indice visibile è diverso da null e corrisponde all'ultimo
+                    elemento della lista ed il conteggio degli elementi totali Ã¨ maggiore di 0  */
                 val isAtEnd =
                     lastVisibleIndex != null && totalCount > 0 && lastVisibleIndex == totalCount - 80
                 isAtEnd
@@ -355,7 +346,7 @@ fun AllHeroesList(navController: NavController, fontFamily: FontFamily, context:
 @Composable
 fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selectedHero: Character, context: Context) {
 
-    val not_av = stringResource(R.string.not_available).uppercase()
+    val notAv = stringResource(R.string.not_available).uppercase()
 
     //  Riga che contiene il composable dell'immagine e il nome dell'eroe
     Row(
@@ -382,7 +373,7 @@ fun HeroThumbnail(navController: NavController, fontFamily: FontFamily, selected
                     val comicsAvailable = selectedHero.comics?.available
 
                     if (description?.trim().isNullOrEmpty() || description == "#N/A") {
-                        description = not_av
+                        description = notAv
                     }
 
                     thumbnail = thumbnail?.replace("/", "_")
@@ -456,9 +447,9 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     )
 
     val alphaState by animateFloatAsState(
-        targetValue = if (isChecked) 1f else 0.5f, // Cambia l'opacitÃ  all'istante del clic
+        targetValue = if (isChecked) 1f else 0.5f, // Cambia l'opacità  all'istante del clic
         animationSpec = tween(
-            durationMillis = 50, // Tempo per l'animazione di opacitÃ  (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacità  (in millisecondi)
             easing = LinearEasing
         )
     )
@@ -485,7 +476,7 @@ fun FavouriteCheckbox(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-//  "Cerchio" per i letti
+//  Spunta per i letti
 @Composable
 fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     val colorState by animateColorAsState(
@@ -505,15 +496,14 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
     )
 
     val alphaState by animateFloatAsState(
-        targetValue = if (isRead) 1f else 0.5f, // Cambia l'opacitÃ  all'istante del clic
+        targetValue = if (isRead) 1f else 0.5f, // Cambia l'opacità all'istante del clic
         animationSpec = tween(
-            durationMillis = 50, // Tempo per l'animazione di opacitÃ  (in millisecondi)
+            durationMillis = 50, // Tempo per l'animazione di opacità (in millisecondi)
             easing = LinearEasing
         )
     )
 
     val scaleModifier = Modifier.scale(scaleState)
-
 
     Row {
         IconButton(
@@ -526,7 +516,6 @@ fun ReadComicCheckbox(isRead: Boolean, onReadChange: (Boolean) -> Unit) {
                 tint = colorState,
                 modifier = Modifier
                     .size(30.dp)
-                    //.then(rotationModifier)
                     .then(scaleModifier)
                     .alpha(alphaState)
             )

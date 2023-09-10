@@ -65,14 +65,14 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
     val selectedHeroStories = arguments[5]
     val selectedHeroComics = arguments[6]
 
-    //Adattamento dimensioni testo per nomi di eroi troppo lunghi
+    //  Adattamento dimensioni testo per nomi di eroi troppo lunghi
     val fontSize: TextUnit = if (selectedHeroName.length <= 15) {
         20.sp
     } else {
-        12.sp
+        10.sp
     }
 
-    //Setup stringhe
+    //  Setup stringhe
     val addedToFav = stringResource(R.string.added_to_fav)
     val removedFromFav = stringResource(R.string.removed_from_fav)
 
@@ -131,14 +131,10 @@ fun HeroScreen(navController: NavController, arguments: List<String>, context: C
                             .show()
                     } else {
                         favouriteCharacterViewModel.deleteData(FavouriteCharacter(selectedHeroId))
-                        Toast.makeText(
-                            context,
-                            "$selectedHeroName $removedFromFav",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context,"$selectedHeroName $removedFromFav", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
-
             )
 
             //  Composable che mostra i dettagli dell'eroe
@@ -234,9 +230,7 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
              context: Context) {
 
     Row {
-
         val scrollState = rememberScrollState()
-
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -273,9 +267,10 @@ fun HeroCard(fontFamily: FontFamily, selectedHeroThumbnail: String, selectedHero
                 )
             }
 
+            //  Separatore
             Spacer(modifier = Modifier.height(10.dp))
 
-            //  Separatore
+            //  Riga con scritta "INFO"
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

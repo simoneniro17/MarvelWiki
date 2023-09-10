@@ -58,11 +58,6 @@ class CharactersViewModel(
             } catch (e: Exception) {
                 //  Gestione eventuali errori durante il caricamento
                 println("Errore durante il caricamento dei personaggi: ${e.message}")
-
-                /*  Toast con il messaggio di errore
-                val errorMessage = "Errore durante il caricamento dei personaggi: ${e.message}"
-                Toast.makeText(application, errorMessage, Toast.LENGTH_SHORT).show()
-                 */
             }
         }
     }
