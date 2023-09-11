@@ -572,7 +572,7 @@ fun FilterComicList(navController: NavController, fontFamily: FontFamily,
     val comicList = comicsViewModel.comicList
 
     //  Caricamento degli elementi della lista appena presa
-    LazyColumn(state = listState) {
+    LazyColumn(state = listState, modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
         items(comicList.size) { index ->
             ComicThumbnail(
                 navController,
